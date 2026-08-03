@@ -1,5 +1,5 @@
 {
-  "name": "puhen-svqt",
+  "name": "puhen-svqt-v2",
   "version": "1.0.0",
   "main": "index.js",
   "directories": {
@@ -13,6 +13,7 @@
     "url": "git+https://github.com/ivan-k-ivanow/puhen-svqt.git"
   },
   "keywords": [],
+  "type": "module",
   "author": "",
   "license": "ISC",
   "bugs": {
