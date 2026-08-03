@@ -1,0 +1,557 @@
+# Development Tasks
+
+## Purpose
+
+This document contains the implementation plan for **Puhen Svqt Version 2**.
+
+Development is divided into milestones.
+
+Each milestone must be completed, tested, and committed before moving to the next one.
+
+Every feature follows the same implementation workflow:
+
+1. Database
+2. Repository
+3. Service
+4. Validation
+5. Controller
+6. Routes
+7. Views
+8. Testing
+9. Documentation
+
+---
+
+# Milestone 1 - Project Setup
+
+## Goal
+
+Create the project and make sure the application runs successfully.
+
+### GitHub
+
+- [ ] Create GitHub repository
+- [ ] Clone repository locally
+- [ ] Open project in VS Code
+- [ ] Create README.md
+- [ ] Add `.gitignore`
+
+---
+
+### Node Project
+
+- [x] Run `npm init`
+- [x] Set `"type": "module"`
+
+---
+
+### package.json
+
+Add:
+
+```json
+"scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+}
+```
+
+---
+
+### Install Packages
+
+- [ ] express
+- [ ] express-handlebars
+- [ ] prisma
+- [ ] @prisma/client
+- [ ] bcrypt
+- [ ] jsonwebtoken
+- [ ] cookie-parser
+- [ ] zod
+- [ ] dotenv
+
+---
+
+### Create Folder Structure
+
+```
+src/
+
+config/
+controllers/
+middlewares/
+repositories/
+routes/
+schemas/
+services/
+utils/
+views/
+public/
+lib/
+```
+
+---
+
+### Express
+
+- [ ] Create `index.js`
+- [ ] Create Express application
+- [ ] Configure Handlebars
+- [ ] Configure static files
+- [ ] Register routes
+- [ ] Verify application starts
+
+---
+
+### Environment
+
+Create `.env`
+
+Add:
+
+```
+DATABASE_URL=
+JWT_SECRET=
+```
+
+- [ ] Install dotenv
+- [ ] Import `dotenv/config`
+
+---
+
+### Finish Checklist
+
+- [ ] Application runs successfully
+- [ ] Handlebars renders pages
+
+---
+
+# Milestone 2 - Database
+
+## Goal
+
+Connect the application to PostgreSQL using Prisma.
+
+### PostgreSQL
+
+- [ ] Create local PostgreSQL database (`puhensvqt`)
+
+---
+
+### Prisma
+
+- [ ] Run `npx prisma init`
+- [ ] Configure `schema.prisma`
+- [ ] Configure datasource
+- [ ] Generate Prisma Client
+
+---
+
+### User Model
+
+- [ ] Create User model
+- [ ] Add email
+- [ ] Add password
+
+---
+
+### Migration
+
+- [ ] Create first migration
+- [ ] Apply migration
+
+---
+
+### Seed
+
+- [ ] Create administrator seed
+- [ ] Hash administrator password
+- [ ] Seed administrator
+
+---
+
+### Finish Checklist
+
+- [ ] Prisma connected
+- [ ] Administrator exists
+- [ ] Prisma Studio works
+
+---
+
+# Milestone 3 - Authentication
+
+## Goal
+
+Allow administrators to securely log into the application.
+
+### Repository
+
+- [ ] Find user by email
+- [ ] Find user by id
+
+---
+
+### Service
+
+- [ ] Login
+- [ ] Logout
+
+---
+
+### Validation
+
+- [ ] Login schema
+
+---
+
+### JWT
+
+- [ ] Generate JWT
+- [ ] Verify JWT
+- [ ] Store JWT in cookie
+
+---
+
+### Middleware
+
+- [ ] Authentication middleware
+- [ ] Guest middleware
+
+---
+
+### Controller
+
+- [ ] Login page
+- [ ] Login action
+- [ ] Logout
+
+---
+
+### Views
+
+- [ ] Login page
+
+---
+
+### Finish Checklist
+
+- [ ] Administrator can login
+- [ ] Administrator can logout
+- [ ] Protected routes work
+
+---
+
+# Milestone 4 - Categories
+
+## Goal
+
+Complete Category CRUD.
+
+### Database
+
+- [ ] Category model
+- [ ] Migration
+
+---
+
+### Repository
+
+- [ ] Create
+- [ ] Get All
+- [ ] Get By Id
+- [ ] Update
+- [ ] Delete
+
+---
+
+### Service
+
+- [ ] Create category
+- [ ] Edit category
+- [ ] Delete category
+- [ ] List categories
+
+---
+
+### Validation
+
+- [ ] Category schema
+
+---
+
+### Controller
+
+- [ ] Dashboard
+- [ ] Create
+- [ ] Edit
+- [ ] Delete
+
+---
+
+### Views
+
+- [ ] Dashboard
+- [ ] Create
+- [ ] Edit
+
+---
+
+### Finish Checklist
+
+- [ ] Full Category CRUD completed
+
+---
+
+# Milestone 5 - Images
+
+## Goal
+
+Store product images.
+
+**Version 2**
+
+Images are stored as URLs.
+
+(Cloudinary will be introduced in a future version.)
+
+---
+
+### Database
+
+- [ ] Image model
+- [ ] Migration
+
+---
+
+### Repository
+
+- [ ] Add image
+- [ ] Delete image
+
+---
+
+### Service
+
+- [ ] Add image
+- [ ] Delete image
+
+---
+
+### Validation
+
+- [ ] Image schema
+
+---
+
+### Controller
+
+- [ ] Upload page
+- [ ] Delete image
+
+---
+
+### Views
+
+- [ ] Upload page
+
+---
+
+### Finish Checklist
+
+- [ ] Images can be managed
+
+---
+
+# Milestone 6 - Products
+
+## Goal
+
+Complete Product CRUD.
+
+### Database
+
+- [ ] Product model
+- [ ] Product → Category relationship
+- [ ] Product → Image relationship
+- [ ] Migration
+
+---
+
+### Repository
+
+- [ ] Create
+- [ ] Get All
+- [ ] Get By Id
+- [ ] Get Latest
+- [ ] Search
+- [ ] Update
+- [ ] Delete
+
+---
+
+### Service
+
+- [ ] Product CRUD
+- [ ] Latest products
+- [ ] Search
+- [ ] Filter by category
+
+---
+
+### Validation
+
+- [ ] Product schema
+
+---
+
+### Controller
+
+- [ ] Dashboard
+- [ ] Details
+- [ ] Create
+- [ ] Edit
+- [ ] Delete
+
+---
+
+### Views
+
+- [ ] Dashboard
+- [ ] Details
+- [ ] Create
+- [ ] Edit
+
+---
+
+### Finish Checklist
+
+- [ ] Full Product CRUD completed
+
+---
+
+# Milestone 7 - Public Website
+
+## Goal
+
+Build the public catalog.
+
+- [ ] Home page
+- [ ] Latest products
+- [ ] Product catalog
+- [ ] Product details
+- [ ] Browse by category
+- [ ] Search
+- [ ] Navigation
+- [ ] Footer
+
+---
+
+### Finish Checklist
+
+- [ ] Public website completed
+
+---
+
+# Milestone 8 - Administration
+
+## Goal
+
+Finish the administrator experience.
+
+- [ ] Dashboard
+- [ ] Product management
+- [ ] Category management
+- [ ] Image management
+
+---
+
+### Finish Checklist
+
+- [ ] Administrator panel completed
+
+---
+
+# Milestone 9 - User Experience
+
+- [ ] Success messages
+- [ ] Error messages
+- [ ] Empty states
+- [ ] 401 page
+- [ ] 403 page
+- [ ] 404 page
+- [ ] Responsive design
+
+---
+
+# Milestone 10 - Security
+
+- [ ] Verify passwords using bcrypt
+- [ ] Protect administrator routes
+- [ ] Verify JWT on every request
+- [ ] Store JWT in HTTP-only cookies
+
+---
+
+# Milestone 11 - Deployment
+
+## Goal
+
+Deploy the application.
+
+### Database
+
+- [ ] Create Supabase PostgreSQL database
+- [ ] Update `DATABASE_URL`
+
+---
+
+### Application
+
+- [ ] Run production migrations
+- [ ] Seed administrator
+- [ ] Test production database
+
+---
+
+### Deployment
+
+- [ ] Deploy application
+- [ ] Test production website
+
+---
+
+# Future Versions
+
+## Version 3
+
+- [ ] React frontend
+- [ ] REST API
+- [ ] Pagination
+- [ ] Advanced Search
+
+---
+
+## Version 4
+
+- [ ] Customer accounts
+- [ ] Customer registration
+- [ ] Shopping cart
+- [ ] Checkout
+- [ ] Orders
+- [ ] Payments
+- [ ] Wishlist
+- [ ] Reviews
+
+---
+
+## Version 5
+
+- [ ] Cloudinary
+- [ ] Inventory management
+- [ ] Product variants
+- [ ] Discounts
+- [ ] Coupons
+- [ ] Analytics
+- [ ] Newsletter
+- [ ] Administrator management
+- [ ] Roles & Permissions
