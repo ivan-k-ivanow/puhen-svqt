@@ -94,7 +94,7 @@ lib/
 
 ### Express
 
-- [ ] Create `index.js`
+- [x] Create `index.js`
 - [ ] Create Express application
 - [ ] Configure Handlebars
 - [ ] Configure static files
