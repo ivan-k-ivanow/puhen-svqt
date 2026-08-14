@@ -96,11 +96,11 @@ lib/
 ### Express
 
 - [x] Create `index.js`
-- [ ] Create Express application
-- [ ] Configure Handlebars
-- [ ] Configure static files
-- [ ] Register routes
-- [ ] Verify application starts
+- [x] Create Express application
+- [x] Configure Handlebars
+- [x] Configure static files
+- [x] Register routes
+- [x] Verify application starts
 
 ---
 
