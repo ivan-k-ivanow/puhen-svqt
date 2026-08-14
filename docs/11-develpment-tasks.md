@@ -60,16 +60,16 @@ Add:
 
 ### Install Packages
 
-- [ ] express
-- [ ] express-handlebars
-- [ ] prisma
-- [ ] @prisma/client
-- [ ] bcrypt
-- [ ] jsonwebtoken
-- [ ] cookie-parser
-- [ ] zod
-- [ ] dotenv
-- [ ] cors
+- [x] express
+- [x] express-handlebars
+- [x] prisma
+- [x] @prisma/client
+- [x] bcrypt
+- [x] jsonwebtoken
+- [x] cookie-parser
+- [x] zod
+- [x] dotenv
+- [x] cors
 
 ---
 

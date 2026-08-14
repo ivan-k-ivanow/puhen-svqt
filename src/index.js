@@ -16,6 +16,10 @@ app.set('views', 'src/views');
 // Setup static files
 app.use(express.static('src/public'));
 
+// Add cors middleware
+app.use(cors());
+
+
 
 
 app.get('/', (req, res) => {
