@@ -69,6 +69,7 @@ Add:
 - [ ] cookie-parser
 - [ ] zod
 - [ ] dotenv
+- [ ] cors
 
 ---
 

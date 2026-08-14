@@ -21,5 +21,10 @@
     "url": "https://github.com/ivan-k-ivanow/puhen-svqt/issues"
   },
   "homepage": "https://github.com/ivan-k-ivanow/puhen-svqt#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.2"
+  }
 }
