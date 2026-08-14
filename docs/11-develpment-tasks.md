@@ -115,8 +115,8 @@ DATABASE_URL=
 JWT_SECRET=
 ```
 
-- [ ] Install dotenv
-- [ ] Import `dotenv/config`
+- [x] Install dotenv
+- [x] Import `dotenv/config`
 
 ---
 

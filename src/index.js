@@ -2,6 +2,7 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import 'dotenv/config';
 import cors from 'cors';
+import routes from './routes.js';
 
 
 // Create an instance of the Express application
@@ -22,18 +23,12 @@ app.use(express.static('src/public'));
 app.use(cors());
 
 
+// Import routes
+app.use(routes);
 
-
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
-
-
-
-
-
-
+// Start the server
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}...`);
 });
