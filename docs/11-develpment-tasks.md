@@ -122,8 +122,9 @@ JWT_SECRET=
 
 ### Finish Checklist
 
-- [ ] Application runs successfully
-- [ ] Handlebars renders pages
+- [x] Application runs successfully
+- [x] Handlebars renders pages
+    
 
 ---
 
@@ -135,7 +136,7 @@ Connect the application to PostgreSQL using Prisma.
 
 ### PostgreSQL
 
-- [ ] Create local PostgreSQL database (`puhensvqt`)
+- [x] Create local PostgreSQL database (`puhen_svqt`)
 
 ---
 
