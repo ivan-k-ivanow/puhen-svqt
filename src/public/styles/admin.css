@@ -57,6 +57,8 @@ body {
   padding: 6px 12px;
   border-radius: 8px;
   transition: all 0.2s;
+  color: #5c463e;
+  text-decoration: none;
 }
 
 .admin-nav-btn.active,
@@ -78,7 +80,7 @@ body {
 
 /* Sections */
 .admin-section {
-  display: none;
+  display: block;
   width: 100%;
   max-width: 600px;
   margin: auto;
@@ -325,7 +327,9 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.admin-product button {
+.admin-product-actions button,
+.admin-product-actions .edit-product {
+  display: inline-block;
   padding: 6px 12px;
   border-radius: 8px;
   border: none;
@@ -333,14 +337,19 @@ body {
   color: white;
   cursor: pointer;
   font-size: 1rem;
+  font-family: inherit;
+  text-decoration: none;
+  text-align: center;
   transition: background 0.2s, transform 0.1s;
 }
 
-.admin-product button:hover {
+.admin-product-actions button:hover,
+.admin-product-actions .edit-product:hover {
   background-color: #c55b45;
 }
 
-.admin-product button:active {
+.admin-product-actions button:active,
+.admin-product-actions .edit-product:active {
   transform: scale(0.95);
 }
 
@@ -479,25 +488,27 @@ body {
     align-items: flex-start;
   }
 
-.drag-handle {
-  cursor: grab !important;
-  font-size: 1.2rem;
-  color: #bca493;
-  padding: 10px;
-  user-select: none;
-  min-width: 44px;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .drag-handle {
+    cursor: grab !important;
+    font-size: 1.2rem;
+    color: #bca493;
+    padding: 10px;
+    user-select: none;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   .drag-handle:active {
-    cursor: grab !important;; 
+    cursor: grab !important;
+    ;
   }
 
   .drag-handle:hover {
-    cursor: grab !important;;
+    cursor: grab !important;
+    ;
   }
 
   .sortable-ghost {
@@ -520,10 +531,10 @@ body {
     width: 100%;
   }
 
-  .admin-product-actions button {
+  .admin-product-actions button,
+  .admin-product-actions .edit-product {
     font-size: 1rem;
     width: 100%;
-    /* примерно 80% ширина на бутоните на мобилно */
   }
 }
 

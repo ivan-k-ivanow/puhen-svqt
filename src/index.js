@@ -2,7 +2,7 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import 'dotenv/config';
 import cors from 'cors';
-import routes from './routes.js';
+import routes from './routes/routes.js';
 
 
 // Create an instance of the Express application

@@ -123,7 +123,9 @@ JWT_SECRET=
 ### Finish Checklist
 
 - [x] Application runs successfully
-- [x] Handlebars renders pages
+- [ ] Handlebars renders pages
+    - [x] Rendered home page without the products
+    - [ ] Render Admin, create admin layout and add header and footer, then create
     
 
 ---
