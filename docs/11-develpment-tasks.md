@@ -123,9 +123,9 @@ JWT_SECRET=
 ### Finish Checklist
 
 - [x] Application runs successfully
-- [ ] Handlebars renders pages
+- [x] Handlebars renders pages
     - [x] Rendered home page without the products
-    - [ ] Render Admin, create admin layout and add header and footer, then create
+    - [x] Render Admin, create admin layout and add header and footer, then create
     
 
 ---
@@ -144,25 +144,25 @@ Connect the application to PostgreSQL using Prisma.
 
 ### Prisma
 
-- [ ] Run `npx prisma init`
-- [ ] Configure `schema.prisma`
-- [ ] Configure datasource
-- [ ] Generate Prisma Client
+- [x] Run `npx prisma init`
+- [x] Configure `schema.prisma`
+- [x] Configure datasource
+- [x] Generate Prisma Client
 
 ---
 
 ### User Model
 
-- [ ] Create User model
-- [ ] Add email
-- [ ] Add password
+- [x] Create User model
+- [x] Add email
+- [x] Add password
 
 ---
 
 ### Migration
 
-- [ ] Create first migration
-- [ ] Apply migration
+- [x] Create first migration
+- [x] Apply migration
 
 ---
 
