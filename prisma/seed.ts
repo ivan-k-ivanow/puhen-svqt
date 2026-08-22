@@ -1,16 +1,18 @@
 import 'dotenv/config';
 import bcrypt from 'bcrypt';
-import { PrismaClient } from "../generated/prisma/client";
+import { PrismaClient } from '../generated/prisma/client.ts';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
     if (!adminEmail || !adminPassword) {
-        console.error('Admin email or password is not set in the environment variables.');
-    } 
+        throw new Error(
+            'Admin email or password is not set in the environment variables.'
+        );
+    }
 
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
@@ -21,8 +23,9 @@ async function main() {
             role: 'ADMIN',
         },
     });
-}
 
+    console.log('Administrator created successfully.');
+}
 
 main()
     .catch((error) => {
