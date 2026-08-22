@@ -168,17 +168,17 @@ Connect the application to PostgreSQL using Prisma.
 
 ### Seed
 
-- [ ] Create administrator seed
-- [ ] Hash administrator password
-- [ ] Seed administrator
+- [x] Create administrator seed
+- [x] Hash administrator password
+- [x] Seed administrator
 
 ---
 
 ### Finish Checklist
 
-- [ ] Prisma connected
-- [ ] Administrator exists
-- [ ] Prisma Studio works
+- [x] Prisma connected
+- [x] Administrator exists
+- [x] Prisma Studio works
 
 ---
 
