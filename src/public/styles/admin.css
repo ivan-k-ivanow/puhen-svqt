@@ -414,7 +414,15 @@ body {
   transition: 0.3s;
 }
 
-
+.error {
+  color: #b45f5f;
+  background-color: #fdf0f0;
+  border: 1px solid #e7baba;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+}
 
 /* Responsive */
 @media (max-width: 768px) {

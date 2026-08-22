@@ -1,8 +1,13 @@
 <section id="login" class="admin-section active">
     <h2>Админ вход</h2>
-    <form id="login-form" class="admin-form">
+    <form id="login-form" action="/admin/login" method="POST" class="admin-form">
         <input type="email" name="email" placeholder="Имейл" required />
         <input type="password" name="password" placeholder="Парола" required />
         <button type="submit">Вход</button>
+
+        {{#if error}}
+        <p class="error">{{error}}</p>
+        {{/if}}
     </form>
+
 </section>

@@ -3,6 +3,8 @@ import { engine } from 'express-handlebars';
 import 'dotenv/config';
 import cors from 'cors';
 import routes from './routes/routes.js';
+import { authMiddleware } from './middlewares/auth-middleware.js';
+import cookieParser from 'cookie-parser';
 
 
 // Create an instance of the Express application
@@ -19,6 +21,13 @@ app.set('views', 'src/views');
 // Setup static files
 app.use(express.static('src/public'));
 
+// Parse incoming JSON data
+app.use(cookieParser());
+
+// Add the authMiddleware to all routes
+app.use(authMiddleware); 
+
+// Parse incoming request bodies
 app.use(express.urlencoded());
 
 // Add cors middleware

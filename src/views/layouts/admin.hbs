@@ -24,9 +24,15 @@
             </a>
             <h1 class="admin-logo">Админ панел</h1>
             <nav class="admin-nav">
-                <a href="/admin/login" class="admin-nav-btn">Вход</a>
+                {{#if user}}
+                <a href="/admin" class="admin-nav-btn">Админ панел</a>
                 <a href="/admin/products/create" class="admin-nav-btn">Добави продукт</a>
-                <a href="/admin" class="admin-nav-btn">Управлявай продукти</a>
+                <form action="/admin/logout" method="POST">
+                    <button type="submit" class="admin-nav-btn">Изход</button>
+                </form>
+                {{else}}
+                <a href="/admin/login" class="admin-nav-btn">Вход</a>
+                {{/if}}
             </nav>
 
             <button class="hamburger" aria-label="Toggle menu">
