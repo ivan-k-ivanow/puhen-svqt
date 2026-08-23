@@ -190,58 +190,58 @@ Allow administrators to securely log into the application.
 
 ### Repository
 
-- [ ] Find user by email
-- [ ] Find user by id
+- [x] Find user by email
+- [x] Find user by id
 
 ---
 
 ### Service
 
-- [ ] Login
-- [ ] Logout
+- [x] Login
+- [x] Logout
 
 ---
 
 ### Validation
 
-- [ ] Login schema
+- [x] Login schema
 
 ---
 
 ### JWT
 
-- [ ] Generate JWT
-- [ ] Verify JWT
-- [ ] Store JWT in cookie
+- [x] Generate JWT
+- [x] Verify JWT
+- [x] Store JWT in cookie
 
 ---
 
 ### Middleware
 
-- [ ] Authentication middleware
-- [ ] Guest middleware
+- [x] Authentication middleware
+- [x] Guest middleware
 
 ---
 
 ### Controller
 
-- [ ] Login page
-- [ ] Login action
-- [ ] Logout
+- [x] Login page
+- [x] Login action
+- [x] Logout
 
 ---
 
 ### Views
 
-- [ ] Login page
+- [x] Login page
 
 ---
 
 ### Finish Checklist
 
-- [ ] Administrator can login
-- [ ] Administrator can logout
-- [ ] Protected routes work
+- [x] Administrator can login
+- [x] Administrator can logout
+- [x] Protected routes work
 
 ---
 
