@@ -36,6 +36,18 @@ adminProductsController.post('/create', async (req, res) => {
     }
 });
 
+adminProductsController.get('/details/:id', async (req, res) => {
+    const product = await productService.getProductById(req.params.id);
+
+    res.render('admin/details', {
+        title: 'Детайли за продукт',
+        layout: 'admin',
+        product
+    });
+});
+
+
+
 adminProductsController.get('/edit/:id', async (req, res) => {
     
     const categories = await categoryService.getAllCategories();

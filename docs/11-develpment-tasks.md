@@ -394,24 +394,24 @@ Complete Product CRUD.
 
 ### Service
 
-- [ ] Product CRUD
-- [ ] Latest products
-- [ ] Search
-- [ ] Filter by category
+- [x] Product CRUD
+- [x] Latest products
+- [x] Search
+- [x] Filter by category
 
 ---
 
 ### Validation
 
-- [ ] Product schema
+- [x] Product schema
 
 ---
 
 ### Controller
 
-- [ ] Dashboard
+- [x] Dashboard
 - [ ] Details
-- [ ] Create
+- [x] Create
 - [ ] Edit
 - [ ] Delete
 

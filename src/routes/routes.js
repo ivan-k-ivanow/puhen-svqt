@@ -5,6 +5,7 @@ import adminProductsController from '../controllers/admin-products-controller.js
 import adminController from '../controllers/admin-home-controller.js';
 import { authMiddleware, isAdmin } from '../middlewares/auth-middleware.js';
 import categoryController from '../controllers/category-controller.js';
+import productController from '../controllers/product-controller.js';
 
 const routes = Router();
 
@@ -13,5 +14,6 @@ routes.use('/admin', adminAuthController);
 routes.use('/admin', authMiddleware, isAdmin, adminController);
 routes.use('/admin/products', authMiddleware, isAdmin, adminProductsController);
 routes.use('/admin/categories', authMiddleware, isAdmin, categoryController);
+routes.use('/product', productController);
 
 export default routes;
