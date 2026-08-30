@@ -253,15 +253,15 @@ Complete Category CRUD.
 
 ### Database
 
-- [ ] Category model
-- [ ] Migration
+- [x] Category model
+- [x] Migration
 
 ---
 
 ### Repository
 
-- [ ] Create
-- [ ] Get All
+- [x] Create
+- [x] Get All
 - [ ] Get By Id
 - [ ] Update
 - [ ] Delete
