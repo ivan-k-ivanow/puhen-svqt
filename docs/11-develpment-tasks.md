@@ -262,9 +262,9 @@ Complete Category CRUD.
 
 - [x] Create
 - [x] Get All
-- [ ] Get By Id
-- [ ] Update
-- [ ] Delete
+- [x] Get By Id
+- [x] Update
+- [x] Delete
 
 ---
 
