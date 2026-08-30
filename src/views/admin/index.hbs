@@ -23,37 +23,46 @@
 
     <ul id="products-list">
 
+        {{#each products}}
+
         <li class="admin-product">
 
             <span class="drag-handle">☰</span>
 
-            <img src="/images/product-example.jpg" alt="Примерен продукт" class="admin-product-image"
-                style="cursor: zoom-in">
+            {{#if images.length}}
+            <img src="{{images.[0].url}}" alt="{{name}}" class="admin-product-image" style="cursor: zoom-in">
+            {{/if}}
 
             <div class="admin-product-info">
 
-                <strong>Примерен продукт</strong>
+                <strong>{{name}}</strong>
 
                 <p>
                     <b>Категории:</b>
-                    Рожден ден
+                    {{#each categories}}
+                    {{name}}{{#unless @last}}, {{/unless}}
+                    {{/each}}
                 </p>
 
                 <p>
                     <b>Снимки:</b>
-                    1
+                    {{images.length}}
+                </p>
+
+                <p>
+                    <b>Цена:</b>
+                    {{price}} €.
                 </p>
 
             </div>
 
-
             <div class="admin-product-actions">
 
-                <a href="/admin/products/edit" class="edit-product">
+                <a href="/admin/products/edit/{{id}}" class="edit-product">
                     Редактирай
                 </a>
 
-                <button type="button" class="delete-product">
+                <button type="button" class="delete-product" data-id="{{id}}">
                     Премахни Продукт
                 </button>
 
@@ -61,44 +70,7 @@
 
         </li>
 
-
-        <li class="admin-product">
-
-            <span class="drag-handle">☰</span>
-
-            <img src="/images/product-example.jpg" alt="Втори примерен продукт" class="admin-product-image"
-                style="cursor: zoom-in">
-
-            <div class="admin-product-info">
-
-                <strong>Втори примерен продукт</strong>
-
-                <p>
-                    <b>Категории:</b>
-                    Кръщене
-                </p>
-
-                <p>
-                    <b>Снимки:</b>
-                    2
-                </p>
-
-            </div>
-
-
-            <div class="admin-product-actions">
-
-                <a href="/admin/products/edit" class="edit-product">
-                    Редактирай
-                </a>
-
-                <button type="button" class="delete-product">
-                    Премахни Продукт
-                </button>
-
-            </div>
-
-        </li>
+        {{/each}}
 
     </ul>
 

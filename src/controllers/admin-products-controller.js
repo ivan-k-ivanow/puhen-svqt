@@ -29,7 +29,7 @@ adminProductsController.post('/create', async (req, res) => {
 
         await productService.createProduct(validatedData);
 
-        res.redirect('/admin/products');
+        res.redirect('/admin');
     } catch (error) {
         console.error(error);
         res.status(400).send('Invalid product data.');
