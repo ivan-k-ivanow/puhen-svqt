@@ -285,10 +285,9 @@ Complete Category CRUD.
 
 ### Controller
 
-- [ ] Dashboard
-- [ ] Create
-- [ ] Edit
-- [ ] Delete
+- [x] Render on create product page
+- [x] Create
+- [ ] Delete // first we need relation to products which we dont have at the moment
 
 ---
 

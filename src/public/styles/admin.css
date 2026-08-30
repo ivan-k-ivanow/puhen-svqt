@@ -444,6 +444,23 @@ body {
     box-sizing: border-box;
 }
 
+.create-category-btn,
+.delete-category-btn {
+  color: #8f6a5e;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0 10px 0 0;
+}
+
+.create-category-btn:hover,
+.delete-category-btn:hover {
+  text-decoration: underline;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
   .hamburger {

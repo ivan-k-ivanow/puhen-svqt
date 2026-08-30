@@ -1,11 +1,16 @@
 import { Router } from 'express';
+import categoryService from '../services/category-service.js';
 
 const adminProductsController = Router();
 
-adminProductsController.get('/create', (req, res) => {
+adminProductsController.get('/create', async (req, res) => {
+
+    const categories = await categoryService.getAllCategories();
+
     res.render('admin/create', {
         title: 'Добави продукт',
-        layout: 'admin'
+        layout: 'admin',
+        categories
     });
 });
 

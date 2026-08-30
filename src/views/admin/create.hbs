@@ -6,49 +6,21 @@
         <input name="name" placeholder="Име на продукт" required />
         <input name="price" type="number" placeholder="Цена" />
         <input type="file" name="image" accept="image/*" id="image-input" style="display: none" />
-        
-        <div class="category-actions"> <a href="/admin/categories/create" class="admin-nav-btn" > + Създай категория </a> <button type="button" class="admin-nav-btn" id="delete-category-btn" > Изтрий категория </button> </div>
-        
-        <!--       <div class="category-checkboxes">
-            <div class="category-checkboxes"> 
-                {{#each categories}}
-                <label>
-                    <input type="checkbox" name="category" value="{{this.id}}"> <span>{{this.name}}</span> 
-                </label> {{/each}}
-            </div>
+
+        <div class="category-actions">
+            <a href="/admin/categories/create" class="create-category-btn"> + Създай категория </a>
+            <a href="/admin/categories/delete" class="delete-category-btn"> - Изтрий категория </a>
         </div>
-        -->
+        
 
         <div class="category-checkboxes">
+            {{#each categories}}
             <label>
-                <input type="checkbox" name="category" value="birthday">
-                <span>Рожден ден</span>
+                <input type="checkbox" name="category" value="{{this.id}}">
+                <span>{{this.name}}</span>
             </label>
+            {{/each}}
 
-            <label>
-                <input type="checkbox" name="category" value="christening">
-                <span>Кръщене</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="wedding">
-                <span>Сватба</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="anniversary">
-                <span>Годишнина</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="teacher">
-                <span>Учител</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="other">
-                <span>Други</span>
-            </label>
         </div>
 
         <textarea name="shortDescription" placeholder="Кратко описание (за каталога)" maxlength="100"></textarea>
