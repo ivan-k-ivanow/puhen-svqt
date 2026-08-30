@@ -20,20 +20,20 @@ async function deleteCategoryById(id) {
     });
 }
 
-async function updateCategoryById(id, name) {
-    return await prisma.category.update({
-        where: {
-            id,
-        },
-        data: {
-            name,
-        },
-    });
-}
+// async function updateCategoryById(id, name) {
+//     return await prisma.category.update({
+//         where: {
+//             id,
+//         },
+//         data: {
+//             name,
+//         },
+//     });
+// }
 
 export default {
     createCategory,
     getAllCategories,
     deleteCategoryById,
-    updateCategoryById,
+    // updateCategoryById,
 };

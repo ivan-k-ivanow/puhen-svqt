@@ -18,6 +18,5 @@ categoryController.post('/create', async (req, res) => {
     res.redirect('/admin/products/create');
 });
 
-categoryController.get('/d')
 
 export default categoryController;

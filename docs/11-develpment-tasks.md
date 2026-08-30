@@ -293,15 +293,14 @@ Complete Category CRUD.
 
 ### Views
 
-- [ ] Dashboard
-- [ ] Create
-- [ ] Edit
+- [x] On create product page
+- [x] Create
 
 ---
 
 ### Finish Checklist
 
-- [ ] Full Category CRUD completed
+- [ ] Full Category CRUD completed // only delete left, we dont hae product relation 
 
 ---
 
