@@ -1,0 +1,16 @@
+<section id="add-category" class="admin-section active">
+    <h2>Създай Категория</h2>
+
+    <form id="category-form" class="admin-form" action="/admin/categories/create" method="POST">
+        <input type="text" name="name" placeholder="Име на категория" maxlength="50" required />
+
+        {{#if error}}
+            <p class="error">{{error}}</p>
+        {{/if}}
+
+        <div class="category-form-actions">
+            <button type="submit">Създай Категория</button>
+            <a href="/admin/products/create" class="admin-nav-btn">Отказ</a>
+        </div>
+    </form>
+</section>
