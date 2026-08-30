@@ -320,22 +320,22 @@ Images are stored as URLs.
 
 ### Database
 
-- [ ] Image model
-- [ ] Migration
+- [x] Image model
+- [x] Migration
 
 ---
 
 ### Repository
 
-- [ ] Add image
-- [ ] Delete image
+- [x] Add image
+- [x] Delete image
 
 ---
 
 ### Service
 
-- [ ] Add image
-- [ ] Delete image
+- [x] Add image
+- [x] Delete image
 
 ---
 
