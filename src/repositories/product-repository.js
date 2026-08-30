@@ -33,7 +33,7 @@ async function getLatestProducts(limit) {
         orderBy: {
             createdAt: 'desc',
         },
-        take: 12,
+        take: limit,
         include: {
             category: true,
             images: true,

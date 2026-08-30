@@ -381,13 +381,14 @@ Complete Product CRUD.
 
 ### Repository
 
-- [ ] Create
-- [ ] Get All
-- [ ] Get By Id
-- [ ] Get Latest
-- [ ] Search
-- [ ] Update
-- [ ] Delete
+- [x] Create
+- [x] Get All
+- [x] Get By Id
+- [x] Get By Slug
+- [x] Get Latest
+- [x] Search
+- [x] Update
+- [x] Delete
 
 ---
 
