@@ -255,7 +255,6 @@ body {
   background-color: #fcf0e8;
   font-size: 0.9rem;
   color: #8f6a5e;
-  transition: 0.2s;
   user-select: none;
 }
 
@@ -310,7 +309,6 @@ body {
   background: none;
   font-size: 0.9rem;
   color: #8f6a5e;
-  transition: 0.2s;
   user-select: none;
 }
 
