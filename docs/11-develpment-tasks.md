@@ -270,16 +270,16 @@ Complete Category CRUD.
 
 ### Service
 
-- [ ] Create category
-- [ ] Edit category
-- [ ] Delete category
-- [ ] List categories
+- [x] Create category
+- [x] Edit category
+- [x] Delete category
+- [x] Get All categories
 
 ---
 
 ### Validation
 
-- [ ] Category schema
+- [x] Category schema
 
 ---
 
