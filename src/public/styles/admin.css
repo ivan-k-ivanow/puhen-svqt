@@ -135,21 +135,6 @@ body {
   box-shadow: 0 0 0 3px #8f6a5e22;
 }
 
-/* Upload Button */
-.custom-upload-btn {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.custom-upload-btn:hover {
-  background-color: #45a049;
-}
 
 /* Form Submit Button */
 .admin-form button {
@@ -460,6 +445,25 @@ body {
   text-decoration: underline;
 }
 
+.image-upload-btn {
+  display: inline-block;
+  padding: 9px 16px;
+  border-radius: 8px;
+  background-color: #8f6a5e;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.image-upload-btn:hover {
+  background-color: #5c463e;
+}
+
+.image-upload-btn:active {
+  transform: scale(0.97);
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -564,6 +568,8 @@ body {
   .admin-product-image {
     width: 40%;
   }
+
+
 
   .admin-product-info p {
     margin-bottom: 1rem;
