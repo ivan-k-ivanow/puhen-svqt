@@ -28,7 +28,8 @@
 
         <div class="category-checkboxes">
             {{#each categories}}
-            <label><input type="checkbox" name="categoryIds" value="{{id}}" {{#if
+            <label><input type="checkbox" name="categoryIds" value="{{id}}" 
+            {{#if
                     selected}}checked{{/if}}><span>{{name}}</span></label>
             {{/each}}
         </div>

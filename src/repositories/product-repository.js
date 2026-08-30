@@ -9,10 +9,13 @@ async function createProduct(data) {
 
 async function getAllProducts() {
     return prisma.product.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        },
         include: {
             categories: true,
-            images: true,
-        },
+            images: true
+        }
     });
 }
 
