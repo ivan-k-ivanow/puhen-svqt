@@ -49,12 +49,12 @@ Create the project and make sure the application runs successfully.
 
 Add:
 
-```json
+ json
 "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js"
 }
-```
+ 
 
 ---
 
@@ -75,7 +75,7 @@ Add:
 
 ### Create Folder Structure
 
-```
+ 
 src/
 
 config/
@@ -89,7 +89,7 @@ utils/
 views/
 public/
 lib/
-```
+ 
 
 ---
 
@@ -110,10 +110,10 @@ Create `.env`
 
 Add:
 
-```
+ 
 DATABASE_URL=
 JWT_SECRET=
-```
+ 
 
 - [x] Install dotenv
 - [x] Import `dotenv/config`
@@ -287,7 +287,7 @@ Complete Category CRUD.
 
 - [x] Render on create product page
 - [x] Create
-- [ ] Delete // first we need relation to products which we dont have at the moment
+- [x] Delete // first we need relation to products which we dont have at the moment
 
 ---
 
