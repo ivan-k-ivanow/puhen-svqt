@@ -30,11 +30,11 @@ Create the project and make sure the application runs successfully.
 
 ### GitHub
 
-- [ ] Create GitHub repository
-- [ ] Clone repository locally
-- [ ] Open project in VS Code
-- [ ] Create README.md
-- [ ] Add `.gitignore`
+- [x] Create GitHub repository
+- [x] Clone repository locally
+- [x] Open project in VS Code
+- [x] Create README.md
+- [x] Add `.gitignore`
 
 ---
 
@@ -412,17 +412,17 @@ Complete Product CRUD.
 - [x] Dashboard
 - [x] Details
 - [x] Create
-- [ ] Edit
-- [ ] Delete
+- [x] Edit // photo delete on edit
+- [x] Delete
 
 ---
 
 ### Views
 
-- [ ] Dashboard
-- [ ] Details
-- [ ] Create
-- [ ] Edit
+- [x] Dashboard
+- [x] Details
+- [x] Create
+- [x] Edit
 
 ---
 

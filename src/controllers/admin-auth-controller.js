@@ -25,7 +25,7 @@ adminAuthController.post('/login', async (req, res) => {
             httpOnly: true,
         });
 
-        res.redirect('/admin');
+        res.redirect('/admin/products');
     } catch (error) {
         console.error(error);
 

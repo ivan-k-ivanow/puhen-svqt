@@ -24,32 +24,39 @@ document.querySelectorAll('.preview-remove-btn').forEach(button => {
 
 // Handle product deletion
 
-const deleteButtons = document.querySelectorAll('.delete-product');
+// Handle category deletion
 
-deleteButtons.forEach(button => {
+const categoryDeleteButtons = document.querySelectorAll('.category-delete-btn');
+
+categoryDeleteButtons.forEach(button => {
     button.addEventListener('click', async () => {
-        const productId = button.dataset.id;
+        const categoryId = button.dataset.categoryId;
 
-        const confirmed = confirm('Сигурни ли сте, че искате да изтриете този продукт?');
+        if (!categoryId) {
+            console.error('Category ID is missing.');
+            return;
+        }
+
+        const confirmed = confirm('Сигурни ли сте, че искате да изтриете тази категория?');
 
         if (!confirmed) {
             return;
         }
 
         try {
-            const response = await fetch(`/admin/products/${productId}`, {
+            const response = await fetch(`/admin/categories/delete/${categoryId}`, {
                 method: 'DELETE'
             });
 
             if (!response.ok) {
-                throw new Error('Failed to delete product.');
+                throw new Error('Failed to delete category.');
             }
 
-            button.closest('.admin-product').remove();
+            button.closest('.category-item').remove();
 
         } catch (error) {
             console.error(error);
-            alert('Възникна грешка при изтриването на продукта.');
+            alert('Възникна грешка при изтриването на категорията.');
         }
     });
 });
