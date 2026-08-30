@@ -10,7 +10,7 @@ async function createProduct(data) {
 async function getAllProducts() {
     return prisma.product.findMany({
         include: {
-            category: true,
+            categories: true,
             images: true,
         },
     });
@@ -22,7 +22,19 @@ async function getProductById(id) {
             id,
         },
         include: {
-            category: true,
+            categories: true,
+            images: true,
+        },
+    });
+}
+
+async function getProductsByCategory(categoryId) {
+    return prisma.product.findMany({
+        where: {
+            categoryId,
+        },
+        include: {
+            categories: true,
             images: true,
         },
     });
@@ -35,7 +47,7 @@ async function getLatestProducts(limit) {
         },
         take: limit,
         include: {
-            category: true,
+            categories: true,
             images: true,
         },
     });
@@ -50,19 +62,19 @@ async function searchProductsByName(name) {
             },
         },
         include: {
-            category: true,
+            categories: true,
             images: true,
         },
     });
 }
 
-async function getBySlug(slug) {
+async function getProductBySlug(slug) {
     return prisma.product.findUnique({
         where: {
             slug,
         },
         include: {
-            category: true,
+            categories: true,
             images: true,
         },
     });
@@ -89,7 +101,8 @@ export {
     createProduct,
     getAllProducts,
     getProductById,
-    getBySlug,
+    getProductsByCategory,
+    getProductBySlug,
     getLatestProducts,
     searchProductsByName,
     updateProduct,

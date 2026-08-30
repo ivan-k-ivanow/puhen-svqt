@@ -12,6 +12,10 @@ async function getProductById(id) {
     return await productRepository.getProductById(id);
 }
 
+async function getProductsByCategory(categoryId) {
+    return await productRepository.getProductsByCategory(categoryId);
+}
+
 async function getLatestProducts(limit) {
     return await productRepository.getLatestProducts(limit);
 }
@@ -20,7 +24,7 @@ async function searchProductsByName(name) {
     return await productRepository.searchProductsByName(name);
 }
 
-async function getBySlug(slug) {
+async function getProductBySlug(slug) {
     return await productRepository.getBySlug(slug);
 }
 
@@ -36,9 +40,10 @@ export {
     createProduct,
     getAllProducts,
     getProductById,
+    getProductsByCategory,
     getLatestProducts,
     searchProductsByName,
-    getBySlug,
+    getProductBySlug,
     updateProduct,
     deleteProduct,
 };
