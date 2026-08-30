@@ -410,7 +410,7 @@ Complete Product CRUD.
 ### Controller
 
 - [x] Dashboard
-- [ ] Details
+- [x] Details
 - [x] Create
 - [ ] Edit
 - [ ] Delete
