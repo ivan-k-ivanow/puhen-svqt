@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import categoryService from '../services/category-service.js';
+import productService from '../services/product-service.js';
+import { createProductSchema } from '../schemas/product-schema.js';
 
 const adminProductsController = Router();
 
@@ -15,13 +17,17 @@ adminProductsController.get('/create', async (req, res) => {
 });
 
 adminProductsController.post('/create', async (req, res) => {
-    
-    const newProductData = req.body;
-
     try {
-        const productData = createProductSchema.parse(newProductData);
+        const productData = {
+            ...req.body,
+            categoryIds: Array.isArray(req.body.categoryIds)
+                ? req.body.categoryIds
+                : [req.body.categoryIds]
+        };
 
-        await productService.createProduct(productData);
+        const validatedData = createProductSchema.parse(productData);
+
+        await productService.createProduct(validatedData);
 
         res.redirect('/admin/products');
     } catch (error) {

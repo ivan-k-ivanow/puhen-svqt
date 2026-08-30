@@ -2,7 +2,7 @@
 
     <h2>Добави Продукт</h2>
 
-    <form id="product-form" class="admin-form">
+    <form id="product-form" class="admin-form" action="/admin/products/create" method="POST">
         <input name="name" placeholder="Име на продукт" required />
         <input name="price" type="number" placeholder="Цена" />
         <input type="file" name="image" accept="image/*" id="image-input" style="display: none" />

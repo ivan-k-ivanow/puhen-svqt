@@ -97,7 +97,7 @@ async function deleteProduct(id) {
     });
 }
 
-export {
+export default {
     createProduct,
     getAllProducts,
     getProductById,

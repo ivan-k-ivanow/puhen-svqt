@@ -1,9 +1,15 @@
-import productRepository from '../repositories/product-repository.js';
 import { generateSlug } from '../utils/slug.js';
-
+import productRepository from '../repositories/product-repository.js';
 async function createProduct(data) {
-    data.slug = generateSlug(data.name);
-    return await productRepository.createProduct(data);
+    const { categoryIds, ...productData } = data;
+
+    productData.slug = generateSlug(productData.name);
+
+    productData.categories = {
+        connect: categoryIds.map(id => ({ id }))
+    };
+
+    return await productRepository.createProduct(productData);
 }
 
 async function getAllProducts() {
@@ -27,7 +33,7 @@ async function searchProductsByName(name) {
 }
 
 async function getProductBySlug(slug) {
-    return await productRepository.getBySlug(slug);
+    return await productRepository.getProductBySlug(slug);
 }
 
 async function updateProduct(id, data) {
@@ -38,7 +44,7 @@ async function deleteProduct(id) {
     return await productRepository.deleteProduct(id);
 }
 
-export {
+export default {
     createProduct,
     getAllProducts,
     getProductById,
