@@ -8,13 +8,12 @@
         <input type="file" name="image" accept="image/*" id="image-input" style="display: none" />
         <label for="image-input" class="image-upload-btn">+ Добави снимка</label>
 
-        
+
 
         <div class="category-checkboxes">
             {{#each categories}}
             <label>
-                <input type="checkbox" name="category" value="{{this.id}}">
-                <span>{{this.name}}</span>
+                <input type="checkbox" name="categoryIds" value="{{this.id}}"> <span>{{this.name}}</span>
             </label>
             {{/each}}
         </div>
@@ -23,7 +22,7 @@
             <a href="/admin/categories/create" class="create-category-btn"> + Създай категория </a>
             <a href="/admin/categories/delete" class="delete-category-btn"> - Изтрий категория </a>
         </div>
-        
+
         <textarea name="shortDescription" placeholder="Кратко описание (за каталога)" maxlength="100"></textarea>
         <textarea name="description" placeholder="Описание (за продуктовата страница)"></textarea>
         <button type="submit">

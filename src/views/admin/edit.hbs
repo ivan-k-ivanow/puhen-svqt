@@ -6,36 +6,15 @@
         <input name="price" type="number" placeholder="Цена" />
         <input type="file" name="image" accept="image/*" id="image-input" style="display: none" />
         <div class="category-checkboxes">
-            <label>
-                <input type="checkbox" name="category" value="birthday">
-                <span>Рожден ден</span>
-            </label>
 
-            <label>
-                <input type="checkbox" name="category" value="christening">
-                <span>Кръщене</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="wedding">
-                <span>Сватба</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="anniversary">
-                <span>Годишнина</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="teacher">
-                <span>Учител</span>
-            </label>
-
-            <label>
-                <input type="checkbox" name="category" value="other">
-                <span>Други</span>
-            </label>
-
+            <div class="category-checkboxes">
+                {{#each categories}}
+                <label>
+                    <input type="checkbox" name="category" value="{{this.id}}">
+                    <span>{{this.name}}</span>
+                </label>
+                {{/each}}
+            </div>
         </div>
 
         <textarea name="shortDescription" placeholder="Кратко описание (за каталога)" maxlength="100"></textarea>

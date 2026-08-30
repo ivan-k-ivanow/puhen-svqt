@@ -1,6 +1,8 @@
 import productRepository from '../repositories/product-repository.js';
+import { generateSlug } from '../utils/slug.js';
 
 async function createProduct(data) {
+    data.slug = generateSlug(data.name);
     return await productRepository.createProduct(data);
 }
 
