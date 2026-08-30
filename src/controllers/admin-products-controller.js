@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import categoryService from '../services/category-service.js';
 import productService from '../services/product-service.js';
+import imageService from '../services/image-service.js';
 import { createProductSchema } from '../schemas/product-schema.js';
 
 const adminProductsController = Router();
@@ -51,12 +52,29 @@ adminProductsController.get('/details/:id', async (req, res) => {
 adminProductsController.get('/edit/:id', async (req, res) => {
     
     const categories = await categoryService.getAllCategories();
+    const product = await productService.getProductById(req.params.id);
 
     res.render('admin/edit', {
         title: 'Редактирай продукт',
         layout: 'admin',
-        categories
+        categories,
+        product
     });
 });
+
+
+adminProductsController.delete('/images/:id', async (req, res) => {
+    try {
+        await imageService.deleteImage(req.params.id);
+
+        res.status(204).send();
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Неуспешно изтриване на снимката.'
+        });
+    }
+});
+
 
 export default adminProductsController;
