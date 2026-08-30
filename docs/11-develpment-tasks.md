@@ -341,26 +341,26 @@ Images are stored as URLs.
 
 ### Validation
 
-- [ ] Image schema
+- [x] Image schema
 
 ---
 
 ### Controller
 
-- [ ] Upload page
-- [ ] Delete image
+- [ ] Upload page // will do on deployment because we dont have files storage right now (supabase)
+- [ ] Delete image // Upload page // will do on deployment because we dont have files storage right now (supabase)
 
 ---
 
 ### Views
 
-- [ ] Upload page
+- [ ] Upload page // added button to create product form
 
 ---
 
 ### Finish Checklist
 
-- [ ] Images can be managed
+- [ ] Images can be managed // Upload page // will do on deployment because we dont have files storage right now (supabase)
 
 ---
 
