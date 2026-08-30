@@ -372,10 +372,10 @@ Complete Product CRUD.
 
 ### Database
 
-- [ ] Product model
-- [ ] Product → Category relationship
-- [ ] Product → Image relationship
-- [ ] Migration
+- [x] Product model
+- [x] Product → Category relationship
+- [x] Product → Image relationship
+- [x] Migration
 
 ---
 
