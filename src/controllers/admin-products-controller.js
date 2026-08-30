@@ -94,16 +94,14 @@ adminProductsController.post('/edit/:id', async (req, res) => {
 });
 
 
-adminProductsController.delete('/images/:id', async (req, res) => {
+adminProductsController.delete('/:id', async (req, res) => {
     try {
-        await imageService.deleteImage(req.params.id);
+        await productService.deleteProduct(req.params.id);
 
-        res.status(204).send();
+        res.status(204).end();
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            message: 'Неуспешно изтриване на снимката.'
-        });
+        res.status(404).json({ message: 'Product not found.' });
     }
 });
 
