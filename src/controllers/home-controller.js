@@ -19,6 +19,25 @@ homeController.get('/', async (req, res) => {
     res.render('home', { title: 'Home Page', products, categories, selectedCategory: categoryId });
 });
 
+homeController.get('/search', async (req, res) => {
+    try {
+        const query = req.query.q?.trim();
+
+        if (!query) {
+            return res.json([]);
+        }
+
+        const products = await productService.searchProductsByName(query);
+
+        res.json(products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Грешка при търсенето.'
+        });
+    }
+});
+
 homeController.get('/filter', async (req, res) => {
     try {
         const categoryId = req.query.category;
@@ -33,5 +52,8 @@ homeController.get('/filter', async (req, res) => {
         res.status(500).json({ message: 'Грешка при зареждането на продуктите.' });
     }
 });
+
+
+
 
 export default homeController;

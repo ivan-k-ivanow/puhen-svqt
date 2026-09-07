@@ -20,11 +20,17 @@
                 <img src="/images/Puhen-Svqt-Logo-Transperent.png" alt="Пухен Свят лого">
             </a>
 
-            <!-- Search -->
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Търси продукт...">
-                <button type="button" id="search-button" aria-label="Търси">
-                </button>
+                <div class="search-input-wrapper">
+
+                    <input type="text" id="search-input" placeholder="Търси продукт..." autocomplete="off">
+                    <button type="button" id="search-button" aria-label="Търси">
+                        <img src="/images/search-icon.svg" alt="Търси">
+                    </button>
+                </div>
+
+                <div id="search-results" class="search-results hidden"></div>
+
             </div>
 
 
@@ -142,6 +148,9 @@
             </button>
         </div>
     </div>
+
+
+    <script src="/js/search.js"></script>
 </body>
 
 </html>

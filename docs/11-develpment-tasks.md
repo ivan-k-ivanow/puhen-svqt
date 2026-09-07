@@ -443,10 +443,9 @@ Build the public catalog.
 - [x] Similar Products
 - [x] Product catalog
 - [x] Product details
-- [ ] Browse by category
-- [ ] Search
-- [ ] Navigation
-- [ ] Footer
+- [x] Search
+- [x] Navigation
+- [x] Footer
 
 ---
 
@@ -462,9 +461,9 @@ Build the public catalog.
 
 Finish the administrator experience.
 
-- [ ] Dashboard
-- [ ] Product management
-- [ ] Category management
+- [x] Dashboard
+- [x] Product management
+- [x] Category management
 - [ ] Image management
 
 ---
