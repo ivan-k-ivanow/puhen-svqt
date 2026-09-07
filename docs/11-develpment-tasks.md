@@ -438,10 +438,11 @@ Complete Product CRUD.
 
 Build the public catalog.
 
-- [ ] Home page
-- [ ] Latest products
-- [ ] Product catalog
-- [ ] Product details
+- [x] Home page
+- [ ] Latest products // we will leave this for later not needed right now
+- [x] Similar Products
+- [x] Product catalog
+- [x] Product details
 - [ ] Browse by category
 - [ ] Search
 - [ ] Navigation

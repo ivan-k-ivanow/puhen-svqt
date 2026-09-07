@@ -34,7 +34,12 @@ async function getProductById(id) {
 async function getProductsByCategory(categoryId) {
     return prisma.product.findMany({
         where: {
-            categoryId,
+            categories: {
+                some: {
+                    id: categoryId,
+                },
+            },
+            isActive: true,
         },
         include: {
             categories: true,

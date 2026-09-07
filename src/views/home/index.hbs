@@ -8,12 +8,12 @@
 <main>
 
     <!-- Hero -->
-           <section class="hero">
-            <div class="overlay"></div>
-            <!--<h1 class="hero-headline">Пухен Свят</h1>-->
-            <p class="hero-subheadline">Персонализирани <br>подаръци, създадени<br>да се помнят.</p>
-            <a href="#products" class="btn">Открий своя подарък</a>
-        </section>
+    <section class="hero">
+        <div class="overlay"></div>
+        <!--<h1 class="hero-headline">Пухен Свят</h1>-->
+        <p class="hero-subheadline">Персонализирани <br>подаръци, създадени<br>да се помнят.</p>
+        <a href="#products" class="btn">Открий своя подарък</a>
+    </section>
 
     <!-- Products -->
     <section class="products" id="products">
@@ -31,13 +31,11 @@
 
             <!-- Product filters -->
             <div class="products-filters">
-
                 {{#each categories}}
-                <button class="product-filter" data-category="{{this}}">
-                    {{this}}
+                <button class="product-filter" data-category="{{this.id}}">
+                    {{this.name}}
                 </button>
                 {{/each}}
-
             </div>
 
         </div>
@@ -210,5 +208,6 @@
     </section>
 
     <script src="/js/faq.js"></script>
+    <script src="/js/home.js"></script>
 
 </main>
