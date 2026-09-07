@@ -21,7 +21,6 @@ document.querySelectorAll('.preview-remove-btn').forEach(button => {
 });
 
 
-
 // Handle product deletion
 
 // Handle category deletion
