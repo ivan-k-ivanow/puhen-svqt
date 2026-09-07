@@ -9,14 +9,20 @@
         <label for="image-input" class="image-upload-btn">+ Добави снимка</label>
 
 
+            <div class="category-checkboxes">
+                {{#each categories}}
+                <div class="category-item">
+                    <label>
+                        <input type="checkbox" name="categoryIds" value="{{id}}" {{#if selected}}checked{{/if}}>
+                        <span>{{name}}</span>
+                    </label>
 
-        <div class="category-checkboxes">
-            {{#each categories}}
-            <label>
-                <input type="checkbox" name="categoryIds" value="{{this.id}}"> <span>{{this.name}}</span>
-            </label>
-            {{/each}}
-        </div>
+                    <button type="button" class="category-delete-btn" data-category-id="{{id}}">
+                        ×
+                    </button>
+                </div>
+                {{/each}}
+            </div>
 
         <div class="category-actions">
             <a href="/admin/categories/create" class="create-category-btn"> + Създай категория </a>
