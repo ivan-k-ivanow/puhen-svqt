@@ -56,6 +56,29 @@ async function getLatestProducts(limit) {
     });
 };
 
+async function getSimilarProducts(productId, categoryIds, limit = 6) {
+    return await prisma.product.findMany({
+        where: {
+            id: {
+                not: productId,
+            },
+            categories: {
+                some: {
+                    id: {
+                        in: categoryIds,
+                    },
+                },
+            },
+            isActive: true,
+        },
+        include: {
+            categories: true,
+            images: true,
+        },
+        take: limit,
+    });
+}
+
 async function searchProductsByName(name) {
     return prisma.product.findMany({
         where: {
@@ -107,6 +130,7 @@ export default {
     getProductsByCategory,
     getProductBySlug,
     getLatestProducts,
+    getSimilarProducts,
     searchProductsByName,
     updateProduct,
     deleteProduct,

@@ -28,6 +28,14 @@ async function getLatestProducts(limit) {
     return await productRepository.getLatestProducts(limit);
 }
 
+async function getSimilarProducts(productId, categoryIds, limit = 6) {
+    return await productRepository.getSimilarProducts(
+        productId,
+        categoryIds,
+        limit
+    );
+}
+
 async function searchProductsByName(name) {
     return await productRepository.searchProductsByName(name);
 }
@@ -59,6 +67,7 @@ export default {
     getLatestProducts,
     searchProductsByName,
     getProductBySlug,
+    getSimilarProducts,
     updateProduct,
     deleteProduct,
 };

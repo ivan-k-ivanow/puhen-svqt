@@ -11,13 +11,22 @@ productController.get('/:slug', async (req, res) => {
 
         const product = await productService.getProductBySlug(slug);
 
+        const categoryIds = product.categories.map(category => category.id);
+
+        const similarProducts = await productService.getSimilarProducts(
+            product.id,
+            categoryIds,
+            6
+        );
+
         if (!product) {
             return res.status(404).send('Product not found.');
         }
 
         res.render('product/details', {
             title: product.name,
-            product
+            product,
+            similarProducts
         });
 
     } catch (error) {

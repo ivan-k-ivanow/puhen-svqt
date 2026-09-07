@@ -1,14 +1,10 @@
 <main class="product-details-page">
-
     <div class="product-container">
-
         <h1 class="product-name-mobile">
             {{product.name}}
         </h1>
-
         <!-- Gallery -->
         <div class="gallery">
-
             <div class="gallery-main">
                 {{#if product.images.length}}
                     <img
@@ -23,13 +19,9 @@
                 {{/if}}
             </div>
 
-
             {{#if product.images.length}}
-
                 <div class="gallery-thumbs">
-
                     {{#each product.images}}
-
                         <div
                             class="thumb {{#if @first}}active{{/if}}"
                         >
@@ -38,79 +30,48 @@
                                 alt="{{../product.name}}"
                             >
                         </div>
-
                     {{/each}}
-
                 </div>
-
             {{/if}}
-
         </div>
-
 
         <!-- Product information -->
         <div class="product-info">
-
             <h1 class="product-name">
                 {{product.name}}
             </h1>
-
-
             {{#if product.categories.length}}
-
                 <div class="product-categories">
-
                     {{#each product.categories}}
-
                         <span class="product-category">
                             {{name}}
                         </span>
-
                     {{/each}}
-
                 </div>
-
             {{/if}}
-
-
             <hr class="product-divider">
-
-
             {{#if product.description}}
-
                 <p class="product-description">
                     {{product.description}}
                 </p>
-
             {{/if}}
-
-
             <div class="product-price-block">
-
                 <span class="product-price-label">
                     Цена
                 </span>
-
                 <div>
-
                     <span class="product-price">
                         {{product.price}} €
                     </span>
-
                 </div>
-
             </div>
-
-
             <a
                 href="https://ig.me/m/puhensvqt"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="order-link"
             >
-
                 <button class="order-btn">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -125,13 +86,11 @@
                             rx="5"
                             ry="5"
                         />
-
                         <circle
                             cx="12"
                             cy="12"
                             r="4"
                         />
-
                         <circle
                             cx="17.5"
                             cy="6.5"
@@ -140,91 +99,57 @@
                             stroke="none"
                         />
                     </svg>
-
                     Поръчай в Instagram
-
                 </button>
-
             </a>
-
-
             <a
                 href="https://m.me/puhensvqt"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="order-link"
             >
-
                 <button class="order-btn">
-
                     <svg
                         viewBox="0 0 24 24"
                         fill="white"
                     >
                         <path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.7v-2.9h2.7V9.6c0-2.7 1.6-4.2 4-4.2 1.2 0 2.4.2 2.4.2v2.6h-1.4c-1.4 0-1.8.9-1.8 1.7v2h3l-.5 2.9h-2.5v7A10 10 0 0 0 22 12z"/>
                     </svg>
-
                     Поръчай във Facebook
-
                 </button>
-
             </a>
-
         </div>
-
     </div>
-
-
+    
     {{#if similarProducts.length}}
-
         <div class="similar-section">
-
             <hr class="similar-divider">
-
             <h2>
                 Подобни продукти
             </h2>
-
-
             <div class="similar-grid">
-
                 {{#each similarProducts}}
-
                     <a
                         href="/product/{{slug}}"
                         class="similar-card"
                     >
-
                         {{#if images.length}}
-
                             <img
                                 src="{{images.[0].url}}"
                                 alt="{{name}}"
                             >
-
                         {{/if}}
-
-
                         <div class="similar-card-body">
-
                             <h3>
                                 {{name}}
                             </h3>
-
                             <p>
                                 {{shortDescription}}
                             </p>
-
                         </div>
-
                     </a>
-
                 {{/each}}
-
             </div>
-
         </div>
-
     {{/if}}
-
 </main>
