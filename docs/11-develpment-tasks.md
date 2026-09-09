@@ -468,7 +468,7 @@ Finish the administrator experience.
 
 ---
 
-# Пухен Свят v2 — Feature development complete.
+# Puhen Svqt v2 — Feature development complete
 
 ## Remaining:
 
