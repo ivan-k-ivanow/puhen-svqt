@@ -211,6 +211,36 @@ Planned functionality includes:
 * Product reviews
 * Inventory management
 
+## Version Roadmap
+
+V2
+│
+├── Backend ✅
+├── Database ✅
+├── Auth ✅
+├── Catalog ✅
+├── Admin ✅
+└── Final bugs/error handling 🟡
+        │
+        ▼
+V2.1
+│
+├── React course
+├── Public Catalog → React
+├── Admin → React
+├── REST API
+└── React course requirements
+        │
+        ▼
+V3
+│
+├── Cart
+├── Customers
+├── Orders
+├── Checkout
+├── Payments
+└── Full E-commerce
+
 ---
 
 ## Guiding Principles
