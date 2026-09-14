@@ -220,7 +220,7 @@ V2
 ├── Auth ✅
 ├── Catalog ✅
 ├── Admin ✅
-└── Final bugs/error handling 🟡
+└── Final bugs/error handling 🟡 //TODO:
         │
         ▼
 V2.1
