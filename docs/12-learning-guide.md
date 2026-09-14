@@ -2,418 +2,534 @@
 
 ## Purpose
 
-This document outlines the technical concepts, architectural patterns, and technologies implemented throughout the development of **Puhen Svqt Version 2**.
+This document describes the technical concepts, architectural patterns, and technologies learned and applied while developing Puhen Svqt.
 
-It serves as a reference for understanding the knowledge demonstrated by each project milestone and complements the project documentation.
+The project is used as a practical learning platform.
+
+Version 2 focuses on backend development, database architecture, authentication, catalog management, and server-rendered interfaces.
+
+Version 2.1 introduces React and applies the concepts learned during the ReactJS course directly to the existing project.
 
 ---
 
-# Milestone 1 - Project Setup
+# Part I — Version 2
 
-## Goal
-
-Establish the project's foundation and development environment.
+## Milestone 1 — Project Setup
 
 ### Concepts
 
-- Node.js project initialization
-- npm and package management
-- Project structure
-- Express.js
-- Express Handlebars
-- Static assets
-- Environment variables
-- PostgreSQL
-- Prisma ORM
-- Prisma Studio
+* Node.js
+* npm
+* Express.js
+* Express Handlebars
+* Static assets
+* Environment variables
+* PostgreSQL
+* Prisma ORM
 
 ### Knowledge Gained
 
-- Creating a Node.js project from scratch
-- Configuring an Express application
-- Configuring Handlebars as the view engine
-- Organizing a scalable backend project
-- Connecting Prisma to PostgreSQL
-- Using environment variables securely
-- Managing database connections
-- Inspecting the database using Prisma Studio
-
-### Completion Criteria
-
-- Express application starts successfully
-- Handlebars renders views
-- PostgreSQL is connected
-- Prisma Client is generated
-- Prisma Studio displays the database
+* Creating a Node.js project
+* Configuring Express
+* Configuring Handlebars
+* Organizing a layered backend
+* Connecting Prisma to PostgreSQL
+* Using environment variables
+* Managing database connections
+* Using Prisma Studio
 
 ---
 
-# Milestone 2 - Authentication
-
-## Goal
-
-Implement secure administrator authentication.
+# Milestone 2 — Database
 
 ### Concepts
 
-- Authentication
-- Authorization
-- bcrypt
-- JSON Web Tokens (JWT)
-- Cookies
-- Protected routes
-- Authentication middleware
-- Login workflow
-- Logout workflow
+* Relational databases
+* PostgreSQL
+* Prisma schema
+* Migrations
+* Relationships
+* Constraints
+* Database seeding
 
 ### Knowledge Gained
 
-- Password hashing and verification
-- JWT generation and validation
-- Cookie-based authentication
-- Route protection using middleware
-- Administrator authentication
-- Session management
-
-### Completion Criteria
-
-- Administrator login works
-- Administrator logout works
-- Protected routes require authentication
-- JWT authentication functions correctly
+* Designing relational models
+* Creating Prisma models
+* Creating migrations
+* Working with relationships
+* Seeding an administrator
+* Using Prisma Client
 
 ---
 
-# Milestone 3 - Categories
-
-## Goal
-
-Implement a complete CRUD module using the application's architecture.
+# Milestone 3 — Authentication
 
 ### Concepts
 
-- CRUD operations
-- MVC Architecture
-- Repository Pattern
-- Service Layer
-- Zod Validation
-- Prisma CRUD operations
+* Authentication
+* Authorization
+* bcrypt
+* JWT
+* Cookies
+* HTTP-only cookies
+* Middleware
+* Protected routes
 
 ### Knowledge Gained
 
-- Building reusable repositories
-- Separating business logic into services
-- Validating input using Zod
-- Creating CRUD controllers
-- Rendering dynamic Handlebars views
-- Protecting administrator functionality
-
-### Completion Criteria
-
-- Categories can be created
-- Categories can be edited
-- Categories can be deleted
-- Validation errors are handled correctly
+* Password hashing
+* Password verification
+* JWT creation
+* JWT verification
+* Cookie-based authentication
+* Protected administrator routes
+* Authentication middleware
+* Authorization middleware
 
 ---
 
-# Milestone 4 - Products
-
-## Goal
-
-Develop the core product management module.
+# Milestone 4 — Categories
 
 ### Concepts
 
-- Database relationships
-- One-to-many relationships
-- Search
-- Filtering
-- Product catalog
-- Dynamic content
+* CRUD
+* Repository Pattern
+* Service Layer
+* Controllers
+* Zod validation
+* Prisma CRUD
 
 ### Knowledge Gained
 
-- Designing relational database models
-- Connecting Products and Categories
-- Building advanced CRUD modules
-- Implementing search functionality
-- Filtering data
-- Displaying related information
-
-### Completion Criteria
-
-- Product CRUD is complete
-- Product search works
-- Category filtering works
-- Product details page displays correctly
+* Creating repositories
+* Separating business logic
+* Creating service methods
+* Validating input
+* Building CRUD controllers
+* Working with database relationships
 
 ---
 
-# Milestone 5 - Images
-
-## Goal
-
-Manage product images.
+# Milestone 5 — Products
 
 ### Concepts
 
-- Image management
-- Resource relationships
-- Image validation
-- Data organization
+* CRUD
+* Database relationships
+* Many-to-many relationships
+* Slugs
+* Search
+* Filtering
+* Related products
 
 ### Knowledge Gained
 
-- Associating images with products
-- Managing related resources
-- Validating image data
-- Displaying product images
-
-### Completion Criteria
-
-- Images can be added
-- Images can be removed
-- Products display the correct image
+* Designing product modules
+* Working with Product and Category relationships
+* Creating product slugs
+* Implementing search
+* Filtering products
+* Loading related data
+* Building product details
 
 ---
 
-# Milestone 6 - Public Website
-
-## Goal
-
-Build the public-facing product catalog.
+# Milestone 6 — Images
 
 ### Concepts
 
-- Public routing
-- Dynamic pages
-- Catalog browsing
-- Navigation
-- Search interface
-- Responsive layouts
+* Related resources
+* Image URLs
+* Image management
+* Resource deletion
 
 ### Knowledge Gained
 
-- Creating dynamic pages
-- Building reusable Handlebars partials
-- Displaying products and categories
-- Building a user-friendly catalog
-- Responsive web design
+* Associating images with products
+* Managing related resources
+* Displaying product images
+* Removing product images
 
-### Completion Criteria
-
-- Visitors can browse products
-- Search functionality works
-- Category filtering works
-- Responsive layout functions correctly
+Cloud storage will be introduced later.
 
 ---
 
-# Milestone 7 - Administration
-
-## Goal
-
-Complete the administrator interface.
+# Milestone 7 — Public Website
 
 ### Concepts
 
-- Administration dashboards
-- Content management
-- Protected interfaces
-- Administrator workflows
+* Server-Side Rendering
+* Handlebars
+* Dynamic pages
+* Client-side JavaScript
+* Fetch API
+* Search
+* Filtering
+* Responsive design
 
 ### Knowledge Gained
 
-- Designing administration panels
-- Managing application content
-- Organizing administrative navigation
-- Restricting access to protected pages
-
-### Completion Criteria
-
-- Administrator dashboard is complete
-- Product management works
-- Category management works
-- Image management works
+* Rendering dynamic content
+* Building public catalog pages
+* Creating search functionality
+* Creating asynchronous filtering
+* Working with browser APIs
+* Connecting frontend JavaScript to backend endpoints
 
 ---
 
-# Milestone 8 - User Experience
-
-## Goal
-
-Improve usability and overall user experience.
+# Milestone 8 — Administration
 
 ### Concepts
 
-- Form validation
-- Error handling
-- Success messages
-- Responsive design
-- User feedback
+* Administration dashboards
+* Protected interfaces
+* CRUD workflows
+* Authentication
+* Authorization
 
 ### Knowledge Gained
 
-- Building intuitive forms
-- Displaying validation errors
-- Improving usability
-- Creating responsive interfaces
-- Providing meaningful user feedback
-
-### Completion Criteria
-
-- Validation messages display correctly
-- Success and error messages work
-- Pages are responsive
-- Empty states are handled
+* Designing admin interfaces
+* Protecting administrator functionality
+* Managing application content
+* Connecting admin interfaces with backend functionality
 
 ---
 
-# Milestone 9 - Security
+# Part II — Version 2.1 React Course
 
-## Goal
-
-Apply fundamental web application security practices.
+## React Setup
 
 ### Concepts
 
-- Password security
-- Authorization
-- Route protection
-- Secure cookies
-- Authentication validation
+* React application structure
+* Components
+* JSX
+* Rendering
 
 ### Knowledge Gained
 
-- Securing administrator accounts
-- Protecting sensitive routes
-- Validating authentication tokens
-- Preventing unauthorized access
+* Creating React applications
+* Understanding component-based architecture
+* Building reusable UI components
+* Rendering dynamic data
 
-### Completion Criteria
+### Puhen Svqt Application
 
-- Administrator routes are protected
-- Passwords are securely stored
-- JWT validation functions correctly
-- Secure cookies are implemented
+The first React components will replace parts of the existing Handlebars frontend.
 
 ---
 
-# Milestone 10 - Deployment
-
-## Goal
-
-Deploy the application to a production environment.
+# Components and Props
 
 ### Concepts
 
-- Production environments
-- Hosted PostgreSQL
-- Environment configuration
-- Deployment workflow
+* Components
+* Props
+* Component composition
+* Reusable components
 
-### Knowledge Gained
+### Puhen Svqt Application
 
-- Deploying Node.js applications
-- Connecting to hosted PostgreSQL databases
-- Managing production environment variables
-- Verifying production deployments
+Potential components include:
 
-### Completion Criteria
 
-- Application is deployed
-- Production database is connected
-- Administrator authentication works
-- Public website is accessible
+Header
+Footer
+ProductCard
+CategoryButton
+Search
+ProductList
+ProductDetails
 
----
-
-# Technologies
-
-## Runtime
-
-- Node.js
-
-## Backend
-
-- Express.js
-
-## Database
-
-- PostgreSQL
-- Prisma ORM
-
-## Validation
-
-- Zod
-
-## Authentication
-
-- JSON Web Tokens (JWT)
-- bcrypt
-- cookie-parser
-
-## Templating
-
-- Express Handlebars
-
-## Version Control
-
-- Git
-- GitHub
 
 ---
 
-# Architectural Patterns
+# State
 
-The project demonstrates the following architectural patterns:
+### Concepts
 
-- MVC (Model–View–Controller)
-- Repository Pattern
-- Service Layer Pattern
-- Middleware Pattern
-- Layered Architecture
+* useState
+* Component state
+* State updates
+* Event handling
+
+### Puhen Svqt Application
+
+State will be used for:
+
+* category filtering;
+* search input;
+* search results;
+* forms;
+* mobile navigation;
+* UI states.
+
+---
+
+# Lists and Conditional Rendering
+
+### Concepts
+
+* Rendering arrays
+* Keys
+* Conditional rendering
+* Empty states
+
+### Puhen Svqt Application
+
+Products and categories will be rendered dynamically from API data.
+
+---
+
+# API Communication
+
+### Concepts
+
+* HTTP requests
+* Fetch API
+* Async operations
+* Loading states
+* Error states
+
+### Puhen Svqt Application
+
+React will communicate with the existing Express backend.
+
+
+React
+   ↓
+REST API
+   ↓
+Controller
+   ↓
+Service
+   ↓
+Repository
+   ↓
+Prisma
+
+
+---
+
+# useEffect
+
+### Concepts
+
+* useEffect
+* Side effects
+* Data fetching
+* Component lifecycle
+
+### Puhen Svqt Application
+
+useEffect may be used for:
+
+* loading products;
+* loading categories;
+* loading product details;
+* loading similar products;
+* reacting to search/filter changes where appropriate.
+
+---
+
+# React Router
+
+### Concepts
+
+* Client-side routing
+* Route parameters
+* Nested routes
+* Protected routes
+* Navigation
+
+### Puhen Svqt Application
+
+Routes will include:
+
+
+/
+ /product/:slug
+ /login
+ /admin
+ /admin/products
+ /admin/categories
+
+
+---
+
+# React Forms
+
+### Concepts
+
+* Controlled inputs
+* Form state
+* Form submission
+* Validation
+* Error messages
+
+### Puhen Svqt Application
+
+Forms will include:
+
+* Login
+* Create product
+* Edit product
+* Create category
+* Edit category
+
+---
+
+# Authentication in React
+
+### Concepts
+
+* Authentication state
+* Protected routes
+* API authentication
+* Logout
+
+### Puhen Svqt Application
+
+React will communicate with the existing JWT-based backend authentication system.
+
+The backend remains responsible for authentication and authorization.
+
+---
+
+# Reusable Components
+
+### Goal
+
+Avoid duplicated UI and logic.
+
+Potential reusable components:
+
+
+ProductCard
+ProductGrid
+CategoryFilter
+SearchBox
+Button
+FormField
+Loading
+ErrorMessage
+EmptyState
+
+
+The exact component structure will evolve during the React course.
+
+---
+
+# React Admin Panel
+
+### Concepts
+
+* Component composition
+* Forms
+* Routing
+* State
+* API communication
+* Protected routes
+
+### Puhen Svqt Application
+
+The existing Admin Panel will be migrated to React.
+
+---
+
+# UX and Error Handling
+
+### Concepts
+
+* Loading states
+* Error states
+* Empty states
+* User feedback
+* Form validation
+
+These concepts will be implemented after the core React functionality is working.
+
+---
+
+# Part III — Future Learning
+
+After the React course, the project will continue toward full e-commerce functionality.
+
+Future technologies and concepts may include:
+
+* TypeScript
+* Shopping cart architecture
+* Customer accounts
+* Order management
+* Payment integration
+* Cloud storage
+* Inventory management
+* Role-based authorization
+* Automated testing
+* Performance optimization
+* Docker
+* CI/CD
+* Cloud deployment
+
+---
+
+# Architectural Patterns Learned
+
+The project demonstrates:
+
+* MVC-inspired architecture
+* Repository Pattern
+* Service Layer Pattern
+* Middleware Pattern
+* Layered Architecture
+* Component-based frontend architecture
 
 ---
 
 # Skills Demonstrated
 
-Upon completion of Version 2, the project demonstrates experience with:
+Upon completion of Version 2.1, the project will demonstrate experience with:
 
-- Express application development
-- MVC architecture
-- Repository Pattern
-- Service Layer architecture
-- PostgreSQL database design
-- Prisma ORM
-- Authentication and authorization
-- JWT implementation
-- Password hashing with bcrypt
-- CRUD application development
-- Relational database modeling
-- Form validation with Zod
-- Dynamic Handlebars views
-- Administrator interfaces
-- Responsive web development
-- Production deployment
-- Git and GitHub workflow
+* Node.js
+* Express
+* PostgreSQL
+* Prisma
+* JWT authentication
+* bcrypt
+* Zod
+* Repository Pattern
+* Service Layer
+* CRUD development
+* Relational database modeling
+* REST API development
+* React
+* React Router
+* React components
+* React state
+* React forms
+* API integration
+* Protected frontend routes
+* Responsive frontend development
 
 ---
 
-# Future Learning
+# Learning Philosophy
 
-Future versions of Puhen Svqt will expand the project with additional technologies and concepts, including:
+The project follows a practical learning approach:
 
-- React
-- REST API development
-- Shopping cart functionality
-- Customer accounts
-- Order management
-- Payment integration
-- Cloudinary
-- Inventory management
-- Role-based authorization
-- Performance optimization
-- Automated testing
-- CI/CD pipelines
+
+Learn a concept
+      ↓
+Understand the concept
+      ↓
+Apply it to Puhen Svqt
+      ↓
+Test the implementation
+      ↓
+Document what was learned
+
+
+The goal is not simply to complete a course project, but to understand how each technology contributes to a real-world application.

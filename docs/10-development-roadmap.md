@@ -4,196 +4,266 @@
 
 This document defines the planned evolution of the Puhen Svqt application.
 
-The project is developed incrementally, with each version introducing a well-defined set of features while building upon the existing architecture.
+The project is developed incrementally, with each version building upon the existing architecture and functionality.
 
-The roadmap serves as a guide for development priorities and long-term planning.
+The roadmap is divided into:
 
----
-
-# Project Vision
-
-Puhen Svqt begins as a handcrafted product catalog with a dedicated administration panel.
-
-Over time, it will evolve into a complete e-commerce platform featuring customer accounts, shopping cart functionality, online payments, and order management.
-
-Each version introduces new functionality while preserving the established architecture and coding standards.
+* Version 1 — Original application
+* Version 2 — Backend and catalog foundation
+* Version 2.1 — React course and frontend migration
+* Version 3 — Full e-commerce development
 
 ---
 
-# Version 2 – Product Catalog
+# Version 1 — Original Application
+
+The original application was built using:
+
+* Vanilla JavaScript
+* lit-html
+* Firebase
+* Firestore
+* Firebase Authentication
+* Firebase Storage
+
+The main purpose was to provide a basic product catalog.
+
+---
+
+# Version 2 — Backend and Catalog Foundation
 
 ## Goal
 
-Build a production-ready catalog management system for handmade products.
+Build a scalable backend and complete product catalog with administration functionality.
 
 ### Infrastructure
 
-- PostgreSQL database
-- Prisma ORM
-- Express.js backend
-- Handlebars server-side rendering
-- Repository pattern
-- MVC architecture
-- JWT authentication
-- Zod validation
-
----
+* PostgreSQL
+* Prisma ORM
+* Express.js
+* Handlebars
+* Repository Pattern
+* Service Layer
+* MVC-inspired architecture
+* JWT authentication
+* Zod validation
 
 ### Authentication
 
-- Administrator login
-- Logout
-- Authentication middleware
-- Authorization middleware
-- Protected routes
-- Administrator account provisioned through database seed
-
----
+* Administrator login
+* Logout
+* Authentication middleware
+* Authorization middleware
+* Protected routes
+* Administrator seed
 
 ### Product Management
 
-- Create product
-- Edit product
-- Delete product
-- Product details
-- Product listing
-- Product validation
-- Product images
-
----
+* Create products
+* Edit products
+* Delete products
+* Product details
+* Product listing
+* Product validation
+* Product images
 
 ### Category Management
 
-- Create category
-- Edit category
-- Delete category
-- Assign products to categories
-- Browse products by category
-
----
-
-### Image Management
-
-- Upload product images
-- Primary product image
-- Multiple product images
-- Image deletion
-
----
+* Create categories
+* Edit categories
+* Delete categories
+* Assign products to categories
+* Browse products by category
 
 ### Public Website
 
-- Home page
-- Product catalog
-- Product details
-- Category browsing
-- Search products
-- Responsive design
-
----
+* Home page
+* Product catalog
+* Product details
+* Category filtering
+* Search
+* Similar products
+* Navigation
+* Footer
 
 ### Administration
 
-- Dashboard
-- Product management
-- Category management
-- Image management
+* Dashboard
+* Product management
+* Category management
+* Basic image management
+
+### Current Status
+
+Version 2 is feature-complete for the current catalog scope.
+
+Remaining work:
+
+* bug fixing;
+* error handling;
+* final cleanup;
+* documentation synchronization.
+
+These tasks will be completed after the React course migration where appropriate.
 
 ---
 
-### Deployment
-
-- Production database
-- Environment configuration
-- Initial deployment
-- Administrator seed
-
----
-
-# Version 3 – Modern Frontend
+# Version 2.1 — React Frontend
 
 ## Goal
 
-Introduce a modern frontend while preserving the existing backend.
+Use the existing Puhen Svqt project as the main course project for the ReactJS course.
 
-### Frontend
-
-- React
-- React Router
-- Component architecture
-- State management
-- Responsive UI
+Version 2.1 will introduce React while preserving the existing backend and database architecture.
 
 ---
 
-### Backend
+## React Learning
 
-- Expand REST API
-- JSON responses
-- API validation
-- API documentation
+The implementation will follow the ReactJS course progressively.
+
+New concepts will be applied directly to the project as they are introduced during the course.
+
+Expected concepts include:
+
+* React components
+* JSX
+* Props
+* State
+* Events
+* Conditional rendering
+* Lists
+* Forms
+* useState
+* useEffect
+* React Router
+* API requests
+* Authentication
+* Protected routes
+* Reusable components
 
 ---
 
-### Features
+## Frontend Migration
 
-- Improved search
-- Product filtering
-- Pagination
-- Better administration dashboard
+The existing Handlebars frontend will gradually be replaced by React.
+
+### Public Catalog
+
+* React application setup
+* Layout
+* Header
+* Navigation
+* Footer
+* Product listing
+* Category filtering
+* Search
+* Product details
+* Similar products
+
+### Administration
+
+* React Admin layout
+* Login
+* Protected routes
+* Dashboard
+* Product management
+* Create product
+* Edit product
+* Delete product
+* Category management
+* Image management where supported
 
 ---
 
-# Version 4 – E-Commerce
+## Backend / API
+
+The existing backend will be adapted to provide the API required by React.
+
+* REST API routes
+* JSON responses
+* API validation
+* API authentication
+* API authorization
+* Consistent API errors
+
+The existing architecture remains:
+
+
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+Prisma
+    ↓
+PostgreSQL
+
+
+The backend is not rewritten.
+
+---
+
+## Version 2.1 Finalization
+
+After the main React functionality is implemented:
+
+* bug fixing;
+* error handling;
+* loading states;
+* empty states;
+* validation feedback;
+* responsive improvements;
+* final cleanup;
+* documentation update.
+
+Version 2.1 will serve as the ReactJS course project.
+
+---
+
+# Version 3 — Full E-Commerce
 
 ## Goal
 
-Transform the catalog into a complete online store.
+Transform the React-based catalog into a complete online store.
 
 ### Customer Accounts
 
-- Customer registration
-- Customer login
-- Customer profile
-- Password reset
-
----
+* Customer registration
+* Customer login
+* Customer profile
+* Password reset
 
 ### Shopping Experience
 
-- Shopping cart
-- Wishlist
-- Product reviews
-- Favorites
-
----
+* Shopping cart
+* Wishlist
+* Favorites
+* Product reviews
 
 ### Orders
 
-- Checkout
-- Order creation
-- Order history
-- Order status tracking
-
----
+* Checkout
+* Order creation
+* Order history
+* Order status tracking
 
 ### Payments
 
-- Payment gateway integration
-- Secure payments
-- Payment confirmation
-
----
+* Payment gateway integration
+* Secure payments
+* Payment confirmation
 
 ### Shipping
 
-- Shipping addresses
-- Shipping methods
-- Delivery tracking
+* Shipping addresses
+* Shipping methods
+* Delivery tracking
 
 ---
 
-# Version 5 – Business Growth
+# Version 4 — Business Growth
 
 ## Goal
 
@@ -201,35 +271,29 @@ Expand the platform with business-oriented features.
 
 ### Inventory
 
-- Stock management
-- Low stock notifications
-- Product availability
-
----
+* Stock management
+* Low stock notifications
+* Product availability
 
 ### Marketing
 
-- Discount codes
-- Promotions
-- Featured products
-- Newsletter integration
-
----
+* Discount codes
+* Promotions
+* Featured products
+* Newsletter integration
 
 ### Analytics
 
-- Sales reports
-- Product statistics
-- Customer insights
-- Dashboard analytics
-
----
+* Sales reports
+* Product statistics
+* Customer insights
+* Dashboard analytics
 
 ### Administration
 
-- Administrator management
-- User roles
-- Permission management
+* Administrator management
+* User roles
+* Permission management
 
 ---
 
@@ -237,17 +301,17 @@ Expand the platform with business-oriented features.
 
 Potential future improvements include:
 
-- Product variants
-- Product customization
-- Multi-language support
-- Multi-currency support
-- Gift cards
-- Digital products
-- AI-powered product recommendations
-- Customer support chat
-- Mobile application
-- Barcode generation
-- Invoice generation
+* Product variants
+* Product customization
+* Multi-language support
+* Multi-currency support
+* Gift cards
+* Digital products
+* AI-powered product recommendations
+* Customer support chat
+* Mobile application
+* Barcode generation
+* Invoice generation
 
 ---
 
@@ -255,12 +319,14 @@ Potential future improvements include:
 
 Each new feature should:
 
-- Follow the established architecture.
-- Respect the coding standards.
-- Include validation.
-- Maintain backward compatibility.
-- Preserve separation of concerns.
-- Be documented before implementation where appropriate.
+* Follow the established architecture.
+* Respect the coding standards.
+* Include validation.
+* Maintain backward compatibility where appropriate.
+* Preserve separation of concerns.
+* Be documented before implementation where appropriate.
+* Be implemented incrementally.
+* Reuse existing backend functionality whenever possible.
 
 ---
 
@@ -268,9 +334,10 @@ Each new feature should:
 
 The project will be considered successful when it:
 
-- Provides a reliable administration interface.
-- Offers an intuitive customer experience.
-- Supports secure authentication.
-- Scales without architectural redesign.
-- Serves as a maintainable long-term codebase.
-- Functions as a complete online store.
+* Provides a reliable administration interface.
+* Offers an intuitive customer experience.
+* Supports secure authentication.
+* Uses a maintainable frontend and backend architecture.
+* Scales without major architectural redesign.
+* Serves as a strong portfolio project.
+* Functions as a complete online store.

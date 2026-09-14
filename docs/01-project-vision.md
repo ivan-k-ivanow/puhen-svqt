@@ -4,9 +4,14 @@
 
 Puhen Svqt is a full-stack web application developed for a real family business that specializes in handcrafted gifts and decorations.
 
-The purpose of the project is to replace the existing Firebase-based product catalog with a scalable, maintainable architecture built using Node.js, Express, PostgreSQL, and Prisma.
+The project started as a Firebase-based product catalog and has evolved into a scalable application built using Node.js, Express, PostgreSQL, Prisma, and JWT authentication.
 
-The application will evolve throughout the Full-Stack JavaScript learning journey, gradually becoming a complete e-commerce platform while serving as both a production application and a portfolio project.
+The application is developed incrementally throughout the Full-Stack JavaScript learning journey and serves simultaneously as:
+
+* a real business application;
+* a learning platform;
+* a portfolio project;
+* a foundation for a future complete e-commerce platform.
 
 ---
 
@@ -18,41 +23,68 @@ To build a modern, scalable, and maintainable e-commerce platform that supports 
 
 ## Business Goals
 
-- Present products through a modern and responsive website.
-- Simplify product management through an administration panel.
-- Improve maintainability by replacing Firebase with a relational database.
-- Prepare the application for future online sales.
-- Support future business growth without requiring major architectural changes.
+* Present products through a modern and responsive website.
+* Simplify product management through an administration panel.
+* Improve maintainability by replacing Firebase with a relational database.
+* Prepare the application for future online sales.
+* Support future business growth without requiring major architectural changes.
 
 ---
 
 ## Technical Goals
 
-- Build a clean MVC architecture using Express.
-- Use PostgreSQL as the primary database.
-- Manage database access through Prisma ORM.
-- Implement secure JWT authentication.
-- Validate all incoming data using Zod.
-- Separate business logic from presentation logic.
-- Expose both Server-Side Rendered pages and REST API endpoints.
-- Prepare the backend for a future React frontend.
+* Build a clean layered architecture using Express.
+* Use PostgreSQL as the primary database.
+* Manage database access through Prisma ORM.
+* Implement secure JWT authentication.
+* Validate incoming data using Zod.
+* Separate business logic from presentation logic.
+* Expose reusable backend functionality through REST API endpoints.
+* Support multiple frontend clients.
+* Use React for the modern frontend.
+* Keep the backend independent from the frontend technology.
 
 ---
 
 ## Learning Goals
 
-This project serves as the primary learning platform throughout the Full-Stack JavaScript curriculum.
+This project serves as the primary learning platform throughout the Full-Stack JavaScript learning journey.
 
-Instead of creating multiple unrelated course projects, every newly learned technology will be integrated into this application.
+Instead of creating multiple unrelated course projects, newly learned technologies are integrated into this application whenever appropriate.
 
-Future technologies include:
+The project currently demonstrates knowledge of:
 
-- React
-- TypeScript
-- Docker
-- Cloud Deployment
-- Automated Testing
-- CI/CD
+* Node.js
+* Express
+* PostgreSQL
+* Prisma
+* JWT authentication
+* bcrypt
+* Zod
+* MVC and layered architecture
+* Repository Pattern
+* Service Layer
+* Handlebars
+* Vanilla JavaScript
+
+The next learning stage introduces:
+
+* React
+* React Router
+* React component architecture
+* React state management
+* API integration
+* React forms
+* Client-side validation
+* Protected routes
+
+Future technologies may include:
+
+* TypeScript
+* Docker
+* Cloud Deployment
+* Automated Testing
+* CI/CD
 
 ---
 
@@ -60,63 +92,134 @@ Future technologies include:
 
 ### Visitors
 
-Visitors can browse products, explore categories, search the catalog, and view detailed product information.
+Visitors can:
+
+* browse products;
+* explore categories;
+* search the catalog;
+* filter products;
+* view product details;
+* view similar products.
 
 ### Administrator
 
-The administrator manages products, categories, images, and all business content through a secure administration panel.
+The administrator manages:
+
+* products;
+* categories;
+* product images;
+* website content.
 
 ### Future Customers
 
-Future versions will introduce customer accounts, shopping carts, wishlists, and online ordering.
+Future versions will introduce:
+
+* customer accounts;
+* shopping carts;
+* wishlists;
+* orders;
+* online payments;
+* customer reviews.
 
 ---
 
-## Project Evolution
+# Project Evolution
 
-### Version 1
+## Version 1
 
-- Vanilla JavaScript
-- lit-html
-- Firebase
-- Firestore
-- Firebase Authentication
-- Firebase Storage
+The original application was based on:
 
-### Version 2
+* Vanilla JavaScript
+* lit-html
+* Firebase
+* Firestore
+* Firebase Authentication
+* Firebase Storage
 
-- Node.js
-- Express
-- PostgreSQL
-- Prisma ORM
-- Handlebars
-- JWT Authentication
-- Zod Validation
+---
 
-### Version 3
+## Version 2 — Backend and Catalog Foundation
 
-- React
-- REST API
-- Existing Express Backend
+Version 2 introduced the current backend architecture and the first complete catalog and administration system.
 
-### Future Versions
+### Technologies
 
-- Shopping Cart
-- Orders
-- Payments
-- Inventory Management
-- Reviews
-- Wishlist
-- Customer Accounts
-- Analytics
+* Node.js
+* Express
+* PostgreSQL
+* Prisma ORM
+* Handlebars
+* JWT Authentication
+* bcrypt
+* Zod
+
+### Main functionality
+
+* Administrator authentication
+* Product management
+* Category management
+* Product images
+* Product search
+* Category filtering
+* Product details
+* Similar products
+* Public catalog
+* Administration panel
+
+Version 2 primarily uses Handlebars and server-rendered pages.
+
+The current version is considered feature-complete, with bug fixing, error handling, and final cleanup remaining.
+
+---
+
+## Version 2.1 — React Frontend
+
+Version 2.1 introduces React as part of the ReactJS course.
+
+The purpose of Version 2.1 is to migrate the existing frontend functionality from Handlebars and Vanilla JavaScript to React while preserving the existing backend and database architecture.
+
+### Main goals
+
+* Learn React through the real Puhen Svqt project.
+* Build the public catalog using React.
+* Build the administration panel using React.
+* Connect React to the existing Express backend through REST API endpoints.
+* Reuse the existing business logic and database layer.
+* Introduce reusable React components.
+* Introduce client-side state management.
+* Introduce React Router.
+* Introduce API communication.
+* Implement loading, error, and empty states.
+
+Version 2.1 is also the primary course project for the ReactJS course.
+
+---
+
+## Version 3 — Full E-Commerce Development
+
+After the React migration is completed, Version 3 will focus on transforming the application into a complete online store.
+
+Planned functionality includes:
+
+* Customer accounts
+* Shopping cart
+* Wishlist
+* Orders
+* Checkout
+* Online payments
+* Shipping
+* Product reviews
+* Inventory management
 
 ---
 
 ## Guiding Principles
 
-- Business requirements drive technical decisions.
-- Build for maintainability rather than short-term convenience.
-- Keep the architecture modular and scalable.
-- Separate concerns between layers.
-- Design today for future expansion.
-- Treat the project as a real production application rather than a course assignment.
+* Business requirements drive technical decisions.
+* Build for maintainability rather than short-term convenience.
+* Keep the architecture modular and scalable.
+* Separate concerns between layers.
+* Keep the backend independent from the frontend.
+* Reuse existing functionality whenever possible.
+* Design today for future expansion.
+* Treat the project as a real production application rather than only a course assignment.

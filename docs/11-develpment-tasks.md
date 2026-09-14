@@ -2,570 +2,367 @@
 
 ## Purpose
 
-This document contains the implementation plan for **Puhen Svqt Version 2**.
+This document contains the implementation plan for Puhen Svqt.
 
-Development is divided into milestones.
+Development is divided into versions and milestones.
 
-Each milestone must be completed, tested, and committed before moving to the next one.
+Version 2 established the backend, database, authentication, catalog, and administration foundation.
 
-Every feature follows the same implementation workflow:
-
-1. Database
-2. Repository
-3. Service
-4. Validation
-5. Controller
-6. Routes
-7. Views
-8. Testing
-9. Documentation
+Version 2.1 introduces React as part of the ReactJS course and migrates the existing public catalog and administration panel to React.
 
 ---
 
-# Milestone 1 - Project Setup
+# Version 2 — Completed Foundation
 
-## Goal
+## Milestone 1 — Project Setup
 
-Create the project and make sure the application runs successfully.
-
-### GitHub
-
-- [x] Create GitHub repository
-- [x] Clone repository locally
-- [x] Open project in VS Code
-- [x] Create README.md
-- [x] Add `.gitignore`
+* [x] Node.js project
+* [x] Express
+* [x] Handlebars
+* [x] Static files
+* [x] Environment variables
+* [x] Project structure
 
 ---
 
-### Node Project
+## Milestone 2 — Database
 
-- [x] Run `npm init`
-- [x] Set `"type": "module"`
-
----
-
-### package.json
-
-Add:
-
- json
-"scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
-}
- 
+* [x] PostgreSQL
+* [x] Prisma
+* [x] User model
+* [x] Category model
+* [x] Product model
+* [x] Image model
+* [x] Migrations
+* [x] Administrator seed
 
 ---
 
-### Install Packages
+## Milestone 3 — Authentication
 
-- [x] express
-- [x] express-handlebars
-- [x] prisma
-- [x] @prisma/client
-- [x] bcrypt
-- [x] jsonwebtoken
-- [x] cookie-parser
-- [x] zod
-- [x] dotenv
-- [x] cors
+* [x] Login
+* [x] Logout
+* [x] JWT
+* [x] HTTP-only cookie
+* [x] Authentication middleware
+* [x] Authorization middleware
+* [x] Protected admin routes
 
 ---
 
-### Create Folder Structure
+## Milestone 4 — Categories
 
- 
-src/
-
-config/
-controllers/
-middlewares/
-repositories/
-routes/
-schemas/
-services/
-utils/
-views/
-public/
-lib/
- 
+* [x] Category model
+* [x] Create category
+* [x] Get categories
+* [x] Edit category
+* [x] Delete category
+* [x] Category validation
+* [x] Product/category relationship
 
 ---
 
-### Express
+## Milestone 5 — Products
 
-- [x] Create `index.js`
-- [x] Create Express application
-- [x] Configure Handlebars
-- [x] Configure static files
-- [x] Register routes
-- [x] Verify application starts
-
----
-
-### Environment
-
-Create `.env`
-
-Add:
-
- 
-DATABASE_URL=
-JWT_SECRET=
- 
-
-- [x] Install dotenv
-- [x] Import `dotenv/config`
+* [x] Product model
+* [x] Product CRUD
+* [x] Product validation
+* [x] Product slug
+* [x] Product details
+* [x] Product search
+* [x] Category filtering
+* [x] Similar products
 
 ---
 
-### Finish Checklist
+## Milestone 6 — Images
 
-- [x] Application runs successfully
-- [x] Handlebars renders pages
-    - [x] Rendered home page without the products
-    - [x] Render Admin, create admin layout and add header and footer, then create
-    
+* [x] Image model
+* [x] Add image URL
+* [x] Delete image
+* [x] Display product images
+* [ ] Cloud storage upload
 
----
-
-# Milestone 2 - Database
-
-## Goal
-
-Connect the application to PostgreSQL using Prisma.
-
-### PostgreSQL
-
-- [x] Create local PostgreSQL database (`puhen_svqt`)
+Cloud storage will be introduced later when production storage is configured.
 
 ---
 
-### Prisma
+## Milestone 7 — Public Website
 
-- [x] Run `npx prisma init`
-- [x] Configure `schema.prisma`
-- [x] Configure datasource
-- [x] Generate Prisma Client
+* [x] Home page
+* [x] Product catalog
+* [x] Product details
+* [x] Category filtering
+* [x] Search
+* [x] Similar products
+* [x] Navigation
+* [x] Footer
 
----
-
-### User Model
-
-- [x] Create User model
-- [x] Add email
-- [x] Add password
+Latest products are intentionally postponed.
 
 ---
 
-### Migration
+## Milestone 8 — Administration
 
-- [x] Create first migration
-- [x] Apply migration
-
----
-
-### Seed
-
-- [x] Create administrator seed
-- [x] Hash administrator password
-- [x] Seed administrator
+* [x] Admin dashboard
+* [x] Product management
+* [x] Category management
+* [x] Product image deletion
 
 ---
 
-### Finish Checklist
+# Version 2 — Finalization
 
-- [x] Prisma connected
-- [x] Administrator exists
-- [x] Prisma Studio works
+These tasks are intentionally postponed until after the main React migration where appropriate.
 
----
-
-# Milestone 3 - Authentication
-
-## Goal
-
-Allow administrators to securely log into the application.
-
-### Repository
-
-- [x] Find user by email
-- [x] Find user by id
+* [ ] Fix remaining bugs
+* [ ] Complete error handling
+* [ ] Add proper error states
+* [ ] Add empty states
+* [ ] Add 401 page
+* [ ] Add 403 page
+* [ ] Add 404 page
+* [ ] Final cleanup
+* [ ] Synchronize documentation
 
 ---
 
-### Service
+# Version 2.1 — React Course
 
-- [x] Login
-- [x] Logout
+## Milestone 1 — React Setup
 
----
+### Goal
 
-### Validation
+Create the React frontend while preserving the existing backend.
 
-- [x] Login schema
-
----
-
-### JWT
-
-- [x] Generate JWT
-- [x] Verify JWT
-- [x] Store JWT in cookie
+* [ ] Create React application
+* [ ] Configure React development environment
+* [ ] Configure project structure
+* [ ] Understand React entry point
+* [ ] Create first component
+* [ ] Connect React frontend to Express backend
 
 ---
 
-### Middleware
+# Milestone 2 — React Fundamentals
 
-- [x] Authentication middleware
-- [x] Guest middleware
+### Goal
 
----
+Apply the concepts taught during the React course.
 
-### Controller
+* [ ] Components
+* [ ] JSX
+* [ ] Props
+* [ ] State
+* [ ] Events
+* [ ] Conditional rendering
+* [ ] Lists and keys
+* [ ] Reusable components
 
-- [x] Login page
-- [x] Login action
-- [x] Logout
-
----
-
-### Views
-
-- [x] Login page
+These tasks will be implemented progressively as the corresponding course topics are introduced.
 
 ---
 
-### Finish Checklist
+# Milestone 3 — Public Catalog
 
-- [x] Administrator can login
-- [x] Administrator can logout
-- [x] Protected routes work
+### Goal
 
----
+Rebuild the existing public catalog using React.
 
-# Milestone 4 - Categories
+### Layout
 
-## Goal
+* [ ] React layout
+* [ ] Header
+* [ ] Navigation
+* [ ] Footer
 
-Complete Category CRUD.
+### Products
 
-### Database
+* [ ] Product list component
+* [ ] Product card component
+* [ ] Load products from API
+* [ ] Display product images
+* [ ] Display product information
 
-- [x] Category model
-- [x] Migration
+### Categories
 
----
+* [ ] Load categories from API
+* [ ] Category buttons
+* [ ] Category filtering
+* [ ] All products filter
 
-### Repository
+### Search
 
-- [x] Create
-- [x] Get All
-- [x] Get By Id
-- [x] Update
-- [x] Delete
+* [ ] Search input
+* [ ] Search state
+* [ ] Search API request
+* [ ] Search results dropdown
+* [ ] Search result navigation
 
----
+### Product Details
 
-### Service
-
-- [x] Create category
-- [x] Edit category
-- [x] Delete category
-- [x] Get All categories
-
----
-
-### Validation
-
-- [x] Category schema
-
----
-
-### Controller
-
-- [x] Render on create product page
-- [x] Create
-- [x] Delete // first we need relation to products which we dont have at the moment
+* [ ] Product details route
+* [ ] Load product by slug
+* [ ] Display product information
+* [ ] Display images
+* [ ] Display categories
+* [ ] Display similar products
 
 ---
 
-### Views
+# Milestone 4 — React Router
 
-- [x] On create product page
-- [x] Create
+### Goal
 
----
+Introduce client-side navigation.
 
-### Finish Checklist
-
-- [ ] Full Category CRUD completed // only delete left, we dont hae product relation 
-
----
-
-# Milestone 5 - Images
-
-## Goal
-
-Store product images.
-
-**Version 2**
-
-Images are stored as URLs.
-
-(Cloudinary will be introduced in a future version.)
+* [ ] Configure React Router
+* [ ] Home route
+* [ ] Product details route
+* [ ] Login route
+* [ ] Admin route
+* [ ] Protected admin routes
+* [ ] Handle unknown routes
 
 ---
 
-### Database
+# Milestone 5 — React Forms
 
-- [x] Image model
-- [x] Migration
+### Goal
 
----
+Migrate administration forms to React.
 
-### Repository
-
-- [x] Add image
-- [x] Delete image
-
----
-
-### Service
-
-- [x] Add image
-- [x] Delete image
+* [ ] Login form
+* [ ] Product create form
+* [ ] Product edit form
+* [ ] Category create form
+* [ ] Category edit form
+* [ ] Form state
+* [ ] Form submission
+* [ ] Validation feedback
 
 ---
 
-### Validation
+# Milestone 6 — React Admin Panel
 
-- [x] Image schema
+### Goal
 
----
+Rebuild the administration panel using React.
 
-### Controller
+### Authentication
 
-- [ ] Upload page // will do on deployment because we dont have files storage right now (supabase)
-- [ ] Delete image // Upload page // will do on deployment because we dont have files storage right now (supabase)
+* [ ] Admin login
+* [ ] Authentication state
+* [ ] Protected routes
+* [ ] Logout
 
----
+### Dashboard
 
-### Views
+* [ ] Admin layout
+* [ ] Navigation
+* [ ] Dashboard
 
-- [ ] Upload page // added button to create product form
+### Products
 
----
+* [ ] Product list
+* [ ] Create product
+* [ ] Edit product
+* [ ] Delete product
 
-### Finish Checklist
+### Categories
 
-- [ ] Images can be managed // Upload page // will do on deployment because we dont have files storage right now (supabase)
+* [ ] Category list
+* [ ] Create category
+* [ ] Edit category
+* [ ] Delete category
 
----
+### Images
 
-# Milestone 6 - Products
-
-## Goal
-
-Complete Product CRUD.
-
-### Database
-
-- [x] Product model
-- [x] Product → Category relationship
-- [x] Product → Image relationship
-- [x] Migration
-
----
-
-### Repository
-
-- [x] Create
-- [x] Get All
-- [x] Get By Id
-- [x] Get By Slug
-- [x] Get Latest
-- [x] Search
-- [x] Update
-- [x] Delete
+* [ ] Display product images
+* [ ] Delete image
+* [ ] Prepare upload integration for future storage
 
 ---
 
-### Service
+# Milestone 7 — API Integration
 
-- [x] Product CRUD
-- [x] Latest products
-- [x] Search
-- [x] Filter by category
+### Goal
 
----
+Connect React to the Express backend.
 
-### Validation
+* [ ] Create API routes
+* [ ] Return JSON responses
+* [ ] Product API
+* [ ] Category API
+* [ ] Authentication API
+* [ ] Admin API
+* [ ] API validation
+* [ ] API error responses
 
-- [x] Product schema
 
----
+The backend architecture remains:
 
-### Controller
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+Prisma
+    ↓
+PostgreSQL
 
-- [x] Dashboard
-- [x] Details
-- [x] Create
-- [x] Edit // photo delete on edit
-- [x] Delete
-
----
-
-### Views
-
-- [x] Dashboard
-- [x] Details
-- [x] Create
-- [x] Edit
 
 ---
 
-### Finish Checklist
+# Milestone 8 — UX and Error Handling
 
-- [ ] Full Product CRUD completed
+### Goal
 
----
+Improve the React application's user experience.
 
-# Milestone 7 - Public Website
-
-## Goal
-
-Build the public catalog.
-
-- [x] Home page
-- [ ] Latest products // we will leave this for later not needed right now
-- [x] Similar Products
-- [x] Product catalog
-- [x] Product details
-- [x] Search
-- [x] Navigation
-- [x] Footer
+* [ ] Loading states
+* [ ] Error states
+* [ ] Empty states
+* [ ] Form validation errors
+* [ ] API errors
+* [ ] 401 handling
+* [ ] 403 handling
+* [ ] 404 handling
+* [ ] Success feedback
+* [ ] Responsive design
 
 ---
 
-### Finish Checklist
+# Milestone 9 — React Course Finalization
 
-- [ ] Public website completed
-
----
-
-# Milestone 8 - Administration
-
-## Goal
-
-Finish the administrator experience.
-
-- [x] Dashboard
-- [x] Product management
-- [x] Category management
-- [ ] Image management
+* [ ] Review course requirements
+* [ ] Review project requirements
+* [ ] Complete required React functionality
+* [ ] Refactor reusable components
+* [ ] Remove unnecessary code
+* [ ] Test public catalog
+* [ ] Test admin panel
+* [ ] Update documentation
+* [ ] Prepare project presentation/submission
 
 ---
 
-# Puhen Svqt v2 — Feature development complete
+# Version 3 — E-Commerce
 
-## Remaining:
+Future development after the React course.
 
-- [ ] bug fixing
-- [ ] error handling
-- [ ] final cleanup
-- [ ] documentation update
-
-Next: React course → Пухен Свят v3
-
-### Finish Checklist
-
-- [ ] Administrator panel completed
-
----
-
-# Milestone 9 - User Experience
-
-- [ ] Success messages
-- [ ] Error messages
-- [ ] Empty states
-- [ ] 401 page
-- [ ] 403 page
-- [ ] 404 page
-- [ ] Responsive design
-
----
-
-# Milestone 10 - Security
-
-- [ ] Verify passwords using bcrypt
-- [ ] Protect administrator routes
-- [ ] Verify JWT on every request
-- [ ] Store JWT in HTTP-only cookies
-
----
-
-# Milestone 11 - Deployment
-
-## Goal
-
-Deploy the application.
-
-### Database
-
-- [ ] Create Supabase PostgreSQL database
-- [ ] Update `DATABASE_URL`
-
----
-
-### Application
-
-- [ ] Run production migrations
-- [ ] Seed administrator
-- [ ] Test production database
-
----
-
-### Deployment
-
-- [ ] Deploy application
-- [ ] Test production website
-
----
-
-# Future Versions
-
-## Version 3
-
-- [ ] React frontend
-- [ ] REST API
-- [ ] Pagination
-- [ ] Advanced Search
-
----
-
-## Version 4
-
-- [ ] Customer accounts
-- [ ] Customer registration
-- [ ] Shopping cart
-- [ ] Checkout
-- [ ] Orders
-- [ ] Payments
-- [ ] Wishlist
-- [ ] Reviews
-
----
-
-## Version 5
-
-- [ ] Cloudinary
-- [ ] Inventory management
-- [ ] Product variants
-- [ ] Discounts
-- [ ] Coupons
-- [ ] Analytics
-- [ ] Newsletter
-- [ ] Administrator management
-- [ ] Roles & Permissions
+* [ ] Customer accounts
+* [ ] Customer registration
+* [ ] Customer login
+* [ ] Shopping cart
+* [ ] Wishlist
+* [ ] Checkout
+* [ ] Orders
+* [ ] Payments
+* [ ] Reviews
+* [ ] Shipping
+* [ ] Inventory
+* [ ] Discounts
+* [ ] Coupons
+* [ ] Analytics
