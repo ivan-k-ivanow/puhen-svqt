@@ -211,6 +211,7 @@ Planned functionality includes:
 * Product reviews
 * Inventory management
 
+
 ## Version Roadmap
 
 V2
