@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import ProductCard from "../product-card/ProductCard";
+import ProductCard from "./product-card/ProductCard";
+import ProductFilters from "./product-filters.jsx/ProductFilters";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -46,28 +47,11 @@ export default function Products() {
                         специалните моменти в живота.
                     </p>
 
-                    <div className="products-filters">
-                        <button
-                            type="button"
-                            className={`product-filter ${selectedCategory === "all" ? "active" : ""
-                                }`}
-                            onClick={() => setSelectedCategory("all")}
-                        >
-                            Всички
-                        </button>
-
-                        {categories.map((category) => (
-                            <button
-                                type="button"
-                                key={category.id}
-                                className={`product-filter ${selectedCategory === category.id ? "active" : ""
-                                    }`}
-                                onClick={() => setSelectedCategory(category.id)}
-                            >
-                                {category.name}
-                            </button>
-                        ))}
-                    </div>
+                    <ProductFilters
+                        categories={categories}
+                        selectedCategory={selectedCategory}
+                        onCategoryChange={setSelectedCategory}
+                    />
                 </div>
 
                 <div className="products-grid">
