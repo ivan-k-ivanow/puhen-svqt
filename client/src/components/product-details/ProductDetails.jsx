@@ -1,9 +1,11 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
+import SimilarProducts from './similar-products/SimilarProducts';
 
 export default function ProductDetails() {
     const { slug } = useParams();
     const [product, setProduct] = useState(null);
+    const [similarProducts, setSimilarProducts] = useState([]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -17,6 +19,18 @@ export default function ProductDetails() {
         };
 
         fetchProduct();
+
+        const fetchSimilarProducts = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${slug}/similar`);
+                const data = await res.json();
+                setSimilarProducts(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchSimilarProducts();
     }, [slug]);
 
     if (!product) {
@@ -152,31 +166,9 @@ export default function ProductDetails() {
                     <h2>
                         Подобни продукти
                     </h2>
-
-                    <div className="similar-grid">
-                        <a
-                            href="/product/vaza-za-uchitel"
-                            className="similar-card"
-                        >
-                            <img
-                                src="https://ijfnibceycvvjkpoyddr.supabase.co/storage/v1/object/public/product-images/teacher-vase-1.jpg"
-                                alt="Ваза за Учител"
-                            />
-
-                            <div className="similar-card-body">
-                                <h3>
-                                    Ваза за Учител
-                                </h3>
-                                <p>
-                                    Нежна ръчно изработена ваза с вечни лалета
-                                    и маргаритки, придружена от картичка с пожелание.
-                                </p>
-                            </div>
-                        </a>
-                    </div>
+                    <SimilarProducts products={similarProducts} />
                 </div>
             </main>
-
         </>
     );
 }

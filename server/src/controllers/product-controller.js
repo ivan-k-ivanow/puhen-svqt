@@ -3,8 +3,38 @@ import productService from '../services/product-service.js';
 
 const productController = Router();
 
+productController.get('/:slug/similar', async (req, res) => {
+    try {
+        const { slug } = req.params;
 
-// React API endpoint for fetching a single product by slug
+        // 1. Find the current product
+        const product = await productService.getProductBySlug(slug);
+
+        if (!product) {
+            return res.status(404).json({
+                message: 'Продуктът не е намерен.'
+            });
+        }
+
+        // 2. Get the IDs of its categories
+        const categoryIds = product.categories.map(category => category.id);
+
+        // 3. Find similar products
+        const similarProducts = await productService.getSimilarProducts(
+            product.id,
+            categoryIds,
+            6
+        );
+
+        res.json(similarProducts);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Грешка при зареждането на подобните продукти.'
+        });
+    }
+});
+
 productController.get('/:slug', async (req, res) => {
     try {
         const slug = req.params.slug;
@@ -20,41 +50,6 @@ productController.get('/:slug', async (req, res) => {
         res.status(500).json({ message: 'Грешка при зареждането на продукта.' });
     }
 });
-
-// productController.get('/:slug', async (req, res) => {
-
-//     const { slug } = req.params;
-
-//     try {
-
-//         const product = await productService.getProductBySlug(slug);
-
-//         const categoryIds = product.categories.map(category => category.id);
-
-//         const similarProducts = await productService.getSimilarProducts(
-//             product.id,
-//             categoryIds,
-//             6
-//         );
-
-//         if (!product) {
-//             return res.status(404).send('Product not found.');
-//         }
-
-//         res.render('product/details', {
-//             title: product.name,
-//             product,
-//             similarProducts
-//         });
-
-//     } catch (error) {
-
-//         console.error(error);
-//         res.status(500).send('Something went wrong.');
-
-//     }
-// });
-
 
 export default productController;
 
