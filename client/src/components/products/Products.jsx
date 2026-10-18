@@ -1,4 +1,21 @@
+import { useEffect, useState } from "react";
+
 export default function Products() {
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
+            const data = await res.json();
+            setProducts(data);
+        } catch (error) {
+            console.error(error);
+        }
+        };
+        fetchProducts();
+    }, []);
+
     return (
         <>
             <section className="products" id="products">
@@ -26,57 +43,33 @@ export default function Products() {
                 </div>
 
                 <div className="products-grid">
-                    <article className="product-card">
-                        <div className="product-image-container">
-                            <img
-                                src="/images/bouquet.jpg"
-                                alt="Ръчно изработен букет"
-                                className="product-image"
-                            />
-                        </div>
+                    {products.map((product) => (
+                        <article className="product-card" key={product.id}>
+                            <div className="product-image-container">
+                                <img
+                                    src={product.images[0]?.url || "/images/bouquet.jpg"}
+                                    alt={product.name}
+                                    className="product-image"
+                                />
+                            </div>
 
-                        <div className="product-info">
-                            <h3 className="product-name">
-                                Ръчно изработен букет
-                            </h3>
+                            <div className="product-info">
+                                <h3 className="product-name">
+                                    {product.name}
+                                </h3>
 
-                            <p className="product-description">
-                                Оригинален подарък за специален повод.
-                            </p>
+                                <p className="product-description">
+                                    {product.shortDescription}
+                                </p>
 
-                            <p className="product-price">35 лв.</p>
+                                <p className="product-price">{product.price} лв.</p>
 
-                            <a href="#" className="product-button">
-                                Виж продукта
-                            </a>
-                        </div>
-                    </article>
-
-                    <article className="product-card">
-                        <div className="product-image-container">
-                            <img
-                                src="/images/gift.jpg"
-                                alt="Персонализиран подарък"
-                                className="product-image"
-                            />
-                        </div>
-
-                        <div className="product-info">
-                            <h3 className="product-name">
-                                Персонализиран подарък
-                            </h3>
-
-                            <p className="product-description">
-                                Подарък, създаден специално за любим човек.
-                            </p>
-
-                            <p className="product-price">25 лв.</p>
-
-                            <a href="#" className="product-button">
-                                Виж продукта
-                            </a>
-                        </div>
-                    </article>
+                                <a href="#" className="product-button">
+                                    Виж продукта
+                                </a>
+                            </div>
+                        </article>
+                    ))}
                 </div>
             </section>
         </>

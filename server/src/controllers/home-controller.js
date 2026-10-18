@@ -55,5 +55,19 @@ homeController.get('/filter', async (req, res) => {
 
 
 
+homeController.get('/api/products', async (req, res) => {
+    try {
+        const products = await productService.getAllProducts();
+
+        res.json(products);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: 'Грешка при зареждането на продуктите.'
+        });
+    }
+});
+
 
 export default homeController;

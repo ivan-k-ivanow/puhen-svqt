@@ -9,6 +9,9 @@ async function createProduct(data) {
 
 async function getAllProducts() {
     return prisma.product.findMany({
+        where: {
+            isActive: true,
+        },
         orderBy: {
             createdAt: 'desc'
         },
