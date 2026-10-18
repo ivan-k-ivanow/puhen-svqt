@@ -1,11 +1,13 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'node:path';
 import cors from 'cors';
 import routes from './routes/routes.js';
 import { authMiddleware } from './middlewares/auth-middleware.js';
 import cookieParser from 'cookie-parser';
 
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Create an instance of the Express application
 const app = express();
