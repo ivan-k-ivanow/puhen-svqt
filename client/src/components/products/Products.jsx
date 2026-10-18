@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import ProductCard from "../product-card/ProductCard";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("all");
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -16,6 +18,23 @@ export default function Products() {
         fetchProducts();
     }, []);
 
+    const categories = [
+        ...new Map(
+            products
+                .flatMap((product) => product.categories ?? [])
+                .map((category) => [category.id, category])
+        ).values(),
+    ];
+
+    const filteredProducts =
+        selectedCategory === "all"
+            ? products
+            : products.filter((product) =>
+                product.categories?.some(
+                    (category) => category.id === selectedCategory
+                )
+            );
+
     return (
         <>
             <section className="products" id="products">
@@ -28,51 +47,37 @@ export default function Products() {
                     </p>
 
                     <div className="products-filters">
-                        <button className="product-filter">
+                        <button
+                            type="button"
+                            className={`product-filter ${selectedCategory === "all" ? "active" : ""
+                                }`}
+                            onClick={() => setSelectedCategory("all")}
+                        >
                             Всички
                         </button>
 
-                        <button className="product-filter">
-                            Букети
-                        </button>
-
-                        <button className="product-filter">
-                            Подаръци
-                        </button>
+                        {categories.map((category) => (
+                            <button
+                                type="button"
+                                key={category.id}
+                                className={`product-filter ${selectedCategory === category.id ? "active" : ""
+                                    }`}
+                                onClick={() => setSelectedCategory(category.id)}
+                            >
+                                {category.name}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
                 <div className="products-grid">
-                    {products.map((product) => (
-                        <article className="product-card" key={product.id}>
-                            <div className="product-image-container">
-                                <img
-                                    src={product.images[0]?.url || "/images/bouquet.jpg"}
-                                    alt={product.name}
-                                    className="product-image"
-                                />
-                            </div>
-
-                            <div className="product-info">
-                                <h3 className="product-name">
-                                    {product.name}
-                                </h3>
-
-                                <p className="product-description">
-                                    {product.shortDescription}
-                                </p>
-
-                                <p className="product-price">{product.price} лв.</p>
-
-                                <a
-                                    href={`/products/${product.slug}`}
-                                    className="product-button"
-                                >
-                                    Виж продукта
-                                </a>
-                            </div>
-                        </article>
+                    {filteredProducts.map((product) => (
+                        <ProductCard product={product} key={product.id} />
                     ))}
+
+                    {filteredProducts.length === 0 && (
+                        <p>Няма продукти в тази категория.</p>
+                    )}
                 </div>
             </section>
         </>

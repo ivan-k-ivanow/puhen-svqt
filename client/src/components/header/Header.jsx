@@ -1,4 +1,4 @@
-
+import { Link } from "react-router";
 
 export default function Header() {
     return (
@@ -6,9 +6,9 @@ export default function Header() {
 
             <header className="header">
                 <div className="nav-wrapper">
-                    <a href="#hero" className="logo">
+                    <Link to="/" className="logo">
                         <img src="/images/logo.png" alt="Пухен Свят лого" />
-                    </a>
+                    </Link>
 
                     <div className="search-box">
                         <div className="search-input-wrapper">
@@ -27,15 +27,11 @@ export default function Header() {
                     <nav>
                         <ul className="navbar">
                             <li>
-                                <a href="#hero">Начало</a>
+                                <Link to="/">Начало</Link>
                             </li>
 
                             <li>
-                                <a href="#products">Продукти</a>
-                            </li>
-
-                            <li>
-                                <a href="#faqs">За нас</a>
+                                <Link to="/">Продукти</Link>
                             </li>
                             
                             <li>
