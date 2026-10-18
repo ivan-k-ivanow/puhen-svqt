@@ -129,18 +129,26 @@ These tasks are intentionally postponed until after the main React migration whe
 
 # Version 2.1 — React Course
 
-## Milestone 1 — React Setup
+**Project:** Пухен Свят  
+**Current focus:** React public catalog migration  
+**Architecture:** React + Vite frontend, Express backend, Prisma, PostgreSQL/Supabase
+
+---
+
+# Milestone 1 — React Setup
 
 ### Goal
 
 Create the React frontend while preserving the existing backend.
 
-* [ ] Create React application
-* [ ] Configure React development environment
-* [ ] Configure project structure
-* [ ] Understand React entry point
-* [ ] Create first component
-* [ ] Connect React frontend to Express backend
+- [x] Create React application
+- [x] Configure React development environment with Vite
+- [x] Configure project structure with a separate `client/` folder
+- [x] Understand React entry point (`main.jsx`)
+- [x] Create first components
+- [x] Connect React frontend to Express backend
+- [x] Configure `VITE_API_URL`
+- [x] Preserve the existing backend architecture
 
 ---
 
@@ -150,16 +158,19 @@ Create the React frontend while preserving the existing backend.
 
 Apply the concepts taught during the React course.
 
-* [ ] Components
-* [ ] JSX
-* [ ] Props
-* [ ] State
-* [ ] Events
-* [ ] Conditional rendering
-* [ ] Lists and keys
-* [ ] Reusable components
+- [x] Components
+- [x] JSX
+- [x] Props
+- [x] State with `useState`
+- [x] Events and event handlers
+- [x] Conditional rendering
+- [x] Lists and keys
+- [x] Reusable components
+- [x] `useEffect` for API requests
+- [ ] Review and reinforce the concepts throughout the project
+- [ ] Practice `useContext` if a real use case arises
 
-These tasks will be implemented progressively as the corresponding course topics are introduced.
+These concepts will continue to be applied as new functionality is implemented. `useContext` will only be introduced when shared state genuinely requires it.
 
 ---
 
@@ -169,44 +180,66 @@ These tasks will be implemented progressively as the corresponding course topics
 
 Rebuild the existing public catalog using React.
 
-### Layout
+## Layout
 
-* [ ] React layout
-* [ ] Header
-* [ ] Navigation
-* [ ] Footer
+- [x] Create React homepage
+- [x] Create Header component
+- [x] Create Footer component
+- [ ] Complete navigation behavior
+- [ ] Implement functional hamburger menu
+- [ ] Complete responsive navigation
 
-### Products
+## Products
 
-* [ ] Product list component
-* [ ] Product card component
-* [ ] Load products from API
-* [ ] Display product images
-* [ ] Display product information
+- [x] Create product list component (`Products.jsx`)
+- [x] Create reusable product card (`ProductCard.jsx`)
+- [x] Load active products from the API
+- [x] Display product images
+- [x] Display product information
+- [x] Display product prices
+- [x] Link product cards to their details pages
+- [x] Preserve existing CSS classes during migration
 
-### Categories
+## Categories
 
-* [ ] Load categories from API
-* [ ] Category buttons
-* [ ] Category filtering
-* [ ] All products filter
+- [x] Retrieve category information through the products API
+- [x] Create category filter component (`ProductFilters.jsx`)
+- [x] Generate category buttons dynamically
+- [x] Filter products by category
+- [x] Implement the "All" filter
+- [x] Support products assigned to multiple categories
+- [x] Link products to categories in the database
+- [ ] Test filtering with a larger catalog
 
-### Search
+## Search
 
-* [ ] Search input
-* [ ] Search state
-* [ ] Search API request
-* [ ] Search results dropdown
-* [ ] Search result navigation
+- [ ] Implement functional search input
+- [ ] Add search state
+- [ ] Implement product search
+- [ ] Implement search results dropdown
+- [ ] Navigate to the selected search result
+- [ ] Make search work together with category filters
+- [ ] Handle empty search results
 
-### Product Details
+## Product Details
 
-* [ ] Product details route
-* [ ] Load product by slug
-* [ ] Display product information
-* [ ] Display images
-* [ ] Display categories
-* [ ] Display similar products
+- [x] Create product details page (`ProductDetails.jsx`)
+- [x] Configure `/product/:slug` route
+- [x] Create API endpoint to fetch a product by slug
+- [x] Connect React to the product details API
+- [x] Display product name
+- [x] Display product description
+- [x] Display product price
+- [x] Display product image
+- [x] Display product categories
+- [x] Associate products with categories in Supabase
+- [x] Add order links for Instagram and Facebook
+- [ ] Implement interactive image gallery
+- [ ] Fetch similar products dynamically
+- [ ] Exclude the current product from similar products
+- [ ] Link similar product cards to the correct details pages
+- [ ] Handle missing products and API errors
+- [ ] Improve loading and error states
 
 ---
 
@@ -216,13 +249,17 @@ Rebuild the existing public catalog using React.
 
 Introduce client-side navigation.
 
-* [ ] Configure React Router
-* [ ] Home route
-* [ ] Product details route
-* [ ] Login route
-* [ ] Admin route
-* [ ] Protected admin routes
-* [ ] Handle unknown routes
+- [x] Install and configure React Router
+- [x] Configure the home route (`/`)
+- [x] Configure the product details route (`/product/:slug`)
+- [x] Use `Link` for React Router navigation where implemented
+- [ ] Complete navigation links across the application
+- [ ] Implement login route
+- [ ] Implement admin routes
+- [ ] Implement protected admin routes
+- [ ] Handle unknown routes
+- [ ] Test direct navigation to product URLs
+- [ ] Test navigation between pages without full page reloads
 
 ---
 
@@ -232,14 +269,16 @@ Introduce client-side navigation.
 
 Migrate administration forms to React.
 
-* [ ] Login form
-* [ ] Product create form
-* [ ] Product edit form
-* [ ] Category create form
-* [ ] Category edit form
-* [ ] Form state
-* [ ] Form submission
-* [ ] Validation feedback
+- [ ] Login form
+- [ ] Product create form
+- [ ] Product edit form
+- [ ] Category create form
+- [ ] Category edit form
+- [ ] Form state
+- [ ] Form submission
+- [ ] Validation feedback
+- [ ] API error feedback
+- [ ] Success feedback
 
 ---
 
@@ -249,38 +288,38 @@ Migrate administration forms to React.
 
 Rebuild the administration panel using React.
 
-### Authentication
+## Authentication
 
-* [ ] Admin login
-* [ ] Authentication state
-* [ ] Protected routes
-* [ ] Logout
+- [ ] Admin login
+- [ ] Authentication state
+- [ ] Protected routes
+- [ ] Logout
 
-### Dashboard
+## Dashboard
 
-* [ ] Admin layout
-* [ ] Navigation
-* [ ] Dashboard
+- [ ] Admin layout
+- [ ] Navigation
+- [ ] Dashboard
 
-### Products
+## Products
 
-* [ ] Product list
-* [ ] Create product
-* [ ] Edit product
-* [ ] Delete product
+- [ ] Product list
+- [ ] Create product
+- [ ] Edit product
+- [ ] Delete product
 
-### Categories
+## Categories
 
-* [ ] Category list
-* [ ] Create category
-* [ ] Edit category
-* [ ] Delete category
+- [ ] Category list
+- [ ] Create category
+- [ ] Edit category
+- [ ] Delete category
 
-### Images
+## Images
 
-* [ ] Display product images
-* [ ] Delete image
-* [ ] Prepare upload integration for future storage
+- [ ] Display product images in the admin panel
+- [ ] Delete image
+- [ ] Prepare upload integration for future storage
 
 ---
 
@@ -290,28 +329,31 @@ Rebuild the administration panel using React.
 
 Connect React to the Express backend.
 
-* [ ] Create API routes
-* [ ] Return JSON responses
-* [ ] Product API
-* [ ] Category API
-* [ ] Authentication API
-* [ ] Admin API
-* [ ] API validation
-* [ ] API error responses
-
+- [x] Connect React to the existing backend
+- [x] Implement product list API integration
+- [x] Implement product details API integration
+- [x] Return product data as JSON
+- [x] Return JSON responses for missing products and server errors
+- [x] Load product categories and images through Prisma relations
+- [ ] Complete category API where required
+- [ ] Implement authentication API integration
+- [ ] Implement admin API integration
+- [ ] Review API validation
+- [ ] Standardize API error responses
 
 The backend architecture remains:
 
-Controller
-    ↓
-Service
-    ↓
-Repository
-    ↓
-Prisma
-    ↓
+Controller  
+↓  
+Service  
+↓  
+Repository  
+↓  
+Prisma  
+↓  
 PostgreSQL
 
+The React frontend communicates with the backend through API requests. Database access remains in the backend.
 
 ---
 
@@ -321,30 +363,44 @@ PostgreSQL
 
 Improve the React application's user experience.
 
-* [ ] Loading states
-* [ ] Error states
-* [ ] Empty states
-* [ ] Form validation errors
-* [ ] API errors
-* [ ] 401 handling
-* [ ] 403 handling
-* [ ] 404 handling
-* [ ] Success feedback
-* [ ] Responsive design
+- [ ] Loading states
+- [ ] Error states
+- [x] Basic empty state for category filtering
+- [ ] Form validation errors
+- [ ] Consistent API error handling
+- [ ] 401 handling
+- [ ] 403 handling
+- [ ] 404 handling
+- [ ] Success feedback
+- [ ] Responsive design review
+- [ ] Check mobile navigation
+- [ ] Check browser console for errors and warnings
+- [ ] Check network requests
+- [ ] Test all public catalog links
 
 ---
 
 # Milestone 9 — React Course Finalization
 
-* [ ] Review course requirements
-* [ ] Review project requirements
-* [ ] Complete required React functionality
-* [ ] Refactor reusable components
-* [ ] Remove unnecessary code
-* [ ] Test public catalog
-* [ ] Test admin panel
-* [ ] Update documentation
-* [ ] Prepare project presentation/submission
+### Goal
+
+Complete the React migration and review the concepts learned during the course.
+
+- [ ] Review course requirements
+- [ ] Review project requirements
+- [ ] Complete required React functionality
+- [ ] Review component responsibilities
+- [x] Introduce reusable `ProductCard` component
+- [x] Introduce reusable `ProductFilters` component
+- [ ] Refactor further only where it improves clarity
+- [ ] Remove unnecessary code
+- [ ] Test public catalog
+- [ ] Test product details and similar products
+- [ ] Test search and category filters together
+- [ ] Test admin panel
+- [ ] Remove old Handlebars routes and views after successful migration
+- [ ] Update documentation
+- [ ] Prepare project presentation/submission
 
 ---
 
@@ -352,17 +408,32 @@ Improve the React application's user experience.
 
 Future development after the React course.
 
-* [ ] Customer accounts
-* [ ] Customer registration
-* [ ] Customer login
-* [ ] Shopping cart
-* [ ] Wishlist
-* [ ] Checkout
-* [ ] Orders
-* [ ] Payments
-* [ ] Reviews
-* [ ] Shipping
-* [ ] Inventory
-* [ ] Discounts
-* [ ] Coupons
-* [ ] Analytics
+- [ ] Customer accounts
+- [ ] Customer registration
+- [ ] Customer login
+- [ ] Shopping cart
+- [ ] Wishlist
+- [ ] Checkout
+- [ ] Orders
+- [ ] Payments
+- [ ] Reviews
+- [ ] Shipping
+- [ ] Inventory
+- [ ] Discounts
+- [ ] Coupons
+- [ ] Analytics
+
+---
+
+# Current Next Steps
+
+Continue with the public catalog in this order:
+
+1. Implement the search bar.
+2. Make the search work together with category filters.
+3. Implement dynamic similar products.
+4. Implement the hamburger menu and complete navigation.
+5. Review loading and error states.
+6. Test the public catalog and finish the remaining React fundamentals review.
+
+**Current implementation note:** `Products.jsx` remains responsible for fetching products, managing the selected category, and filtering the list. `ProductFilters.jsx` renders the category controls, and `ProductCard.jsx` renders an individual product. Further component refactoring can wait until there is a clear benefit.
