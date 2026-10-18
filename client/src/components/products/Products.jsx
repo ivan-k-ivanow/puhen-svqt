@@ -65,7 +65,7 @@ export default function Products() {
                                 <p className="product-price">{product.price} лв.</p>
 
                                 <a
-                                    href={`/product/${product.slug}`}
+                                    href={`/products/${product.slug}`}
                                     className="product-button"
                                 >
                                     Виж продукта

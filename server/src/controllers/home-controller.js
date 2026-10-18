@@ -71,23 +71,6 @@ homeController.get('/api/products', async (req, res) => {
     }
 });
 
-
 export default homeController;
 
 
-// React API endpoint for fetching a single product by slug
-homeController.get('/api/products/:slug', async (req, res) => {
-    try {
-        const slug = req.params.slug;
-        const product = await productService.getProductBySlug(slug);
-
-        if (!product) {
-            return res.status(404).json({ message: 'Продуктът не е намерен.' });
-        }
-
-        res.json(product);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Грешка при зареждането на продукта.' });
-    }
-});
