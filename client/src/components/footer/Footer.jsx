@@ -1,7 +1,3 @@
-import logo from "../../assets/logo.png"
-import facebookLogo from "../../assets/facebook-logo.svg";
-import instagramLogo from "../../assets/instagram-logo.svg";
-import tiktokLogo from "../../assets/tik-tok-logo.png";
 
 export default function Footer() {
     return (
@@ -11,7 +7,7 @@ export default function Footer() {
                     {/* <!-- About --> */}
                     <div className="footer-about">
                         <a href="/" className="footer-logo">
-                            <img src={logo} alt="Пухен Свят лого"/>
+                            <img src="/images/logo.png" alt="Пухен Свят лого"/>
                         </a>
                         <p>
                             Ръчно, с обич, за специални моменти.
@@ -42,11 +38,11 @@ export default function Footer() {
                                 <div className="social-links">
                                     <a href="https://www.facebook.com/puhensvqt/" aria-label="Facebook" target="_blank"
                                         rel="noopener noreferrer">
-                                        <img src={facebookLogo} alt="Facebook"/>
+                                        <img src="/images/facebook-logo.svg" alt="Facebook"/>
                                     </a>
                                     <a href="https://www.instagram.com/puhensvqt/" aria-label="Instagram" target="_blank"
                                         rel="noopener noreferrer">
-                                        <img src={instagramLogo} alt="Instagram"/>
+                                        <img src="/images/instagram-logo.svg" alt="Instagram"/>
                                     </a>
                                     <a href="https://www.tiktok.com/@puhensvqt" aria-label="TikTok" target="_blank"
                                         rel="noopener noreferrer">

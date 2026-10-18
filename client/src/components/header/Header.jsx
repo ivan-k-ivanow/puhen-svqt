@@ -1,5 +1,4 @@
-import logo from "../../assets/logo.png"
-import searchIcon from "../../assets/search-icon.svg";
+
 
 export default function Header() {
     return (
@@ -8,7 +7,7 @@ export default function Header() {
             <header className="header">
                 <div className="nav-wrapper">
                     <a href="/" className="logo">
-                        <img src={logo} alt="Пухен Свят лого"/>
+                        <img src="/images/logo.png" alt="Пухен Свят лого"/>
                     </a>
 
                     <div className="search-box">
@@ -16,7 +15,7 @@ export default function Header() {
 
                             <input type="text" id="search-input" placeholder="Търси продукт..." autoComplete="off"/>
                                 <button type="button" id="search-button" aria-label="Търси">
-                                    <img src={searchIcon} alt="Търси"/>
+                                    <img src="/images/search-icon.svg" alt="Търси"/>
                                 </button>
                         </div>
 
