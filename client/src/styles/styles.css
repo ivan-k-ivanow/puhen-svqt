@@ -343,15 +343,16 @@ a {
 }
 
 .product-card h3 {
-    font-size: 2rem;
-    margin-bottom: 5px;
-    padding: 0px 20px;
+    font-family: "Chocolate Classical Sans", sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding: 0px 10px;
 }
 
 .product-card .product-description {
     font-size: 0.9rem;
     color: #555;
-    padding: 10px 30px;
+    padding: 0px 30px;
 }
 
 .product-card .product-price {
@@ -696,7 +697,7 @@ a {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 16px;
+    padding: 0 10px
 }
 
 .product-card .product-info h3 {
@@ -710,7 +711,6 @@ a {
 .product-card .product-description {
     text-align: center;
     padding: 0;
-    margin-bottom: 15px;
     flex-grow: 1;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -721,8 +721,7 @@ a {
     display: block;
     text-align: center;
     padding: 0;
-    margin-bottom: 15px;
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     color: #8f6a5e;
     font-weight: 700;
 }
@@ -804,7 +803,7 @@ a {
 
     .faq {
         padding-top: 50px;
-        columns: #8f6a5d;
+        color: #8f6a5d;
     }
 
     .faq-question {
