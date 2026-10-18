@@ -472,19 +472,26 @@ a {
     transform: rotate(45deg);
 }
 
+
 .faq-answer {
-    height: 0;
-    overflow: hidden;
-    transition: height 0.4s ease;
-    padding: 0px 20px;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s ease;
+    padding: 0 20px;
     margin-bottom: 15px;
 }
 
-
 .faq-answer p {
+    min-height: 0;
+    overflow: hidden;
     margin: 0;
     color: #5c463e;
 }
+
+.faq-item.active .faq-answer {
+    grid-template-rows: 1fr;
+}
+
 
 
 
