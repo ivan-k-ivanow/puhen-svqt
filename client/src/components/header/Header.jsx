@@ -6,17 +6,17 @@ export default function Header() {
 
             <header className="header">
                 <div className="nav-wrapper">
-                    <a href="/" className="logo">
-                        <img src="/images/logo.png" alt="Пухен Свят лого"/>
+                    <a href="#hero" className="logo">
+                        <img src="/images/logo.png" alt="Пухен Свят лого" />
                     </a>
 
                     <div className="search-box">
                         <div className="search-input-wrapper">
 
-                            <input type="text" id="search-input" placeholder="Търси продукт..." autoComplete="off"/>
-                                <button type="button" id="search-button" aria-label="Търси">
-                                    <img src="/images/search-icon.svg" alt="Търси"/>
-                                </button>
+                            <input type="text" id="search-input" placeholder="Търси продукт..." autoComplete="off" />
+                            <button type="button" id="search-button" aria-label="Търси">
+                                <img src="/images/search-icon.svg" alt="Търси" />
+                            </button>
                         </div>
 
                         <div id="search-results" className="search-results hidden"></div>
@@ -27,14 +27,17 @@ export default function Header() {
                     <nav>
                         <ul className="navbar">
                             <li>
-                                <a href="#home">Начало</a>
+                                <a href="#hero">Начало</a>
                             </li>
+
                             <li>
                                 <a href="#products">Продукти</a>
                             </li>
+
                             <li>
                                 <a href="#faqs">За нас</a>
                             </li>
+                            
                             <li>
                                 <a className="btn-contact-us" href="#contact-us">
                                     Свържи се с нас
