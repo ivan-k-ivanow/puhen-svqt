@@ -5,13 +5,13 @@ export default function Products() {
 
     useEffect(() => {
         const fetchProducts = async () => {
-        try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
-            const data = await res.json();
-            setProducts(data);
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
+                const data = await res.json();
+                setProducts(data);
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchProducts();
     }, []);
@@ -64,7 +64,10 @@ export default function Products() {
 
                                 <p className="product-price">{product.price} лв.</p>
 
-                                <a href="#" className="product-button">
+                                <a
+                                    href={`/product/${product.slug}`}
+                                    className="product-button"
+                                >
                                     Виж продукта
                                 </a>
                             </div>
