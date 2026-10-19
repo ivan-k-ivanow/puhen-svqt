@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
-export default function HamburgerMenu() {
+export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
 
     function closeHamburgerMenu() {
@@ -42,9 +42,6 @@ export default function HamburgerMenu() {
             <button
                 type="button"
                 className="hamburger"
-                aria-label={isOpen ? "Затвори менюто" : "Отвори менюто"}
-                aria-expanded={isOpen}
-                aria-controls="header-navigation"
                 onClick={() => setIsOpen((previousState) => !previousState)}
             >
                 <span />

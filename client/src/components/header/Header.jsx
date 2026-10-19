@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import HamburgerMenu from "./hamburgerMenu/HamburgerMenu";
+import Navigation from "./navigation/Navigation";
 
 
 export default function Header() {
@@ -26,7 +26,7 @@ export default function Header() {
                     </div>
 
 
-                    <HamburgerMenu />
+                    <Navigation />
                 </div>
             </header>
         </>

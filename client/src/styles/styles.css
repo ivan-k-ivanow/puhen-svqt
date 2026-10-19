@@ -328,14 +328,6 @@ a {
     cursor: pointer;
 }
 
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 40px;
-    color: white;
-    cursor: pointer;
-}
 
 .product-card img {
     width: 100%;
