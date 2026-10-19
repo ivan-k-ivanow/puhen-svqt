@@ -166,7 +166,7 @@ export default function ProductDetails() {
                     <h2>
                         Подобни продукти
                     </h2>
-                    <SimilarProducts products={similarProducts} />
+                    <SimilarProducts similarProducts={similarProducts} />
                 </div>
             </main>
         </>

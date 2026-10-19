@@ -1,11 +1,11 @@
 import { Link } from "react-router";
 
 export default function SimilarProducts({
-    products
+    similarProducts
 }) {
     return (
         <div className="similar-grid">
-            {products.map((product) => (
+            {similarProducts.map((product) => (
                 <Link
                     key={product.id}
                     to={`/products/${product.slug}`}
