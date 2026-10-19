@@ -22,12 +22,11 @@ export default function SimilarProducts({
                         <p>
                             {product.shortDescription}
                         </p>
-                        <Link
-                            to={`/products/${product.slug}`}
+                        <div
                             className="product-button"
                         >
                             Виж продукта
-                        </Link>
+                        </div>
                     </div>
                 </Link>
             ))}
