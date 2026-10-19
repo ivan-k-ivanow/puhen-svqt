@@ -1,36 +1,12 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import SimilarProducts from './similar-products/SimilarProducts';
+import ProductGallery from './product-gallery/ProductGallery';
 
 export default function ProductDetails() {
     const { slug } = useParams();
     const [product, setProduct] = useState(null);
     const [similarProducts, setSimilarProducts] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeThumb, setActiveThumb] = useState(0);
-
-    const toggleModal = () => {
-         setIsModalOpen((previousState) => !previousState);
-    };
-
-    useEffect(() => {
-        if (!isModalOpen) return;
-
-        const escapeKeyHandler = (event) => {
-            if (event.key === 'Escape') {
-                toggleModal();
-            }
-        };
-
-        if (isModalOpen) {
-            window.addEventListener('keydown', escapeKeyHandler);
-        }
-
-        return () => {
-            window.removeEventListener('keydown', escapeKeyHandler);
-        };
-
-    }, [isModalOpen]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -71,38 +47,7 @@ export default function ProductDetails() {
                         {product.name}
                     </h1>
 
-                    {/* <!-- Gallery --> */}
-                    <div className="gallery">
-                        <div className="gallery-main">
-                            <img
-                                id="main-image"
-                                src={product.images[activeThumb].url}
-                                alt={product.name}
-                                onClick={toggleModal}
-                            />
-                        </div>
-
-                        {isModalOpen && (
-                            <div className="image-modal" onClick={toggleModal}>
-                                <img
-                                    src={product.images[activeThumb].url}
-                                    alt={product.name}
-                                    onClick={(event) => event.stopPropagation()}
-                                />
-                            </div>
-                        )}
-
-                        <div className="gallery-thumbs">
-                            {product.images.map((image, index) => (
-                                <div className={`thumb ${index === activeThumb ? 'active' : ''}`} key={index} onClick={() => setActiveThumb(index)}>
-                                    <img
-                                        src={image.url}
-                                        alt={product.name}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                   <ProductGallery product={product} />
 
                     {/* <!-- Product information --> */}
                     <div className="product-info">
