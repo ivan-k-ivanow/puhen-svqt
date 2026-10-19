@@ -1,4 +1,6 @@
 import { Link } from "react-router";
+import HamburgerMenu from "./hamburgerMenu/HamburgerMenu";
+
 
 export default function Header() {
     return (
@@ -24,29 +26,7 @@ export default function Header() {
                     </div>
 
 
-                    <nav>
-                        <ul className="navbar">
-                            <li>
-                                <Link to="/">Начало</Link>
-                            </li>
-
-                            <li>
-                                <Link to="/">Продукти</Link>
-                            </li>
-                            
-                            <li>
-                                <a className="btn-contact-us" href="#contact-us">
-                                    Свържи се с нас
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <button className="hamburger" aria-label="Toggle menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
+                    <HamburgerMenu />
                 </div>
             </header>
         </>
