@@ -12,7 +12,7 @@ export default function Header() {
                         <img src="/images/logo.png" alt="Пухен Свят лого" />
                     </Link>
 
-                    <div className="search-box">
+                    {/* <div className="search-box">
                         <div className="search-input-wrapper">
 
                             <input type="text" id="search-input" placeholder="Търси продукт..." autoComplete="off" />
@@ -23,7 +23,7 @@ export default function Header() {
 
                         <div id="search-results" className="search-results hidden"></div>
 
-                    </div>
+                    </div> */}
 
 
                     <Navigation />
