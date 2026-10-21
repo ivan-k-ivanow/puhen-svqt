@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router'
+import AdminLogin from './pages/admin/AdminLogin'
 import { useState } from 'react'
 import Home from './pages/home/Home'
 import Product from './pages/product/Product'
@@ -14,6 +15,8 @@ function App() {
        <Route path="/" element={<Home />} />
        <Route path="/products" element={<ProductPage />} />
        <Route path="/products/:slug" element={<Product />} />
+
+       <Route path="/admin/login" element={<AdminLogin />} />
      </Routes>
 
     </>
