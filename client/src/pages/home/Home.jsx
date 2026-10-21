@@ -2,7 +2,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Faqs from "../../components/faqs/Faqs";
 import Hero from "../../components/hero/Hero";
-import Products from "../../components/products/Products";
+import Products from "../../components/products/Catalog";
 
 export default function Home() {
     return (
