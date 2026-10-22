@@ -52,7 +52,7 @@ export default function ProductTable() {
 
                         <div className="admin-product-actions">
                             <a
-                                href="/admin/products/1/edit"
+                                href="/admin/products/edit"
                                 className="edit-product"
                             >
                                 Редактирай

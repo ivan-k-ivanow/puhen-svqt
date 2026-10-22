@@ -157,6 +157,18 @@
   transform: scale(0.97);
 }
 
+.product-images {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-images h3 {
+  font-size: 1.2rem;
+  color: #8f6a5e;
+}
+
+
 .image-preview-container {
   display: flex;
   flex-wrap: wrap;
@@ -281,7 +293,7 @@
 }
 
 .category-section h3 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #8f6a5e;
 }
 

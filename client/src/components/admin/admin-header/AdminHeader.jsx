@@ -2,8 +2,8 @@ export default function AdminHeader() {
     return (
         <header className="admin-header">
             <div className="admin-nav-wrapper">
-                <a href="/" className="logo">
-                    <img src="/images/logo.png" alt="Пухен Свят лого"/>
+                <a href="/admin/products" className="logo">
+                    <img src="/images/logo.png" alt="Пухен Свят лого" />
                 </a>
                 <h1 className="admin-logo">Админ панел</h1>
                 <nav className="admin-nav">
