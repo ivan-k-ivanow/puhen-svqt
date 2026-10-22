@@ -25,6 +25,21 @@ export default function EditProduct() {
                         required
                     />
 
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        id="image-input"
+                        style={{ display: 'none' }}
+                    />
+
+                    <label
+                        htmlFor="image-input"
+                        className="image-upload-btn"
+                    >
+                        + Добави снимка
+                    </label>
+
                     <div className="product-images">
                         <h3>Снимки на продукта</h3>
 
@@ -61,20 +76,7 @@ export default function EditProduct() {
                         </div>
                     </div>
 
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        id="image-input"
-                        style={{ display: 'none' }}
-                    />
 
-                    <label
-                        htmlFor="image-input"
-                        className="image-upload-btn"
-                    >
-                        + Добави снимка
-                    </label>
 
                     <div className="category-section">
                         <h3>Категории</h3>

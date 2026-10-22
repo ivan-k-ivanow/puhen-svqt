@@ -5,8 +5,10 @@ export default function AdminEditProduct() {
     return (
 
         <>
-            <AdminHeader />
-            <EditProduct />
+            <div className="admin-page">
+                <AdminHeader />
+                <EditProduct />
+            </div>
         </>
     );
 }
