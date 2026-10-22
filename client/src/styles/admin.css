@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-body {
+.admin-page {
   background-color: #fcf0e8;
   color: #5c463e;
   min-height: 100vh;
@@ -92,7 +92,8 @@ body {
 }
 
 /* Section headings */
-.admin h2 {
+.admin-section h2 {
+  margin-top: 50px;
   font-size: 1.9rem;
   color: #8f6a5e;
   margin-bottom: 20px;
