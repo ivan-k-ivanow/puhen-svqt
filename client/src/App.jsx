@@ -6,22 +6,23 @@ import Home from './pages/home/Home'
 import Product from './pages/product/Product'
 import ProductPage from './pages/product-catalog/ProductCatalog'
 import AdminEditProduct from './pages/admin/AdminEditProduct'
+import AuthProvider from './contexts/AuthProvider'
 
 function App() {
 
   return (
     <>
-
-     <Routes>
-       <Route path="/" element={<Home />} />
-       <Route path="/products" element={<ProductPage />} />
-       <Route path="/products/:slug" element={<Product />} />
-       <Route path="/admin/login" element={<AdminLogin />} />
-       <Route path="/admin/dashboard" element={<AdminDashboard />} />
-       <Route path="/admin/products/create" element={<AdminCreateProduct />} />
-       <Route path="/admin/products/edit" element={<AdminEditProduct />} />
-     </Routes>
-
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/products/:slug" element={<Product />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/products/create" element={<AdminCreateProduct />} />
+          <Route path="/admin/products/edit" element={<AdminEditProduct />} />
+        </Routes>
+      </AuthProvider>
     </>
   )
 }
