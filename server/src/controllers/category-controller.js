@@ -2,6 +2,18 @@ import { Router } from 'express';
 import categoryService from '../services/category-service.js';
 
 const categoryController = Router();
+
+categoryController.get('/', async (req, res) => {
+    try {
+        const categories = await categoryService.getAllCategories();
+
+        return res.json(categories);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+
+        return res.status(500).json({ error: 'Грешка при извличане на категориите' });
+    }
+});
     
 categoryController.get('/create', (req, res) => {
     res.render('admin/categories/create-category', {
