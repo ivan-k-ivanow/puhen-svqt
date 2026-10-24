@@ -1,4 +1,4 @@
-import Categories from './categories/Categories';
+import Categories from '../categories/Categories';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 
@@ -118,7 +118,7 @@ export default function EditProduct() {
                     </div>
 
 
-                    <Categories product={product} />
+                    <Categories selectedCategories={product.categories} />
 
                     <textarea
                         name="shortDescription"

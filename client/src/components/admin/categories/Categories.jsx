@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function Categories({
-    product
+    selectedCategories
 }) {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +43,9 @@ export default function Categories({
 
             <div className="category-checkboxes">
                 {categories.map(category => {
-                    const isSelected = product.categories?.some(c => c.id === category.id);
+                    const isSelected = selectedCategories.some(
+                        selectedCategory => selectedCategory.id === category.id
+                    );
                     return (
                         <div className="category-item" key={category.id}>
                             <label>
