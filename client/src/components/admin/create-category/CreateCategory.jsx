@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import CategoryList from './category-list/CategoryList';
 
 export default function CreateCategoryForm() {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,7 +16,7 @@ export default function CreateCategoryForm() {
         setSuccess('');
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories/create`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/categories/create`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -34,10 +36,12 @@ export default function CreateCategoryForm() {
 
             setSuccess('Категорията е създадена успешно');
             setName('');
+            setRefreshTrigger(prev => !prev);
         } catch (error) {
             console.error('Error creating category:', error);
             setError('Грешка при създаване на категория');
         }
+
     }
     return (
         <>
@@ -56,13 +60,15 @@ export default function CreateCategoryForm() {
                     {error && <p className="error">{error}</p>}
                     {success && <p className="success">{success}</p>}
 
+                    <CategoryList refreshTrigger={refreshTrigger} />
+
                     <div className="category-form-actions">
                         <button type="submit">Създай Категория</button>
 
                         <button
                             type="button"
                             className="admin-nav-btn"
-                            onClick={() => navigate("/admin/products/create")}
+                            onClick={() => navigate("/admin/dashboard")}
                         >
                             Отказ
                         </button>

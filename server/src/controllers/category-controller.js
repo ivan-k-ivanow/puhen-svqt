@@ -43,10 +43,10 @@ categoryController.delete('/delete/:id', async (req, res) => {
     try {
         await categoryService.deleteCategoryById(req.params.id);
 
-        res.sendStatus(204);
+        return res.sendStatus(204);
     } catch (error) {
         console.error(error);
-        res.sendStatus(500);
+        return res.sendStatus(500);
     }
 });
 

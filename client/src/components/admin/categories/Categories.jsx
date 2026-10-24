@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
 
 export default function Categories({
-    selectedCategories
+    selectedCategories = []
 }) {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +37,7 @@ export default function Categories({
         return <p>{error}</p>;
     }
 
+
     return (
         <div className="category-section">
             <h3>Категории</h3>
@@ -58,27 +58,10 @@ export default function Categories({
                                 />
                                 <span>{category.name}</span>
                             </label>
-
-                            <button
-                                type="button"
-                                className="category-delete-btn"
-                                data-category-id={category.id}
-                            >
-                                ×
-                            </button>
                         </div>
                     );
                 })}
 
-            </div>
-
-            <div className="category-actions">
-                <Link
-                    to="/admin/categories/create"
-                    className="create-category-btn"
-                >
-                    + Създай категория
-                </Link>
             </div>
         </div>
     );
