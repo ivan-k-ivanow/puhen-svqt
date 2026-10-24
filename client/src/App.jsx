@@ -7,6 +7,7 @@ import Product from './pages/product/Product'
 import ProductPage from './pages/product-catalog/ProductCatalog'
 import AdminEditProduct from './pages/admin/AdminEditProduct'
 import AuthProvider from './contexts/AuthProvider'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function App() {
 
@@ -18,9 +19,13 @@ function App() {
           <Route path="/products" element={<ProductPage />} />
           <Route path="/products/:slug" element={<Product />} />
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/products/create" element={<AdminCreateProduct />} />
-          <Route path="/admin/products/edit" element={<AdminEditProduct />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/products/create" element={<AdminCreateProduct />} />
+            <Route path="/admin/products/edit" element={<AdminEditProduct />} />
+          </Route>
+          
         </Routes>
       </AuthProvider>
     </>

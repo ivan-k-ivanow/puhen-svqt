@@ -8,7 +8,7 @@ export default function AdminHeader() {
                 <h1 className="admin-logo">Админ панел</h1>
                 <nav className="admin-nav">
                     
-                    <a href="/admin/products" className="admin-nav-btn">Админ панел</a>
+                    <a href="/admin/dashboard" className="admin-nav-btn">Админ панел</a>
                     <a href="/admin/products/create" className="admin-nav-btn">Добави продукт</a>
                     <form action="/admin/logout" method="POST">
                         <button type="submit" className="admin-nav-btn">Изход</button>
