@@ -22,6 +22,18 @@ async function getAllProducts() {
     });
 }
 
+async function getAllProductsForAdmin() {
+    return prisma.product.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        },
+        include: {
+            categories: true,
+            images: true
+        }
+    });
+}
+
 async function getProductById(id) {
     return prisma.product.findUnique({
         where: {
@@ -142,4 +154,5 @@ export default {
     searchProductsByName,
     updateProduct,
     deleteProduct,
+    getAllProductsForAdmin
 };

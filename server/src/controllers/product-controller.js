@@ -3,6 +3,21 @@ import productService from '../services/product-service.js';
 
 const productController = Router();
 
+
+productController.get('/', async (req, res) => {
+    try {
+        const products = await productService.getAllProducts();
+
+        res.json(products);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: 'Грешка при зареждането на продуктите.'
+        });
+    }
+});
+
 productController.get('/:slug/similar', async (req, res) => {
     try {
         const { slug } = req.params;
@@ -51,7 +66,29 @@ productController.get('/:slug', async (req, res) => {
     }
 });
 
+
+
+// homeController.get('/search', async (req, res) => {
+//     try {
+//         const query = req.query.q?.trim();
+
+//         if (!query) {
+//             return res.json([]);
+//         }
+
+//         const products = await productService.searchProductsByName(query);
+
+//         res.json(products);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             message: 'Грешка при търсенето.'
+//         });
+//     }
+// });
+
 export default productController;
+
 
 
 

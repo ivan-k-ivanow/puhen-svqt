@@ -16,6 +16,10 @@ async function getAllProducts() {
     return await productRepository.getAllProducts();
 }
 
+async function getAllProductsForAdmin() {
+    return await productRepository.getAllProductsForAdmin();
+}
+
 async function getProductById(id) {
     return await productRepository.getProductById(id);
 }
@@ -70,4 +74,5 @@ export default {
     getSimilarProducts,
     updateProduct,
     deleteProduct,
+    getAllProductsForAdmin
 };

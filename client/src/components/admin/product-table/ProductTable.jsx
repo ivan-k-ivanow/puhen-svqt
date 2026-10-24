@@ -1,4 +1,35 @@
+import { useState, useEffect } from 'react';
+
 export default function ProductTable() {
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const getProducts = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products`, {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            setError(error);
+            console.error('Error fetching products:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+
     return (
             <div id="manage-products" className="admin-section">
                 <h2>Всички Продукти</h2>
@@ -24,49 +55,59 @@ export default function ProductTable() {
                 </div>
 
                 <ul id="products-list">
-                    <li className="admin-product">
-                        <span className="drag-handle">☰</span>
+                    {isLoading && <li>Зареждане...</li>}
+                    {error && <li className="error-message">{error.message}</li>}
 
-                        <img
-                            src="https://placehold.co/100x100?text=Product"
-                            alt="Букет от пухена тел"
-                            className="admin-product-image"
-                            style={{ cursor: 'zoom-in' }}
-                        />
+                    {!isLoading && !error && products.length === 0 && <li>Няма продукти</li>}
 
-                        <div className="admin-product-info">
-                            <strong>Букет от пухена тел</strong>
+                    {!isLoading && !error && products.length > 0 && products.map(product => (
+                        <li key={product.id} className="admin-product">
+                            <span className="drag-handle">☰</span>
 
-                            <p>
-                                <b>Категории:</b> Рожден ден, Други
-                            </p>
+                            <img
+                                src={
+                                    product.images?.[0]?.url ||
+                                    "/images/bouquet.jpg"
+                                }
+                                alt={product.name}
+                                className="admin-product-image"
+                                style={{ cursor: 'zoom-in' }}
+                            />
 
-                            <p>
-                                <b>Снимки:</b> 2
-                            </p>
+                            <div className="admin-product-info">
+                                <strong>{product.name}</strong>
 
-                            <p>
-                                <b>Цена:</b> 25 €.
-                            </p>
-                        </div>
+                                <p>
+                                    <b>Категории:</b> {product.categories.map(category => category.name).join(', ')}
+                                </p>
 
-                        <div className="admin-product-actions">
-                            <a
-                                href="/admin/products/edit"
-                                className="edit-product"
-                            >
-                                Редактирай
-                            </a>
+                                <p>
+                                    <b>Снимки:</b> {product.images.length}
+                                </p>
 
-                            <button
-                                type="button"
-                                className="delete-product"
-                                data-id="1"
-                            >
-                                Премахни Продукт
-                            </button>
-                        </div>
-                    </li>
+                                <p>
+                                    <b>Цена:</b> {product.price} €.
+                                </p>
+                            </div>
+
+                            <div className="admin-product-actions">
+                                <a
+                                    href={`/admin/products/edit/${product.id}`}
+                                    className="edit-product"
+                                >
+                                    Редактирай
+                                </a>
+
+                                <button
+                                    type="button"
+                                    className="delete-product"
+                                    data-id={product.id}
+                                >
+                                    Премахни Продукт
+                                </button>
+                            </div>
+                        </li>
+                    ))}
                 </ul>
             </div>
         );

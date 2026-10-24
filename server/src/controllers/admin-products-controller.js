@@ -1,10 +1,24 @@
 import { Router } from 'express';
 import categoryService from '../services/category-service.js';
 import productService from '../services/product-service.js';
-import imageService from '../services/image-service.js';
 import { createProductSchema, updateProductSchema } from '../schemas/product-schema.js';
 
 const adminProductsController = Router();
+
+adminProductsController.get('/', async (req, res) => {
+    try {
+        const products = await productService.getAllProductsForAdmin();
+
+        return res.json(products);
+    } catch (error) {
+        console.error(error);
+        console.error('Error fetching admin products:', error);
+
+        return res.status(500).json({
+            message: 'Грешка при зареждането на продуктите.'
+        });
+    }
+});
 
 adminProductsController.get('/create', async (req, res) => {
 
