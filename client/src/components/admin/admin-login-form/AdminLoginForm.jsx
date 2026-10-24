@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
+import useAuth from '../../../contexts/useAuth';
 
 export default function AdminLoginForm() {
     const navigate = useNavigate();
@@ -8,6 +9,7 @@ export default function AdminLoginForm() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const { setUser } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,6 +31,7 @@ export default function AdminLoginForm() {
             if (!response.ok) {
                 setError(data.message || 'Грешка при вход');
             } else {
+                setUser(data.user);
                 navigate('/admin/dashboard');
             }
         } catch (err) {

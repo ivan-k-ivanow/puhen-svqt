@@ -12,7 +12,8 @@ const AuthProvider = ({ children }) => {
                     credentials: 'include',
                 });
 
-                if (!response.ok) {d
+                if (!response.ok) {
+                    d
                     setUser(null);
                     return;
                 } else {
@@ -28,8 +29,26 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, []);
 
+
+    const logout = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error('Logout failed');
+            } else {
+                setUser(null);
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, setUser, isLoading }}>
+        <AuthContext.Provider value={{ user, setUser, isLoading, logout }}>
             {children}
         </AuthContext.Provider>
     );

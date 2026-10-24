@@ -1,28 +1,32 @@
+import { useNavigate, Link } from 'react-router';
+import useAuth from '../../../contexts/useAuth';
+import AdminNavigation from './AdminNavigation/AdminNavigation';
+
+
 export default function AdminHeader() {
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/admin/login');
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+
+    };
     return (
         <header className="admin-header">
             <div className="admin-nav-wrapper">
-                <a href="/admin/products" className="logo">
+                <Link to="/admin/dashboard" className="logo">
                     <img src="/images/logo.png" alt="Пухен Свят лого" />
-                </a>
+                </Link>
                 <h1 className="admin-logo">Админ панел</h1>
-                <nav className="admin-nav">
-                    
-                    <a href="/admin/dashboard" className="admin-nav-btn">Админ панел</a>
-                    <a href="/admin/products/create" className="admin-nav-btn">Добави продукт</a>
-                    <form action="/admin/logout" method="POST">
-                        <button type="submit" className="admin-nav-btn">Изход</button>
-                    </form>
-                   
-                    <a href="/admin/login" className="admin-nav-btn">Вход</a>
-                    
-                </nav>
-
-                <button className="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                
+                <AdminNavigation
+                    onLogout={handleLogout}
+                />
 
             </div>
         </header>
