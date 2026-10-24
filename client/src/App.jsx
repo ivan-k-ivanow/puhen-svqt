@@ -23,7 +23,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/products/create" element={<AdminCreateProduct />} />
-            <Route path="/admin/products/edit" element={<AdminEditProduct />} />
+            <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
           </Route>
           
         </Routes>

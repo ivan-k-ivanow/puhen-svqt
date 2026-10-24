@@ -11,7 +11,6 @@ adminProductsController.get('/', async (req, res) => {
 
         return res.json(products);
     } catch (error) {
-        console.error(error);
         console.error('Error fetching admin products:', error);
 
         return res.status(500).json({
@@ -19,6 +18,24 @@ adminProductsController.get('/', async (req, res) => {
         });
     }
 });
+
+
+adminProductsController.get('/:id', async (req, res) => {
+    try {
+        const product = await productService.getProductById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found.' });
+        }
+
+        return res.json(product);
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        return res.status(500).json({ message: 'Грешка при зареждането на продукта.' });
+    }
+});
+
+
 
 adminProductsController.get('/create', async (req, res) => {
 
@@ -49,16 +66,6 @@ adminProductsController.post('/create', async (req, res) => {
         console.error(error);
         res.status(400).send('Invalid product data.');
     }
-});
-
-adminProductsController.get('/details/:id', async (req, res) => {
-    const product = await productService.getProductById(req.params.id);
-
-    res.render('admin/details', {
-        title: 'Детайли за продукт',
-        layout: 'admin',
-        product
-    });
 });
 
 

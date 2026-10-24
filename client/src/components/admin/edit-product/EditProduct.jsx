@@ -1,4 +1,51 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+
 export default function EditProduct() {
+
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchProduct = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${id}`,
+                {
+                    credentials: 'include'
+                }
+            );
+
+
+            if (!response.ok) {
+                throw new Error('Грешка при зареждането на продукта.');
+            }
+            const data = await response.json();
+            setProduct(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProduct();
+    }, [id]);
+
+    if (isLoading) {
+        return <p>Зареждане...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    if (!product) {
+        return <p>Продуктът не е намерен.</p>;
+    }
+
+
     return (
         <>
             <section id="edit-product" className="admin-section">
@@ -12,7 +59,7 @@ export default function EditProduct() {
                     <input
                         name="name"
                         placeholder="Име на продукт"
-                        defaultValue="Букет от пухена тел"
+                        defaultValue={product.name}
                         required
                     />
 
@@ -21,7 +68,7 @@ export default function EditProduct() {
                         type="number"
                         step="0.01"
                         placeholder="Цена"
-                        defaultValue="25.00"
+                        defaultValue={product.price}
                         required
                     />
 
@@ -44,102 +91,57 @@ export default function EditProduct() {
                         <h3>Снимки на продукта</h3>
 
                         <div className="image-preview-container">
-                            <div className="preview-wrapper">
-                                <img
-                                    src="https://placehold.co/200x200?text=Image+1"
-                                    alt="Букет от пухена тел"
-                                    className="image-preview"
-                                />
-                                <button
-                                    type="button"
-                                    className="preview-remove-btn"
-                                    data-image-id="1"
-                                >
-                                    ×
-                                </button>
-                            </div>
+                            {product.images?.length > 0 ? (
+                                product.images.map(image => (
+                                    <div className="preview-wrapper" key={image.id}>
+                                        <img
+                                            src={image.url}
+                                            alt={product.name}
+                                            className="image-preview"
+                                        />
 
-                            <div className="preview-wrapper">
-                                <img
-                                    src="https://placehold.co/200x200?text=Image+2"
-                                    alt="Букет от пухена тел"
-                                    className="image-preview"
-                                />
-                                <button
-                                    type="button"
-                                    className="preview-remove-btn"
-                                    data-image-id="2"
-                                >
-                                    ×
-                                </button>
-                            </div>
+                                        <button
+                                            type="button"
+                                            className="preview-remove-btn"
+                                            data-image-id={image.id}
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>Няма добавени снимки.</p>
+                            )}
                         </div>
-                    </div>
 
+                    </div>
 
 
                     <div className="category-section">
                         <h3>Категории</h3>
 
                         <div className="category-checkboxes">
-                            <div className="category-item">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="categoryIds"
-                                        value="1"
-                                        defaultChecked
-                                    />
-                                    <span>Рожден ден</span>
-                                </label>
+                            {product.categories?.map(category => (
+                                <div className="category-item" key={category.id}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="categoryIds"
+                                            value={category.id}
+                                            defaultChecked
+                                        />
+                                        <span>{category.name}</span>
+                                    </label>
 
-                                <button
-                                    type="button"
-                                    className="category-delete-btn"
-                                    data-category-id="1"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="category-item">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="categoryIds"
-                                        value="2"
-                                        defaultChecked
-                                    />
-                                    <span>Кръщене</span>
-                                </label>
-
-                                <button
-                                    type="button"
-                                    className="category-delete-btn"
-                                    data-category-id="2"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="category-item">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="categoryIds"
-                                        value="3"
-                                    />
-                                    <span>Сватба</span>
-                                </label>
-
-                                <button
-                                    type="button"
-                                    className="category-delete-btn"
-                                    data-category-id="3"
-                                >
-                                    ×
-                                </button>
-                            </div>
+                                    <button
+                                        type="button"
+                                        className="category-delete-btn"
+                                        data-category-id={category.id}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
                         </div>
 
                         <div className="category-actions">
@@ -156,22 +158,21 @@ export default function EditProduct() {
                         name="shortDescription"
                         placeholder="Кратко описание (за каталога)"
                         maxLength={100}
-                        defaultValue="Красив ръчно изработен букет."
+                        defaultValue={product.shortDescription}
                     />
 
                     <textarea
                         name="description"
                         placeholder="Описание (за продуктовата страница)"
-                        defaultValue="Оригинален букет от пухена тел, изработен ръчно с обич."
+                        defaultValue={product.description}
                     />
 
                     <button type="submit">
                         Запази Промените
                     </button>
 
-                    <div id="toast-edit" className="toast hidden"></div>
                 </form>
-            </section>
+            </section >
         </>
     );
 }
