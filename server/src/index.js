@@ -15,7 +15,7 @@ const app = express();
 
 // Set up Handlebars as the view engine
 app.engine('hbs', engine({
-    extname: 'hbs',
+  extname: 'hbs',
 }));
 app.set('view engine', 'hbs');
 app.set('views', 'src/views');
@@ -24,20 +24,18 @@ app.set('views', 'src/views');
 // Setup static files
 app.use(express.static('src/public'));
 
+//Add JSON parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Parse incoming JSON data
 app.use(cookieParser());
 
 // Add the authMiddleware to all routes
-app.use(authMiddleware); 
-
-// Parse incoming request bodies
-app.use(express.urlencoded());
+app.use(authMiddleware);
 
 // Add cors middleware
 app.use(cors());
-
-//Add JSON parsing middleware
-app.use(express.json());
 
 // Import routes
 app.use(routes);
