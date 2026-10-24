@@ -11,14 +11,6 @@ const routes = Router();
 
 
 routes.use('/api/auth', adminAuthController);
-routes.use('/admin', authMiddleware, isAdmin, adminController);
-routes.use('/admin/products', authMiddleware, isAdmin, adminProductsController);
-routes.use('/admin/categories', authMiddleware, isAdmin, categoryController);
-
-// Handlebars API endpoints
-routes.use('/product', productController);
-
-// React API endpoints
 routes.use('/', homeController);
 routes.use('/api/products', productController);
 

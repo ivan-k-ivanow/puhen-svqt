@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
                 });
 
                 if (!response.ok) {
-                    d
                     setUser(null);
                     return;
                 } else {
