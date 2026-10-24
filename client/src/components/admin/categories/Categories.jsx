@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 
 export default function Categories({
     selectedCategories
@@ -72,12 +73,12 @@ export default function Categories({
             </div>
 
             <div className="category-actions">
-                <a
-                    href="/admin/categories/create"
+                <Link
+                    to="/admin/categories/create"
                     className="create-category-btn"
                 >
                     + Създай категория
-                </a>
+                </Link>
             </div>
         </div>
     );

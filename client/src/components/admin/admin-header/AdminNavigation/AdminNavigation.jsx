@@ -19,6 +19,7 @@ export default function AdminNavigation() {
                 {isAdmin ? (<>
                     <Link to="/admin/dashboard" className="admin-nav-btn">Админ панел</Link>
                     <Link to="/admin/products/create" className="admin-nav-btn">Добави продукт</Link>
+                    <Link to="/admin/categories/create"className="admin-nav-btn"> Създай категория </Link>
 
                     <button type="button" className="admin-nav-btn" onClick={handleLogout}>Изход</button>
 

@@ -14,21 +14,29 @@ categoryController.get('/', async (req, res) => {
         return res.status(500).json({ error: 'Грешка при извличане на категориите' });
     }
 });
-    
-categoryController.get('/create', (req, res) => {
-    res.render('admin/categories/create-category', {
-        title: 'Създай категория',
-        layout: 'admin',
-    });
-});
+
 
 categoryController.post('/create', async (req, res) => {
-    
-    const { name } = req.body;
-    await categoryService.createCategory(name);
+      console.log('Request body:', req.body);
 
-    res.redirect('/admin/products/create');
+    try {
+        const { name } = req.body;
+
+        if (!name || !name.trim()) {
+            return res.status(400).json({ error: 'Името на категорията е задължително' });
+        }
+
+        const category = await categoryService.createCategory(name);
+
+        return res.status(201).json(category);
+    } catch (error) {
+        console.error('Error creating category:', error);
+        res.status(500).json({ error: 'Грешка при създаване на категория' });
+    }
 });
+
+
+
 
 
 categoryController.delete('/delete/:id', async (req, res) => {

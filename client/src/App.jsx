@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminCreateProduct from './pages/admin/AdminCreateProduct'
+import AdminCreateCategory from './pages/admin/AdminCreateCategory'
 import Home from './pages/home/Home'
 import Product from './pages/product/Product'
 import ProductPage from './pages/product-catalog/ProductCatalog'
@@ -24,6 +25,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/products/create" element={<AdminCreateProduct />} />
             <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
+            <Route path="/admin/categories/create" element={<AdminCreateCategory />} />
           </Route>
           
         </Routes>
