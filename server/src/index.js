@@ -7,6 +7,7 @@ import routes from './routes/routes.js';
 import { authMiddleware } from './middlewares/auth-middleware.js';
 import cookieParser from 'cookie-parser';
 
+
 dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Create an instance of the Express application
@@ -35,6 +36,8 @@ app.use(express.urlencoded());
 // Add cors middleware
 app.use(cors());
 
+//Add JSON parsing middleware
+app.use(express.json());
 
 // Import routes
 app.use(routes);
