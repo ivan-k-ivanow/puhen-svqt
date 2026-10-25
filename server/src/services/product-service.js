@@ -78,6 +78,15 @@ async function deleteProduct(id) {
     return await productRepository.deleteProduct(id);
 }
 
+async function updateProductPositions(productIds) {
+    const products = productIds.map((id, index) => ({
+        id,
+        position: index + 1
+    }));
+
+    return await productRepository.updateProductPositions(products);
+}
+
 export default {
     createProduct,
     getAllProducts,
@@ -89,5 +98,6 @@ export default {
     getSimilarProducts,
     updateProduct,
     deleteProduct,
-    getAllProductsForAdmin
+    getAllProductsForAdmin,
+    updateProductPositions
 };

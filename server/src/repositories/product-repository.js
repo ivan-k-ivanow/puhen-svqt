@@ -12,9 +12,10 @@ async function getAllProducts() {
         where: {
             isActive: true,
         },
-        orderBy: {
-            createdAt: 'desc'
-        },
+        orderBy: [
+            { position: 'asc' },
+            { createdAt: 'desc' }
+        ],
         include: {
             categories: true,
             images: true
@@ -24,9 +25,10 @@ async function getAllProducts() {
 
 async function getAllProductsForAdmin() {
     return prisma.product.findMany({
-        orderBy: {
-            createdAt: 'desc'
-        },
+        orderBy: [
+            { position: 'asc' },
+            { createdAt: 'desc' }
+        ],
         include: {
             categories: true,
             images: true
@@ -143,6 +145,17 @@ async function deleteProduct(id) {
     });
 }
 
+async function updateProductPositions(products) {
+    return await prisma.$transaction(
+        products.map(({ id, position }) =>
+            prisma.product.update({
+                where: { id },
+                data: { position }
+            })
+        )
+    );
+}
+
 export default {
     createProduct,
     getAllProducts,
@@ -154,5 +167,6 @@ export default {
     searchProductsByName,
     updateProduct,
     deleteProduct,
-    getAllProductsForAdmin
+    getAllProductsForAdmin,
+    updateProductPositions,
 };

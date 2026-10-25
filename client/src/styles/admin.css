@@ -505,25 +505,103 @@
   gap: 16px;
 }
 
-
-.toast {
-  bottom: 20px;
-  right: 20px;
-  background: #2ecc71;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: 500;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
-  transition: opacity .3s, transform .3s;
-  z-index: 9999;
-  text-align: center;
+/* Product order controls */
+.product-order-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
 }
 
-.toast.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(20px);
+.product-order-controls button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.product-order-controls button:first-child {
+    background-color: #8b5e50;
+    color: #fff;
+}
+
+.product-order-controls button:first-child:hover:not(:disabled) {
+    background-color: #70483d;
+    transform: translateY(-1px);
+}
+
+.product-order-controls button:last-child {
+    background-color: #f3e7e1;
+    color: #5c463e;
+}
+
+.product-order-controls button:last-child:hover:not(:disabled) {
+    background-color: #e8d5cb;
+}
+
+.product-order-controls button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Product movement arrows */
+.product-order-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-right: 8px;
+}
+
+.product-order-actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #e2cfc5;
+    border-radius: 8px;
+    background-color: #fffaf7;
+    color: #70483d;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.product-order-actions button:hover:not(:disabled) {
+    background-color: #f3e7e1;
+    border-color: #b99583;
+}
+
+.product-order-actions button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.product-order-controls button:focus-visible,
+.product-order-actions button:focus-visible {
+    outline: 2px solid #8b5e50;
+    outline-offset: 3px;
+}
+
+/* Responsive layout */
+@media (max-width: 600px) {
+    .product-order-controls {
+        flex-wrap: wrap;
+    }
+
+    .product-order-controls button {
+        flex: 1;
+    }
+
+    .product-order-actions {
+        margin-right: 0;
+    }
 }
 
 

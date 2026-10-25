@@ -166,4 +166,47 @@ adminProductsController.delete('/:id', async (req, res) => {
 });
 
 
+adminProductsController.patch('/reorder', async (req, res) => {
+    try {
+        const { productIds } = req.body;
+
+        if (
+            !Array.isArray(productIds) ||
+            !productIds.every(id => typeof id === 'string' && id.length > 0) ||
+            new Set(productIds).size !== productIds.length
+        ) {
+            return res.status(400).json({
+                message: 'Невалиден списък с продукти.'
+            });
+        }
+
+        // Проверяваме дали са изпратени всички продукти точно по веднъж.
+        const existingProducts = await productService.getAllProductsForAdmin();
+
+        const existingIds = existingProducts.map(product => product.id);
+
+        if (
+            productIds.length !== existingIds.length ||
+            !existingIds.every(id => productIds.includes(id))
+        ) {
+            return res.status(400).json({
+                message: 'Списъкът трябва да съдържа всички продукти.'
+            });
+        }
+
+        await productService.updateProductPositions(productIds);
+
+        return res.status(200).json({
+            message: 'Редът на продуктите е запазен успешно.'
+        });
+    } catch (error) {
+        console.error('Error reordering products:', error);
+
+        return res.status(500).json({
+            message: 'Грешка при запазването на реда.'
+        });
+    }
+});
+
+
 export default adminProductsController;
