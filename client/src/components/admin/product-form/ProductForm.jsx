@@ -12,6 +12,7 @@ export default function ProductForm({
     onCategoryChange,
     onSubmit,
     selectedCategories,
+    submitLabel
 }) {
     return (
         <form
@@ -64,7 +65,7 @@ export default function ProductForm({
             />
 
             <button type="submit">
-                Запази промените
+                {submitLabel ?? 'Запази промените'}
             </button>
         </form>
     );

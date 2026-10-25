@@ -39,37 +39,45 @@ adminProductsController.get('/:id', async (req, res) => {
 
 
 
-adminProductsController.get('/create', async (req, res) => {
+adminProductsController.post(
+    '/',
+    upload.array('images', 10),
+    async (req, res) => {
+        try {
+            const productData = {
+                name: req.body.name,
+                price: req.body.price,
+                shortDescription: req.body.shortDescription,
+                description: req.body.description,
+                categoryIds: req.body.categoryIds
+                    ? Array.isArray(req.body.categoryIds)
+                        ? req.body.categoryIds
+                        : [req.body.categoryIds]
+                    : [],
+            };
 
-    const categories = await categoryService.getAllCategories();
+            const validatedData = createProductSchema.parse(productData);
 
-    res.render('admin/create', {
-        title: 'Добави продукт',
-        layout: 'admin',
-        categories
-    });
-});
+            const product = await productService.createProduct(validatedData);
 
-adminProductsController.post('/create', async (req, res) => {
-    try {
-        const productData = {
-            ...req.body,
-            categoryIds: Array.isArray(req.body.categoryIds)
-                ? req.body.categoryIds
-                : [req.body.categoryIds]
-        };
+            for (const file of req.files ?? []) {
+                await imageService.uploadImage(file, product.id);
+            }
 
-        const validatedData = createProductSchema.parse(productData);
+            const createdProduct = await productService.getProductById(
+                product.id
+            );
 
-        await productService.createProduct(validatedData);
+            return res.status(201).json(createdProduct);
+        } catch (error) {
+            console.error('Error creating product:', error);
 
-        res.redirect('/admin/products');
-    } catch (error) {
-        console.error(error);
-        res.status(400).send('Invalid product data.');
+            return res.status(400).json({
+                message: 'Грешка при създаването на продукта.',
+            });
+        }
     }
-});
-
+);
 
 
 
@@ -144,8 +152,6 @@ adminProductsController.put(
         }
     }
 );
-
-
 
 
 adminProductsController.delete('/:id', async (req, res) => {

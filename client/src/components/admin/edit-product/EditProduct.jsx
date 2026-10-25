@@ -1,7 +1,5 @@
-import Categories from '../categories/Categories';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import ImagePreview from '../image-preview/ImagePreview';
 import ProductForm from '../product-form/ProductForm';
 
 export default function EditProduct() {
@@ -152,6 +150,7 @@ export default function EditProduct() {
                     onCategoryChange={handleCategoryChange}
                     onSubmit={handleSubmit}
                     selectedCategories={selectedCategories}
+                    submitLabel="Запази промените"
                 />
                 {message && (
                     <p className={`form-message ${messageType}`} role="status">

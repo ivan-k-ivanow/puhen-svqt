@@ -1,181 +1,99 @@
+
+import { useState } from 'react';
+import ProductForm from '../product-form/ProductForm';
+
 export default function CreateProduct() {
+    const [newImages, setNewImages] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('');
+
+    const handleCategoryChange = (categoryId, isChecked) => {
+        setSelectedCategories(previousIds => {
+            if (isChecked) {
+                return [...previousIds, categoryId];
+            }
+
+            return previousIds.filter(id => id !== categoryId);
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+
+        const formData = new FormData(event.currentTarget);
+
+        formData.delete('image');
+        formData.delete('categoryIds');
+
+        selectedCategories.forEach(categoryId => {
+            formData.append('categoryIds', categoryId);
+        });
+
+        newImages.forEach(image => {
+            formData.append('images', image);
+        });
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/admin/products`,
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: formData,
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Грешка при създаването на продукта.');
+            }
+
+            setMessage('Продуктът е добавен успешно!');
+            setMessageType('success');
+            setNewImages([]);
+            setSelectedCategories([]);
+            form.reset();
+        } catch (err) {
+            console.error(err);
+            setMessage(err.message);
+            setMessageType('error');
+        }
+    };
+
     return (
-        <>
-            <section id="add-product" className="admin-section">
-                <h2>Добави Продукт</h2>
+        <section id="add-product" className="admin-section">
+            <h2>Добави продукт</h2>
 
-                <form
-                    id="product-form"
-                    className="admin-form"
-                    onSubmit={(event) => event.preventDefault()}
-                >
-                    <input
-                        name="name"
-                        placeholder="Име на продукт"
-                        required
-                    />
-
-                    <input
-                        name="price"
-                        type="number"
-                        placeholder="Цена"
-                    />
-
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        id="image-input"
-                        style={{ display: 'none' }}
-                    />
-
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        id="image-input"
-                        style={{ display: 'none' }}
-                    />
-
-                    <label
-                        htmlFor="image-input"
-                        className="image-upload-btn"
-                    >
-                        + Добави снимка
-                    </label>
-
-                    <div className="product-images">
-                        <h3>Снимки на продукта</h3>
-
-                        <div className="image-preview-container">
-                            <div className="preview-wrapper">
-                                <img
-                                    src="https://placehold.co/200x200?text=Image+1"
-                                    alt="Букет от пухена тел"
-                                    className="image-preview"
-                                />
-                                <button
-                                    type="button"
-                                    className="preview-remove-btn"
-                                    data-image-id="1"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="preview-wrapper">
-                                <img
-                                    src="https://placehold.co/200x200?text=Image+2"
-                                    alt="Букет от пухена тел"
-                                    className="image-preview"
-                                />
-                                <button
-                                    type="button"
-                                    className="preview-remove-btn"
-                                    data-image-id="2"
-                                >
-                                    ×
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div className="category-section">
-                        <h3>Категории</h3>
-
-                        <div className="category-checkboxes">
-                            <div className="category-item">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="categoryIds"
-                                        value="1"
-                                        defaultChecked
-                                    />
-                                    <span>Рожден ден</span>
-                                </label>
-
-                                <button
-                                    type="button"
-                                    className="category-delete-btn"
-                                    data-category-id="1"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="category-item">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="categoryIds"
-                                        value="2"
-                                        defaultChecked
-                                    />
-                                    <span>Кръщене</span>
-                                </label>
-
-                                <button
-                                    type="button"
-                                    className="category-delete-btn"
-                                    data-category-id="2"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="category-item">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="categoryIds"
-                                        value="3"
-                                    />
-                                    <span>Сватба</span>
-                                </label>
-
-                                <button
-                                    type="button"
-                                    className="category-delete-btn"
-                                    data-category-id="3"
-                                >
-                                    ×
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="category-actions">
-                            <a
-                                href="/admin/categories/create"
-                                className="create-category-btn"
-                            >
-                                + Създай категория
-                            </a>
-                        </div>
-                    </div>
-
-
-                    <textarea
-                        name="shortDescription"
-                        placeholder="Кратко описание (за каталога)"
-                        maxLength={100}
-                    />
-
-                    <textarea
-                        name="description"
-                        placeholder="Описание (за продуктовата страница)"
-                    />
-
-                    <button type="submit">
-                        Добави Продукта
-                    </button>
-
-                    <div id="toast-add" className="toast hidden"></div>
-                </form>
-            </section>
-        </>
+            <ProductForm
+                product={{
+                    name: '',
+                    price: '',
+                    shortDescription: '',
+                    description: '',
+                    images: [],
+                }}
+                deletedImageIds={[]}
+                newImages={newImages}
+                selectedCategories={selectedCategories}
+                onAddImages={(files) => {
+                    setNewImages(previous => [...previous, ...files]);
+                }}
+                onRemoveExistingImage={() => { }}
+                onRemoveNewImage={(index) => {
+                    setNewImages(previous =>
+                        previous.filter((_, i) => i !== index)
+                    );
+                }}
+                onCategoryChange={handleCategoryChange}
+                onSubmit={handleSubmit}
+                submitLabel="Добави продукта"
+            />
+            {message && (
+                <p className={`form-message ${messageType}`} role="status">
+                    {message}
+                </p>
+            )}
+        </section>
     );
 }
-
