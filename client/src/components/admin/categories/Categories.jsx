@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 export default function Categories({
-    selectedCategories = []
+    selectedCategories = [],
+    onChange,
 }) {
     const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -44,9 +45,7 @@ export default function Categories({
 
             <div className="category-checkboxes">
                 {categories.map(category => {
-                    const isSelected = selectedCategories.some(
-                        selectedCategory => selectedCategory.id === category.id
-                    );
+                    const isSelected = selectedCategories.includes(category.id);
                     return (
                         <div className="category-item" key={category.id}>
                             <label>
@@ -55,6 +54,9 @@ export default function Categories({
                                     name="categoryIds"
                                     value={category.id}
                                     defaultChecked={isSelected}
+                                    onChange={(event) => {
+                                        onChange?.(category.id, event.target.checked);
+                                    }}
                                 />
                                 <span>{category.name}</span>
                             </label>

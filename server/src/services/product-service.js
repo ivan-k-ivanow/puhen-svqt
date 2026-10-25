@@ -51,12 +51,17 @@ async function getProductBySlug(slug) {
 async function updateProduct(id, data) {
     const { categoryIds, ...productData } = data;
 
-    return await productRepository.updateProduct(id, {
-        ...productData,
-        categories: {
+    if (productData.name) {
+        productData.slug = generateSlug(productData.name);
+    }
+
+    if (categoryIds) {
+        productData.categories = {
             set: categoryIds.map(categoryId => ({ id: categoryId }))
-        }
-    });
+        };
+    }
+
+    return await productRepository.updateProduct(id, productData);
 }
 
 async function deleteProduct(id) {

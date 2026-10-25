@@ -2,6 +2,8 @@ import { Router } from 'express';
 import categoryService from '../services/category-service.js';
 import productService from '../services/product-service.js';
 import { createProductSchema, updateProductSchema } from '../schemas/product-schema.js';
+import upload from '../middlewares/upload-middleware.js';
+import imageService from '../services/image-service.js';
 
 const adminProductsController = Router();
 
@@ -70,25 +72,80 @@ adminProductsController.post('/create', async (req, res) => {
 
 
 
-adminProductsController.post('/edit/:id', async (req, res) => {
-    try {
-        const productData = {
-            ...req.body,
-            categoryIds: Array.isArray(req.body.categoryIds)
-                ? req.body.categoryIds
-                : [req.body.categoryIds]
-        };
 
-        const validatedData = updateProductSchema.parse(productData);
+adminProductsController.put(
+    '/:id',
+    upload.array('images', 10),
+    async (req, res) => {
+        try {
+            const product = await productService.getProductById(req.params.id);
 
-        await productService.updateProduct(req.params.id, validatedData);
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Продуктът не е намерен.',
+                });
+            }
 
-        res.redirect('/admin/products');
-    } catch (error) {
-        console.error(error);
-        res.status(400).send('Invalid product data.');
+            const productData = {
+                name: req.body.name,
+                price: req.body.price,
+                shortDescription: req.body.shortDescription,
+                description: req.body.description,
+            };
+
+            if (req.body.categoryIds !== undefined) {
+                productData.categoryIds = Array.isArray(req.body.categoryIds)
+                    ? req.body.categoryIds
+                    : [req.body.categoryIds];
+            }
+
+            const validatedData = updateProductSchema.parse(productData);
+
+            const deletedImageIds = req.body.deletedImageIds
+                ? JSON.parse(req.body.deletedImageIds)
+                : [];
+
+            for (const imageId of deletedImageIds) {
+                const belongsToProduct = product.images.some(
+                    image => image.id === imageId
+                );
+
+                if (!belongsToProduct) {
+                    return res.status(400).json({
+                        message: 'Невалидна снимка за изтриване.',
+                    });
+                }
+            }
+
+            await productService.updateProduct(
+                req.params.id,
+                validatedData
+            );
+
+            for (const file of req.files ?? []) {
+                await imageService.uploadImage(file, req.params.id);
+            }
+
+            for (const imageId of deletedImageIds) {
+                await imageService.deleteImage(imageId);
+            }
+
+            const updatedProduct = await productService.getProductById(
+                req.params.id
+            );
+
+            return res.json(updatedProduct);
+        } catch (error) {
+            console.error('Error updating product:', error);
+
+            return res.status(400).json({
+                message: 'Грешка при редактирането на продукта.',
+            });
+        }
     }
-});
+);
+
+
 
 
 adminProductsController.delete('/:id', async (req, res) => {

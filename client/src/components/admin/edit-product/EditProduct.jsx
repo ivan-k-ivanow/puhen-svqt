@@ -1,6 +1,7 @@
 import Categories from '../categories/Categories';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
+import ImagePreview from '../image-preview/ImagePreview';
 
 export default function EditProduct() {
 
@@ -8,6 +9,11 @@ export default function EditProduct() {
     const [product, setProduct] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+    const [newImages, setNewImages] = useState([]);
+    const [deletedImageIds, setDeletedImageIds] = useState([]);
 
     const fetchProduct = async () => {
         try {
@@ -23,12 +29,90 @@ export default function EditProduct() {
             }
             const data = await response.json();
             setProduct(data);
+            setSelectedCategories(
+                data.categories.map(category => category.id)
+            );
         } catch (err) {
             setError(err.message);
         } finally {
             setIsLoading(false);
         }
     };
+
+    const handleCategoryChange = (categoryId, isChecked) => {
+        setSelectedCategories(previousIds => {
+            if (isChecked) {
+                return [...previousIds, categoryId];
+            }
+
+            return previousIds.filter(id => id !== categoryId);
+        });
+    };
+
+    const handleAddImages = (files) => {
+        setNewImages((previousImages) => [...previousImages, ...files
+        ]);
+    };
+
+    const handleRemoveExistingImage = (imageId) => {
+        setDeletedImageIds((previousImages) => [...previousImages, imageId]);
+    };
+
+    const handleRemoveNewImage = (index) => {
+        setNewImages((previousImages) => previousImages.filter((_, i) => i !== index));
+    };
+
+
+    
+const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    formData.delete('image');
+    formData.delete('categoryIds');
+
+    selectedCategories.forEach(categoryId => {
+        formData.append('categoryIds', categoryId);
+    });
+
+    newImages.forEach(image => {
+        formData.append('images', image);
+    });
+
+    formData.append('deletedImageIds', JSON.stringify(deletedImageIds));
+
+    try {
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/admin/products/${id}`,
+            {
+                method: 'PUT',
+                credentials: 'include',
+                body: formData,
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Грешка при запазването на продукта.');
+        }
+
+        const updatedProduct = await response.json();
+
+        setProduct(updatedProduct);
+        setNewImages([]);
+        setDeletedImageIds([]);
+        setSelectedCategories(
+            updatedProduct.categories.map(category => category.id)
+        );
+
+        alert('Промените са запазени успешно!');
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+};
+
+
 
     useEffect(() => {
         fetchProduct();
@@ -55,7 +139,7 @@ export default function EditProduct() {
                 <form
                     id="product-form"
                     className="admin-form"
-                    onSubmit={(event) => event.preventDefault()}
+                    onSubmit={handleSubmit}
                 >
                     <input
                         name="name"
@@ -73,52 +157,20 @@ export default function EditProduct() {
                         required
                     />
 
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        id="image-input"
-                        style={{ display: 'none' }}
+                    <ImagePreview
+                        existingImages={product.images.filter(
+                            image => !deletedImageIds.includes(image.id)
+                        )}
+                        newImages={newImages}
+                        onAddImages={handleAddImages}
+                        onRemoveExisting={handleRemoveExistingImage}
+                        onRemoveNew={handleRemoveNewImage}
                     />
 
-                    <label
-                        htmlFor="image-input"
-                        className="image-upload-btn"
-                    >
-                        + Добави снимка
-                    </label>
-
-                    <div className="product-images">
-                        <h3>Снимки на продукта</h3>
-
-                        <div className="image-preview-container">
-                            {product.images?.length > 0 ? (
-                                product.images.map(image => (
-                                    <div className="preview-wrapper" key={image.id}>
-                                        <img
-                                            src={image.url}
-                                            alt={product.name}
-                                            className="image-preview"
-                                        />
-
-                                        <button
-                                            type="button"
-                                            className="preview-remove-btn"
-                                            data-image-id={image.id}
-                                        >
-                                            ×
-                                        </button>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Няма добавени снимки.</p>
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <Categories selectedCategories={product.categories} />
+                    <Categories
+                        selectedCategories={selectedCategories}
+                        onChange={handleCategoryChange}
+                    />
 
                     <textarea
                         name="shortDescription"

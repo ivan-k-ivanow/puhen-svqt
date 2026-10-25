@@ -12,6 +12,15 @@ async function addImage(imageData) {
     }
 }
 
+async function getImageById(imageId) {
+    return await prisma.image.findUnique({
+        where: {
+            id: imageId,
+        },
+    });
+}
+
+
 async function deleteImage(imageId) {
     try {
         const deletedImage = await prisma.image.delete({
@@ -28,5 +37,6 @@ async function deleteImage(imageId) {
 
 export default {
     addImage,
+    getImageById,
     deleteImage,
 };
