@@ -69,30 +69,6 @@ adminProductsController.post('/create', async (req, res) => {
 });
 
 
-adminProductsController.get('/edit/:id', async (req, res) => {
-    try {
-        const product = await productService.getProductById(req.params.id);
-        const categories = await categoryService.getAllCategories();
-
-        const productCategoryIds = product.categories.map(category => category.id);
-
-        const categoriesWithSelection = categories.map(category => ({
-            ...category,
-            selected: productCategoryIds.includes(category.id)
-        }));
-
-        res.render('admin/edit', {
-            title: 'Редактирай продукт',
-            layout: 'admin',
-            product,
-            categories: categoriesWithSelection
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(404).send('Product not found.');
-    }
-});
-
 
 adminProductsController.post('/edit/:id', async (req, res) => {
     try {

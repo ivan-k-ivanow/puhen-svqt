@@ -36,9 +36,6 @@ categoryController.post('/create', async (req, res) => {
 });
 
 
-
-
-
 categoryController.delete('/delete/:id', async (req, res) => {
     try {
         await categoryService.deleteCategoryById(req.params.id);
