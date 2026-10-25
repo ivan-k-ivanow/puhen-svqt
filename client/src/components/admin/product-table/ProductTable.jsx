@@ -52,7 +52,7 @@ export default function ProductTable() {
 
     return (
             <div id="manage-products" className="admin-section">
-                <h2>Всички Продукти</h2>
+                <h2>Администриране на продукти</h2>
 
                 <div id="toast-update" className="toast hidden"></div>
 

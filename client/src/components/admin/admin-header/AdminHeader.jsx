@@ -22,12 +22,11 @@ export default function AdminHeader() {
                 <Link to="/admin/dashboard" className="logo">
                     <img src="/images/logo.png" alt="Пухен Свят лого" />
                 </Link>
-                <h1 className="admin-logo">Админ панел</h1>
+               
                 
                 <AdminNavigation
                     onLogout={handleLogout}
                 />
-
             </div>
         </header>
     );

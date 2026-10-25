@@ -1,9 +1,12 @@
 import { Link } from 'react-router';
+import { useState } from 'react';
 import useAuth from '../../../../contexts/useAuth';
 
 export default function AdminNavigation() {
     const { user, logout, isLoading } = useAuth();
     const isAdmin = user?.role === 'ADMIN';
+
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleLogout = async () => {
         try {
@@ -15,7 +18,7 @@ export default function AdminNavigation() {
 
     return (
         <>
-            <nav className="admin-nav">
+            <nav className={`admin-nav ${isOpen ? "active" : ""}`}>
                 {isAdmin ? (<>
                     <Link to="/admin/dashboard" className="admin-nav-btn">Админ панел</Link>
                     <Link to="/admin/products/create" className="admin-nav-btn">Добави продукт</Link>
@@ -30,7 +33,7 @@ export default function AdminNavigation() {
 
             </nav>
 
-            <button className="hamburger" aria-label="Toggle menu">
+            <button className="hamburger" aria-label="Toggle menu" onClick={() => setIsOpen((previousState) => !previousState)}>
                 <span></span>
                 <span></span>
                 <span></span>
