@@ -74,7 +74,7 @@ export default function ProductDetails() {
                             {product.description}
                         </p>
 
-                        <div className="product-price-block">
+                        {/* <div className="product-price-block">
                             <span className="product-price-label">
                                 Цена
                             </span>
@@ -83,7 +83,7 @@ export default function ProductDetails() {
                                     {product.price} €
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
 
                         <a
                             href="https://ig.me/m/puhensvqt"

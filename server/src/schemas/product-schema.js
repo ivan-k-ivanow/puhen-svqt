@@ -2,7 +2,7 @@ import * as zod from 'zod';
 
 export const createProductSchema = zod.object({
     name: zod.string().min(1).max(100),
-    price: zod.coerce.number().positive(),
+    price: zod.coerce.number(),
     shortDescription: zod.string().max(100).optional(),
     description: zod.string().optional(),
     categoryIds: zod.array(zod.string().uuid()).min(1),
@@ -10,7 +10,7 @@ export const createProductSchema = zod.object({
 
 export const updateProductSchema = zod.object({
     name: zod.string().min(1).max(100).optional(),
-    price: zod.coerce.number().positive().optional(),
+    price: zod.coerce.number().optional(),
     shortDescription: zod.string().max(100).optional(),
     description: zod.string().optional(),
     categoryIds: zod.array(zod.string().uuid()).min(1).optional(),
