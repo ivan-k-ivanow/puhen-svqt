@@ -1,5 +1,6 @@
 import { generateSlug } from '../utils/slug.js';
 import productRepository from '../repositories/product-repository.js';
+import imageService from './image-service.js';
 async function createProduct(data) {
     const { categoryIds, ...productData } = data;
 
@@ -65,6 +66,15 @@ async function updateProduct(id, data) {
 }
 
 async function deleteProduct(id) {
+    const product = await productRepository.getProductById(id);
+    if (!product) {
+        throw new Error('Продуктът не е намерен.');
+    }
+
+    for( const image of product.images) {
+        await imageService.deleteImage(image.id);
+    }
+
     return await productRepository.deleteProduct(id);
 }
 

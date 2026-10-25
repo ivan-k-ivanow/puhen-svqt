@@ -161,7 +161,7 @@ adminProductsController.delete('/:id', async (req, res) => {
         res.status(204).end();
     } catch (error) {
         console.error(error);
-        res.status(404).json({ message: 'Product not found.' });
+        return res.status(404).json({ message: 'Product not found.' });
     }
 });
 

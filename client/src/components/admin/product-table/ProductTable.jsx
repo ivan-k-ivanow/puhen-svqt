@@ -29,6 +29,26 @@ export default function ProductTable() {
         getProducts();
     }, []);
 
+    const handleDeleteProduct = (productId) => async () => {
+        const confirmed = window.confirm('Сигурни ли сте, че искате да изтриете този продукт?');
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${productId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete product');
+            }
+
+            setProducts(products.filter(product => product.id !== productId));
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
+    };
+
 
     return (
             <div id="manage-products" className="admin-section">
@@ -102,6 +122,7 @@ export default function ProductTable() {
                                     type="button"
                                     className="delete-product"
                                     data-id={product.id}
+                                    onClick={handleDeleteProduct(product.id)}
                                 >
                                     Премахни Продукт
                                 </button>
