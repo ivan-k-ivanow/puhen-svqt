@@ -2,6 +2,7 @@ import Categories from '../categories/Categories';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import ImagePreview from '../image-preview/ImagePreview';
+import ProductForm from '../product-form/ProductForm';
 
 export default function EditProduct() {
 
@@ -14,6 +15,9 @@ export default function EditProduct() {
 
     const [newImages, setNewImages] = useState([]);
     const [deletedImageIds, setDeletedImageIds] = useState([]);
+
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('');
 
     const fetchProduct = async () => {
         try {
@@ -63,54 +67,56 @@ export default function EditProduct() {
     };
 
 
-    
-const handleSubmit = async (event) => {
-    event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-    formData.delete('image');
-    formData.delete('categoryIds');
+        const formData = new FormData(event.currentTarget);
 
-    selectedCategories.forEach(categoryId => {
-        formData.append('categoryIds', categoryId);
-    });
+        formData.delete('image');
+        formData.delete('categoryIds');
 
-    newImages.forEach(image => {
-        formData.append('images', image);
-    });
+        selectedCategories.forEach(categoryId => {
+            formData.append('categoryIds', categoryId);
+        });
 
-    formData.append('deletedImageIds', JSON.stringify(deletedImageIds));
+        newImages.forEach(image => {
+            formData.append('images', image);
+        });
 
-    try {
-        const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/admin/products/${id}`,
-            {
-                method: 'PUT',
-                credentials: 'include',
-                body: formData,
+        formData.append('deletedImageIds', JSON.stringify(deletedImageIds));
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/admin/products/${id}`,
+                {
+                    method: 'PUT',
+                    credentials: 'include',
+                    body: formData,
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Грешка при запазването на продукта.');
             }
-        );
 
-        if (!response.ok) {
-            throw new Error('Грешка при запазването на продукта.');
+            const updatedProduct = await response.json();
+
+            setProduct(updatedProduct);
+            setNewImages([]);
+            setDeletedImageIds([]);
+            setSelectedCategories(
+                updatedProduct.categories.map(category => category.id)
+            );
+
+            setMessage('Промените са запазени успешно!');
+            setMessageType('success');
+        } catch (err) {
+            console.error(err);
+            setMessage(err.message);
+            setMessageType('error');
         }
-
-        const updatedProduct = await response.json();
-
-        setProduct(updatedProduct);
-        setNewImages([]);
-        setDeletedImageIds([]);
-        setSelectedCategories(
-            updatedProduct.categories.map(category => category.id)
-        );
-
-        alert('Промените са запазени успешно!');
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
-};
+    };
 
 
 
@@ -136,60 +142,22 @@ const handleSubmit = async (event) => {
             <section id="edit-product" className="admin-section">
                 <h2>Редактирай Продукт</h2>
 
-                <form
-                    id="product-form"
-                    className="admin-form"
+                <ProductForm
+                    product={product}
+                    deletedImageIds={deletedImageIds}
+                    newImages={newImages}
+                    onAddImages={handleAddImages}
+                    onRemoveExistingImage={handleRemoveExistingImage}
+                    onRemoveNewImage={handleRemoveNewImage}
+                    onCategoryChange={handleCategoryChange}
                     onSubmit={handleSubmit}
-                >
-                    <input
-                        name="name"
-                        placeholder="Име на продукт"
-                        defaultValue={product.name}
-                        required
-                    />
-
-                    <input
-                        name="price"
-                        type="number"
-                        step="0.01"
-                        placeholder="Цена"
-                        defaultValue={product.price}
-                        required
-                    />
-
-                    <ImagePreview
-                        existingImages={product.images.filter(
-                            image => !deletedImageIds.includes(image.id)
-                        )}
-                        newImages={newImages}
-                        onAddImages={handleAddImages}
-                        onRemoveExisting={handleRemoveExistingImage}
-                        onRemoveNew={handleRemoveNewImage}
-                    />
-
-                    <Categories
-                        selectedCategories={selectedCategories}
-                        onChange={handleCategoryChange}
-                    />
-
-                    <textarea
-                        name="shortDescription"
-                        placeholder="Кратко описание (за каталога)"
-                        maxLength={100}
-                        defaultValue={product.shortDescription}
-                    />
-
-                    <textarea
-                        name="description"
-                        placeholder="Описание (за продуктовата страница)"
-                        defaultValue={product.description}
-                    />
-
-                    <button type="submit">
-                        Запази Промените
-                    </button>
-
-                </form>
+                    selectedCategories={selectedCategories}
+                />
+                {message && (
+                    <p className={`form-message ${messageType}`} role="status">
+                        {message}
+                    </p>
+                )}
             </section >
         </>
     );
