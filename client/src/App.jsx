@@ -9,6 +9,8 @@ import ProductPage from './pages/product-catalog/ProductCatalog'
 import AdminEditProduct from './pages/admin/AdminEditProduct'
 import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import CookieConsent from './components/cookie-consent/CookieConsent'
+
 
 function App() {
 
@@ -16,9 +18,9 @@ function App() {
     <>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<ProductPage />} />
-          <Route path="/products/:slug" element={<Product />} />
+          <Route path="/" element={<><Home /> <CookieConsent /></>} />
+          <Route path="/products" element={<><ProductPage /> <CookieConsent /></>} />
+          <Route path="/products/:slug" element={<><Product /> <CookieConsent /></>} />
           <Route path="/admin/login" element={<AdminLogin />} />
 
           <Route element={<ProtectedRoute />}>
@@ -29,6 +31,7 @@ function App() {
           </Route>
           
         </Routes>
+        
       </AuthProvider>
     </>
   )
