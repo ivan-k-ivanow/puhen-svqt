@@ -13,24 +13,28 @@ async function main() {
         );
     }
 
-    const hashedPassword = await bcrypt.hash(adminPassword, 10);
-
-    await prisma.user.upsert({
+    const existingUser = await prisma.user.findUnique({
         where: {
             email: adminEmail,
         },
-        update: {
-            password: hashedPassword,
-            role: 'ADMIN',
-        },
-        create: {
+    });
+
+    if (existingUser) {
+        console.log('Test administrator already exists. No changes made.');
+        return;
+    }
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    await prisma.user.create({
+        data: {
             email: adminEmail,
             password: hashedPassword,
             role: 'ADMIN',
         },
     });
 
-    console.log('Administrator seeded successfully.');
+    console.log('Test administrator created successfully.');
 }
 
 main()

@@ -10,6 +10,7 @@ export default function ProductTable() {
     const [message, setMessage] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+    
 
     const hasOrderChanges =
         products.length !== savedOrderIds.length ||
