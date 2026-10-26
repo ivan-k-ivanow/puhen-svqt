@@ -23,8 +23,13 @@ app.use(cookieParser());
 app.use(authMiddleware);
 
 // Add cors middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://puhen-svqt.onrender.com'
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: allowedOrigins,
   credentials: true
 }));
 
