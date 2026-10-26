@@ -30,7 +30,7 @@ export default function Navigation() {
                     <li>
                         <a
                             className="btn-contact-us"
-                            href="/#contact-us"
+                            href="#contact-us"
                             onClick={closeHamburgerMenu}
                         >
                             Свържи се с нас
