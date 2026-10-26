@@ -147,3 +147,7 @@ vite.config.ts.timestamp-*
 .agents
 .claude
 .windsurf
+
+
+
+/server/generated/prisma/
