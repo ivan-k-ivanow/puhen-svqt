@@ -2,6 +2,7 @@ import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import SimilarProducts from './similar-products/SimilarProducts';
 import ProductGallery from './product-gallery/ProductGallery';
+import ReactMarkdown from 'react-markdown';
 
 export default function ProductDetails() {
     const { slug } = useParams();
@@ -47,7 +48,7 @@ export default function ProductDetails() {
                         {product.name}
                     </h1>
 
-                   <ProductGallery product={product} />
+                    <ProductGallery product={product} />
 
                     {/* <!-- Product information --> */}
                     <div className="product-info">
@@ -70,9 +71,11 @@ export default function ProductDetails() {
 
                         <hr className="product-divider" />
 
-                        <p className="product-description">
-                            {product.description}
-                        </p>
+                        <div className="product-description">
+                            <ReactMarkdown>
+                                {product.description}
+                            </ReactMarkdown>
+                        </div>
 
                         {/* <div className="product-price-block">
                             <span className="product-price-label">
