@@ -20,7 +20,7 @@ adminAuthController.post('/login', async (req, res) => {
         res.cookie('auth', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            sameSite: 'none',
             path: '/',
             maxAge: 60 * 60 * 1000 // 1 hour in milliseconds
         });
