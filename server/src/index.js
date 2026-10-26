@@ -25,12 +25,20 @@ app.use(authMiddleware);
 // Add cors middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://puhen-svqt.onrender.com'
+  'https://puhen-svqt.onrender.com',
+  'https://puhensvqt.com',
+  'https://www.puhensvqt.com',
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
 }));
 
 // Import routes
