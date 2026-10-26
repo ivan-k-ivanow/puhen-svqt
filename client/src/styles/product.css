@@ -381,6 +381,10 @@
         gap: 20px;
     }
 
+    .similar-card-body h3 {
+       display: none;
+    }
+
     .similar-section h2 {
         font-size: 2rem;
     }
