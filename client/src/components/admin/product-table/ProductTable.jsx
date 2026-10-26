@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CategoryFilter from '../category-filter/CategoryFilter';
 
 export default function ProductTable() {
     const [products, setProducts] = useState([]);
@@ -7,6 +8,8 @@ export default function ProductTable() {
     const [isSavingOrder, setIsSavingOrder] = useState(false);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const hasOrderChanges =
         products.length !== savedOrderIds.length ||
@@ -53,9 +56,9 @@ export default function ProductTable() {
                 reorderedProducts[index],
                 reorderedProducts[newIndex]
             ] = [
-                reorderedProducts[newIndex],
-                reorderedProducts[index]
-            ];
+                    reorderedProducts[newIndex],
+                    reorderedProducts[index]
+                ];
 
             return reorderedProducts;
         });
@@ -147,6 +150,31 @@ export default function ProductTable() {
         }
     };
 
+
+    const categories = [
+        ...new Map(
+            products
+                .flatMap(product => product.categories || [])
+                .map(category => [category.id, category])
+        ).values()
+    ];
+
+    const filteredProducts = products.filter(product => {
+        const matchesSearch = product.name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+        const matchesCategory =
+            !selectedCategory ||
+            product.categories?.some(
+                category => category.id === selectedCategory
+            );
+
+        return matchesSearch && matchesCategory;
+    });
+
+    const isFiltering = searchTerm !== '' || selectedCategory !== '';
+
     return (
         <div id="manage-products" className="admin-section">
             <h2>Администриране на продукти</h2>
@@ -162,17 +190,15 @@ export default function ProductTable() {
                     type="text"
                     id="admin-search"
                     placeholder="Търси по име..."
+                    value={searchTerm}
+                    onChange={event => setSearchTerm(event.target.value)}
                 />
 
-                <select id="admin-category-filter">
-                    <option value="">Всички категории</option>
-                    <option value="birthday">Рожден ден</option>
-                    <option value="christening">Кръщене</option>
-                    <option value="wedding">Сватба</option>
-                    <option value="anniversary">Годишнина</option>
-                    <option value="teacher">Учител</option>
-                    <option value="other">Други</option>
-                </select>
+                <CategoryFilter
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={setSelectedCategory}
+                />
             </div>
 
             {hasOrderChanges && (
@@ -206,7 +232,7 @@ export default function ProductTable() {
                     <li>Няма продукти</li>
                 )}
 
-                {!isLoading && !error && products.map((product, index) => (
+                {!isLoading && !error && filteredProducts.map((product, index) => (
                     <li key={product.id} className="admin-product">
                         <div className="product-order-actions">
                             <button
@@ -222,7 +248,7 @@ export default function ProductTable() {
                                 type="button"
                                 onClick={() => handleMoveProduct(index, 1)}
                                 disabled={
-                                    index === products.length - 1 ||
+                                    index === filteredProducts.length - 1 ||
                                     isSavingOrder
                                 }
                                 aria-label={`Премести ${product.name} надолу`}
