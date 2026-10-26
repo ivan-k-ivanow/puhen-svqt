@@ -1,4 +1,4 @@
-# Puhen Svqt — Handmade Gifts
+# Puhen Svqt - Handmade Gifts
 
 **Live Website:** [https://puhensvqt.com](https://puhensvqt.com)
 **Backend API:** [https://api.puhensvqt.com](https://api.puhensvqt.com)
@@ -119,12 +119,12 @@ React Router provides client-side navigation.
 
 Main routes include:
 
-- `/` — home page and product catalog
-- `/products/:slug` — product details
-- `/admin/login` — administrator login
-- `/admin/products` — product management
-- `/admin/products/create` — create a product
-- `/admin/products/:id/edit` — edit a product
+- `/` - home page and product catalog
+- `/products/:slug` - product details
+- `/admin/login` - administrator login
+- `/admin/products` - product management
+- `/admin/products/create` - create a product
+- `/admin/products/:id/edit` - edit a product
 
 Admin routes are protected by authentication and authorization checks.
 
