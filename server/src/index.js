@@ -1,5 +1,4 @@
 import express from 'express';
-import { engine } from 'express-handlebars';
 import dotenv from 'dotenv';
 import path from 'node:path';
 import cors from 'cors';
@@ -12,17 +11,6 @@ dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Create an instance of the Express application
 const app = express();
-
-// Set up Handlebars as the view engine
-app.engine('hbs', engine({
-  extname: 'hbs',
-}));
-app.set('view engine', 'hbs');
-app.set('views', 'src/views');
-
-
-// Setup static files
-app.use(express.static('src/public'));
 
 //Add JSON parsing middleware
 app.use(express.json());
