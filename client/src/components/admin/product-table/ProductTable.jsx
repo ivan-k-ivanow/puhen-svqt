@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import CategoryFilter from '../category-filter/CategoryFilter';
+import { Link } from 'react-router';
 
 export default function ProductTable() {
     const [products, setProducts] = useState([]);
@@ -284,12 +285,12 @@ export default function ProductTable() {
                         </div>
 
                         <div className="admin-product-actions">
-                            <a
-                                href={`/admin/products/edit/${product.id}`}
+                            <Link
+                                to={`/admin/products/edit/${product.id}`}
                                 className="edit-product"
                             >
                                 Редактирай
-                            </a>
+                            </Link>
 
                             <button
                                 type="button"

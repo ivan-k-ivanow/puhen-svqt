@@ -20,9 +20,10 @@ export default function AdminNavigation() {
         <>
             <nav className={`admin-nav ${isOpen ? "active" : ""}`}>
                 {isAdmin ? (<>
+                    <Link to="/" className="admin-nav-btn">Начало</Link>
                     <Link to="/admin/dashboard" className="admin-nav-btn">Админ панел</Link>
                     <Link to="/admin/products/create" className="admin-nav-btn">Добави продукт</Link>
-                    <Link to="/admin/categories/create"className="admin-nav-btn"> Създай категория </Link>
+                    <Link to="/admin/categories/create" className="admin-nav-btn"> Създай категория </Link>
 
                     <button type="button" className="admin-nav-btn" onClick={handleLogout}>Изход</button>
 
