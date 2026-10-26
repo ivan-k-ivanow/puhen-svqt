@@ -151,3 +151,6 @@ vite.config.ts.timestamp-*
 
 
 /server/generated/prisma/
+
+!.env.production
+!client/.env.production
