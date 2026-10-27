@@ -10,6 +10,7 @@ import AdminEditProduct from './pages/admin/AdminEditProduct'
 import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import CookieConsent from './components/cookie-consent/CookieConsent'
+import ScrollToTop from './components/scroll-to-top/ScrollToTop'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   return (
     <>
       <AuthProvider>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<><Home /> <CookieConsent /></>} />
           <Route path="/products" element={<><ProductPage /> <CookieConsent /></>} />
@@ -29,9 +31,8 @@ function App() {
             <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
             <Route path="/admin/categories/create" element={<AdminCreateCategory />} />
           </Route>
-          
+
         </Routes>
-        
       </AuthProvider>
     </>
   )
