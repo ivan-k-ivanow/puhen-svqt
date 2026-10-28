@@ -83,6 +83,8 @@ npm run dev
 
 Open the local URL printed by Vite in the terminal.
 
+### Important: On the first visit, loading may take 10–30 seconds while the backend wakes up. This is because the API is hosted on Render's free plan.
+
 ---
 
 # Functional Guide
