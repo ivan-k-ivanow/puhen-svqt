@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import "./SimilarProducts.css";
 
 export default function SimilarProducts({
     similarProducts

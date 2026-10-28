@@ -1,0 +1,162 @@
+.product-details-page {
+    width: 100%;
+}
+
+
+/* PRODUCT DETAILS LAYOUT */
+
+.product-container {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+
+/* PRODUCT INFO */
+
+.product-details-page .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 8px;
+}
+
+.product-details-page .product-name {
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-size: 2.5rem;
+    color: #8f6a5d;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.product-details-page .product-name-mobile {
+    display: none;
+}
+
+
+/* CATEGORIES */
+
+.product-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.product-category {
+    display: inline-block;
+    font-size: 0.85rem;
+    background-color: #fcf0e8;
+    color: #8f6a5e;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid #e8d5c8;
+    width: fit-content;
+}
+
+
+/* DIVIDER */
+
+.product-divider {
+    border: none;
+    border-top: 1px solid #e8d5c8;
+    margin: 0;
+}
+
+
+/* DESCRIPTION */
+
+.product-details-page .product-description {
+    font-size: 1rem;
+    color: #7a5c52;
+    line-height: 1.8;
+    margin: 0;
+    white-space: pre-line;
+}
+
+
+/* PRICE */
+
+.product-price-block {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.product-price-label {
+    font-size: 0.85rem;
+    color: #bca493;
+}
+
+.product-price-block .product-price {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #8f6a5e;
+    line-height: 1;
+}
+
+
+/* ORDER */
+
+.order-link {
+    text-decoration: none;
+}
+
+.order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #8f6a5e;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 24px;
+    font-size: 1.05rem;
+    font-family: "Chocolate Classical Sans", sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.order-btn:hover {
+    background-color: #5c463e;
+}
+
+.order-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .product-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin: 30px auto;
+        padding: 0 16px;
+    }
+
+    .product-details-page .product-name-mobile {
+        display: block;
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-size: 2.5rem;
+        color: #8f6a5d;
+        padding: 0;
+    }
+
+    .product-details-page .product-price {
+        font-size: 2rem;
+    }
+
+}

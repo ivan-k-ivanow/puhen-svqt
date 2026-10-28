@@ -1,0 +1,58 @@
+.products-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding-bottom: 70px;
+}
+
+.products-filters button {
+    padding: 8px 16px;
+    border: 1px solid #8f6a5e;
+    border-radius: 25px;
+    background-color: #fcf0e8;
+    cursor: pointer;
+    font-family: "Chocolate Classical Sans", sans-serif;
+    font-size: 1rem;
+}
+
+.products-filters button:hover {
+    background-color: #ebdacf;
+    scale: 1.05;
+    transition: 0.1s;
+}
+
+.products-filters button.active {
+    background-color: #8f6a5e;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .products-filters {
+        justify-content: flex-start;
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 0;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .products-filters button:first-child {
+        margin-left: 25px;
+    }
+
+    .products-filters button:last-child {
+        margin-right: 25px;
+    }
+
+    .products-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .products-filters button {
+        white-space: nowrap;
+        font-size: 1em;
+        color: #8f6a5d;
+    }
+}

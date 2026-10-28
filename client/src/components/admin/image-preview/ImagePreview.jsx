@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from 'react';
 
+import './ImagePreview.css';
+
 export default function ImagePreview({
     existingImages = [],
     newImages = [],

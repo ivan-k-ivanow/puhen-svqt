@@ -1,6 +1,7 @@
 import { useNavigate, Link } from 'react-router';
 import useAuth from '../../../contexts/useAuth';
 import AdminNavigation from './AdminNavigation/AdminNavigation';
+import './AdminHeader.css';
 
 
 export default function AdminHeader() {

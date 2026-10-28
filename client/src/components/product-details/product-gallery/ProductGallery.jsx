@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './ProductGallery.css';
 
 export default function ProductGallery({ product }) {
 

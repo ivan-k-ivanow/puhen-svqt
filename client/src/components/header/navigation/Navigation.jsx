@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import "./Navigation.css";
 
 export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);

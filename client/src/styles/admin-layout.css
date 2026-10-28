@@ -1,0 +1,135 @@
+.admin-page {
+  background-color: #fcf0e8;
+  color: #5c463e;
+  min-height: 100vh;
+}
+
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 15px;
+  max-width: 1200px;
+  margin: auto;
+  gap: 40px;
+}
+
+.admin-section {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  text-align: left;
+}
+
+.admin-section.active {
+  display: block;
+}
+
+.admin-section h2 {
+  margin-top: 50px;
+  font-size: 1.9rem;
+  color: #8f6a5e;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-message {
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-message.success {
+  color: #246b3c;
+  background-color: #e8f5ec;
+  border: 1px solid #b7dfc3;
+}
+
+.form-message.error {
+  color: #a12626;
+  background-color: #fdeaea;
+  border: 1px solid #f1bcbc;
+}
+
+.admin-form {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #8f6a5e33;
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.admin-form textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+  border-color: #8f6a5e;
+  box-shadow: 0 0 0 3px #8f6a5e22;
+}
+
+.admin-form button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #8f6a5e;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.1s;
+}
+
+.admin-form button:hover {
+  background-color: #5c463e;
+}
+
+.admin-form button:active {
+  transform: scale(0.97);
+}
+
+.error {
+  color: #b45f5f;
+  background-color: #fdf0f0;
+  border: 1px solid #e7baba;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .admin {
+    padding: 20px 10px;
+  }
+
+  .admin-form,
+  .admin-section {
+    max-width: 100%;
+    padding: 20px 15px;
+  }
+
+  .admin-logo {
+    font-size: 1.2rem;
+  }
+}

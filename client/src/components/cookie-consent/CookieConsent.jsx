@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import "../../styles/cookie-consent.css";
+import "./cookie-consent.css"
 
 const COOKIE_CONSENT_KEY = "puhen-svqt-cookie-consent";
 

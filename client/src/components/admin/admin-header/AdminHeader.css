@@ -1,0 +1,31 @@
+.admin-header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.admin-header .logo img {
+  width: 130px;
+}
+
+@media (max-width: 768px) {
+  .admin-nav-wrapper {
+    justify-content: space-between;
+  }
+
+  .admin-header .logo img {
+    width: 80px;
+  }
+
+}

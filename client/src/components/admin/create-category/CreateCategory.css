@@ -1,0 +1,19 @@
+.category-form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.category-form-actions button,
+.category-form-actions .admin-nav-btn {
+  flex: 1;
+}
+
+.category-form-actions .admin-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}

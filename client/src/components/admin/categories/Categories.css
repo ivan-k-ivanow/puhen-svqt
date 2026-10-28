@@ -1,0 +1,129 @@
+.category-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-checkboxes label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 1px solid #8f6a5e;
+  border-radius: 25px;
+  background-color: #fcf0e8;
+  font-size: 0.9rem;
+  color: #8f6a5e;
+  user-select: none;
+}
+
+.category-checkboxes input[type="checkbox"] {
+  display: none;
+}
+
+.category-checkboxes input[type="checkbox"]:checked + span {
+  font-weight: bold;
+}
+
+.category-checkboxes label:has(input:checked) {
+  background-color: #8f6a5e;
+  color: white;
+}
+
+.category-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-section h3 {
+  font-size: 1.2rem;
+  color: #8f6a5e;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #8f6a5e;
+  border-radius: 25px;
+  background-color: #fcf0e8;
+  overflow: hidden;
+}
+
+.category-item label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 0;
+  background: none;
+  font-size: 0.9rem;
+  color: #8f6a5e;
+  user-select: none;
+}
+
+.category-item input[type="checkbox"] {
+  display: none;
+}
+
+.category-item input[type="checkbox"]:checked + span {
+  font-weight: bold;
+}
+
+.category-item:has(input:checked) {
+  background-color: #8f6a5e;
+}
+
+.category-item:has(input:checked) label {
+  color: white;
+}
+
+.category-item:has(input:checked) .category-delete-btn {
+  background: #fcf0e8 !important;
+  color: #8f6a5e !important;
+}
+
+.category-item:has(input:checked) .category-delete-btn:hover {
+  background: #5c463e !important;
+  color: white !important;
+}
+
+.category-delete-btn {
+  width: 28px !important;
+  height: 28px;
+  padding: 0 !important;
+  margin-right: 5px;
+  border: none !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #8f6a5e !important;
+  font-size: 1.1rem !important;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.category-delete-btn:hover {
+  background: #8f6a5e !important;
+  color: white !important;
+  transform: none !important;
+}
+
+.create-category-btn,
+.delete-category-btn {
+  color: #8f6a5e;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0 10px 0 0;
+}
+
+.create-category-btn:hover,
+.delete-category-btn:hover {
+  text-decoration: underline;
+}

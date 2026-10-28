@@ -1,0 +1,15 @@
+#admin-category-filter {
+  padding: 8px 12px;
+  border: 1px solid #d4b8a8;
+  border-radius: 8px;
+  font-family: "Chocolate Classical Sans", sans-serif;
+  font-size: 0.95rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #admin-category-filter {
+    width: 100%;
+  }
+}

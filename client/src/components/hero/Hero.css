@@ -1,0 +1,115 @@
+.hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 600px;
+    background-image: url("../../images/new-website-header.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero .overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #00000015;
+}
+
+.hero .hero-headline {
+    position: relative;
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 5rem;
+    color: #ffffff;
+    padding-top: 175px;
+    padding-left: 100px;
+    text-shadow: 8px 8px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hero .hero-subheadline {
+    position: relative;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 3.2rem;
+    color: #ffffff;
+    padding-left: 100px;
+    padding-top: 140px;
+    text-shadow: 6px 6px 6px rgba(84, 71, 55, 0.898);
+}
+
+.hero .btn {
+    position: relative;
+    z-index: 2;
+    margin-left: 100px;
+    margin-top: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 999px;
+    background: #755448;
+    color: white;
+    font-family: "Chocolate Classical Sans", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.hero .btn:hover {
+    background: #5e4239;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(143, 106, 94, 0.25);
+}
+
+.hero .btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.hero .btn:focus-visible {
+    outline: 3px solid rgba(143, 106, 94, 0.3);
+    outline-offset: 3px;
+}
+
+@media (max-width: 1024px) {
+    .hero {
+        align-items: center;
+    }
+
+    .hero .hero-subheadline {
+        font-size: 2.5rem;
+        text-align: center;
+        padding: 55px 15px 0;
+    }
+
+    .hero .btn {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: 500px;
+        background-image: url("../../images/header-image-mobile.png");
+    }
+
+    .hero .hero-headline {
+        font-size: 3.5rem;
+        padding-top: 55px;
+        padding-left: 0;
+    }
+
+    .hero .hero-subheadline {
+        font-size: 2rem;
+        padding-top: 55px;
+        text-shadow: 3px 3px 3px rgba(84, 71, 55, 0.297);
+    }
+
+    .hero .btn {
+        margin-top: 30px;
+    }
+}

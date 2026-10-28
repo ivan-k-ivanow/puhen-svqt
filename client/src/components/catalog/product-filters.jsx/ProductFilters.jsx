@@ -1,3 +1,5 @@
+import "./ProductFilters.css";
+
 export default function ProductFilters({
     categories,
     selectedCategory,

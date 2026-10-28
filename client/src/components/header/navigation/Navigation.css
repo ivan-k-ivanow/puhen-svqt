@@ -1,0 +1,82 @@
+.header .navbar {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-weight: 400;
+}
+
+.navbar .btn-contact-us {
+    padding: 10px 15px;
+    border: solid 1px #8f6a5e12;
+    border-radius: 10px;
+    background-color: #8f6a5e;
+    color: white;
+    margin-left: 10px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.065);
+}
+
+.navbar .btn-contact-us:hover {
+    background-color: #bca493;
+    transition: 0.3s;
+}
+
+.header .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.header .hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: #4c3a34;
+    border-radius: 2px;
+}
+
+@media (max-width: 1300px) {
+    .header .hamburger {
+        display: flex;
+    }
+
+    .header nav {
+        position: absolute;
+        top: 100%;
+        right: 70px;
+        background-color: #fcf0e8;
+        border-radius: 12px;
+        padding: 30px 20px;
+        display: none;
+        z-index: 100;
+    }
+
+    .header nav.active {
+        display: block;
+    }
+
+    .header .navbar {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .header .navbar .btn-contact-us {
+        margin-left: 0;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 1024px) {
+    .header nav {
+        right: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header .navbar .btn-contact-us {
+        background-color: #8f6a5d;
+        color: white;
+    }
+}

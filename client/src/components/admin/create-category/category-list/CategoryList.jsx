@@ -1,5 +1,7 @@
 
 import { useEffect, useState } from 'react';
+import '../../categories/Categories.css';
+import './CategoryList.css';
 
 export default function CategoryList({
     refreshTrigger

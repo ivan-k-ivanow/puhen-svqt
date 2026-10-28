@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&family=Pacifico&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Chocolate Classical Sans", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #5c463e;
+}
+
+.product-button {
+    display: inline-block;
+    margin: 0 30px;
+    padding: 12px 30px;
+    background-color: #8f6a5e;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.product-button:hover {
+    background-color: #6f5149;
+}

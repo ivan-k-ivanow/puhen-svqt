@@ -1,0 +1,33 @@
+.create-category-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 5px 5px 15px;
+  border: 1px solid #8f6a5e;
+  border-radius: 25px;
+  background-color: #fcf0e8;
+  overflow: hidden;
+}
+
+.create-category-delete-btn {
+  width: 28px !important;
+  height: 28px;
+  padding: 0 !important;
+  margin-right: 0;
+  margin-left: 5px;
+  border: none !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #8f6a5e !important;
+  font-size: 1.1rem !important;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.create-category-delete-btn:hover {
+  background: #8f6a5e !important;
+  color: white !important;
+  transform: none !important;
+}

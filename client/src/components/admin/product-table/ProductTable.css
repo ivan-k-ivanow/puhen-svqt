@@ -1,0 +1,253 @@
+.admin-products {
+  width: 100%;
+  max-width: 900px;
+}
+
+#manage-products {
+  max-width: 1000px;
+  width: 100%;
+  margin: auto;
+}
+
+#products-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin-filters input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d4b8a8;
+  border-radius: 8px;
+  font-family: "Chocolate Classical Sans", sans-serif;
+  font-size: 0.95rem;
+}
+
+.admin-product {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-product-image {
+  width: 12%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #8f6a5e33;
+}
+
+.admin-product-info {
+  flex-grow: 1;
+  font-size: 1rem;
+  line-height: 1.3;
+  width: 60%;
+}
+
+.admin-product-info p {
+  margin-bottom: 1rem;
+  width: 90%;
+  white-space: pre-line;
+}
+
+.admin-product-info strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-product-actions button,
+.admin-product-actions .edit-product {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #e27d60;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.admin-product-actions button:hover,
+.admin-product-actions .edit-product:hover {
+  background-color: #c55b45;
+}
+
+.admin-product-actions button:active,
+.admin-product-actions .edit-product:active {
+  transform: scale(0.95);
+}
+
+.admin-product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-order-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.product-order-controls button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.product-order-controls button:first-child {
+  background-color: #8b5e50;
+  color: #fff;
+}
+
+.product-order-controls button:first-child:hover:not(:disabled) {
+  background-color: #70483d;
+  transform: translateY(-1px);
+}
+
+.product-order-controls button:last-child {
+  background-color: #f3e7e1;
+  color: #5c463e;
+}
+
+.product-order-controls button:last-child:hover:not(:disabled) {
+  background-color: #e8d5cb;
+}
+
+.product-order-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.product-order-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-right: 8px;
+}
+
+.product-order-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e2cfc5;
+  border-radius: 8px;
+  background-color: #fffaf7;
+  color: #70483d;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.product-order-actions button:hover:not(:disabled) {
+  background-color: #f3e7e1;
+  border-color: #b99583;
+}
+
+.product-order-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.product-order-controls button:focus-visible,
+.product-order-actions button:focus-visible {
+  outline: 2px solid #8b5e50;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .product-order-controls {
+    flex-wrap: wrap;
+  }
+
+  .product-order-controls button {
+    flex: 1;
+  }
+
+  .product-order-actions {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-filters {
+    flex-direction: column;
+  }
+
+  .admin-product {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .drag-handle {
+    cursor: grab !important;
+    font-size: 1.2rem;
+    color: #bca493;
+    padding: 10px;
+    user-select: none;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drag-handle:active,
+  .drag-handle:hover {
+    cursor: grab !important;
+  }
+
+  .sortable-ghost {
+    opacity: 0.4;
+    background-color: #fcf0e8;
+  }
+
+  .admin-product-image {
+    width: 40%;
+  }
+
+  .admin-product-info p {
+    margin-bottom: 1rem;
+    width: 165%;
+    white-space: pre-line;
+  }
+
+  .admin-product-actions {
+    align-items: center;
+    width: 100%;
+  }
+
+  .admin-product-actions button,
+  .admin-product-actions .edit-product {
+    font-size: 1rem;
+    width: 100%;
+  }
+}

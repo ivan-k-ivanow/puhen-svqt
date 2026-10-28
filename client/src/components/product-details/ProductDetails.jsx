@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import SimilarProducts from './similar-products/SimilarProducts';
 import ProductGallery from './product-gallery/ProductGallery';
 import ReactMarkdown from 'react-markdown';
+import './ProductDetails.css';
 
 export default function ProductDetails() {
     const { slug } = useParams();

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import CategoryList from './category-list/CategoryList';
+import './CreateCategory.css';
 
 export default function CreateCategoryForm() {
     const navigate = useNavigate();

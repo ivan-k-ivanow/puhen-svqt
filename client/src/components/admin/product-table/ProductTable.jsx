@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import CategoryFilter from '../category-filter/CategoryFilter';
 import { Link } from 'react-router';
+import './ProductTable.css';
 
 export default function ProductTable() {
     const [products, setProducts] = useState([]);

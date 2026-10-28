@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Faqs.css";
 
 const faqItems = [
     {
