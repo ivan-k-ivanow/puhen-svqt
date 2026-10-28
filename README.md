@@ -83,6 +83,8 @@ npm run dev
 
 Open the local URL printed by Vite in the terminal.
 
+### Important: On first load you may have to wait 10-30 sec for Render to wake up the backend, because we are using the free plan.
+
 ---
 
 # Functional Guide
