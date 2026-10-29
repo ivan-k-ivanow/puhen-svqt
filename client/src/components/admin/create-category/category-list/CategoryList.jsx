@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import '../../categories/Categories.css';
 import './CategoryList.css';
+import { getCategories, deleteCategory } from '../../../../services/categories';
 
 export default function CategoryList({
     refreshTrigger
@@ -10,33 +11,22 @@ export default function CategoryList({
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const getCategories = async () => {
-        try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/categories`,
-                {
-                    credentials: 'include',
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Грешка при зареждането на категориите.');
-            }
-
-            const data = await response.json();
-            setCategories(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     useEffect(() => {
-        getCategories();
+        async function loadCategories() {
+            try {
+                const data = await getCategories();
+                setCategories(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadCategories();
     }, [refreshTrigger]);
 
-    const deleteCategory = async (categoryId) => {
+    const handleDeleteCategory = async (categoryId) => {
         const confirmed = window.confirm(
             'Сигурни ли сте, че искате да изтриете тази категория?'
         );
@@ -46,22 +36,7 @@ export default function CategoryList({
         }
 
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/categories/delete/${categoryId}`,
-                {
-                    method: 'DELETE',
-                    credentials: 'include',
-                }
-            );
-
-            if (!response.ok) {
-                const data = await response.json().catch(() => ({}));
-
-                throw new Error(
-                    data.error || 'Грешка при изтриването на категорията.'
-                );
-            }
-
+            await deleteCategory(categoryId);
             setCategories(currentCategories =>
                 currentCategories.filter(
                     category => category.id !== categoryId
@@ -92,7 +67,7 @@ export default function CategoryList({
                         <button
                             type="button"
                             className="create-category-delete-btn"
-                            onClick={() => deleteCategory(category.id)}
+                            onClick={() => handleDeleteCategory(category.id)}
                         >
                             ×
                         </button>

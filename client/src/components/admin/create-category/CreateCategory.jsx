@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { createCategory } from '../../../services/categories';
 import CategoryList from './category-list/CategoryList';
 import './CreateCategory.css';
 
@@ -17,24 +18,7 @@ export default function CreateCategoryForm() {
         setSuccess('');
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/categories/create`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name }),
-            }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                const data = await response.json();
-                setError(data.error || 'Грешка при създаване на категория');
-                return;
-            }
-
+            const data = await createCategory(name);
             setSuccess('Категорията е създадена успешно');
             setName('');
             setRefreshTrigger(prev => !prev);

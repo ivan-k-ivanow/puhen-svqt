@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Categories.css';
+import { getCategories } from '../../../services/categories';
 
 export default function Categories({
     selectedCategories = [],
@@ -9,26 +10,19 @@ export default function Categories({
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const getCategories = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/categories`, {
-                credentials: 'include'
-            });
-
-            if (!response.ok) {
-                throw new Error('Грешка при зареждането на категориите.');
-            }
-            const data = await response.json();
-            setCategories(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     useEffect(() => {
-        getCategories();
+        async function loadCategories() {
+            try {
+                const data = await getCategories();
+                setCategories(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadCategories();
     }, []);
 
     if (isLoading) {
