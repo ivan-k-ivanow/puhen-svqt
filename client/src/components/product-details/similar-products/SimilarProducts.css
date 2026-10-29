@@ -96,5 +96,6 @@
     .similar-card-body .product-button {
         font-size: 0.8rem;
         margin: 0;
+        padding: 12px 0;
     }
 }
