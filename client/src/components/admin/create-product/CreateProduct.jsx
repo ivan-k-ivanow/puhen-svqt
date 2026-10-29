@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import ProductForm from '../product-form/ProductForm';
+import { createProduct } from '../../../services/products';
 
 export default function CreateProduct() {
     const [newImages, setNewImages] = useState([]);
@@ -36,18 +37,7 @@ export default function CreateProduct() {
         });
 
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/products`,
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                    body: formData,
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Грешка при създаването на продукта.');
-            }
+            const response = await createProduct(formData);
 
             setMessage('Продуктът е добавен успешно!');
             setMessageType('success');

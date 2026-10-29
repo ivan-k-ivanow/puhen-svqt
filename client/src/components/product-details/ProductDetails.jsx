@@ -4,6 +4,7 @@ import SimilarProducts from './similar-products/SimilarProducts';
 import ProductGallery from './product-gallery/ProductGallery';
 import ReactMarkdown from 'react-markdown';
 import './ProductDetails.css';
+import { getProductBySlug, getSimilarProducts } from '../../services/products';
 
 export default function ProductDetails() {
     const { slug } = useParams();
@@ -13,8 +14,7 @@ export default function ProductDetails() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${slug}`);
-                const data = await res.json();
+                const data = await getProductBySlug(slug);
                 setProduct(data);
             } catch (error) {
                 console.error(error);
@@ -25,8 +25,7 @@ export default function ProductDetails() {
 
         const fetchSimilarProducts = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/${slug}/similar`);
-                const data = await res.json();
+                const data = await getSimilarProducts(slug);
                 setSimilarProducts(data);
             } catch (error) {
                 console.error(error);

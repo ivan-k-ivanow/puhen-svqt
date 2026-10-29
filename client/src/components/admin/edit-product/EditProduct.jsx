@@ -1,6 +1,7 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import ProductForm from '../product-form/ProductForm';
+import { getProductById, updateProduct } from '../../../services/products';
 
 export default function EditProduct() {
 
@@ -19,20 +20,10 @@ export default function EditProduct() {
 
     const fetchProduct = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${id}`,
-                {
-                    credentials: 'include'
-                }
-            );
-
-
-            if (!response.ok) {
-                throw new Error('Грешка при зареждането на продукта.');
-            }
-            const data = await response.json();
-            setProduct(data);
+            const response = await getProductById(id);
+            setProduct(response);
             setSelectedCategories(
-                data.categories.map(category => category.id)
+                response.categories.map(category => category.id)
             );
         } catch (err) {
             setError(err.message);
@@ -40,6 +31,7 @@ export default function EditProduct() {
             setIsLoading(false);
         }
     };
+   
 
     const handleCategoryChange = (categoryId, isChecked) => {
         setSelectedCategories(previousIds => {
@@ -85,20 +77,7 @@ export default function EditProduct() {
         formData.append('deletedImageIds', JSON.stringify(deletedImageIds));
 
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/products/${id}`,
-                {
-                    method: 'PUT',
-                    credentials: 'include',
-                    body: formData,
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Грешка при запазването на продукта.');
-            }
-
-            const updatedProduct = await response.json();
+            const updatedProduct = await updateProduct(id, formData);
 
             setProduct(updatedProduct);
             setNewImages([]);

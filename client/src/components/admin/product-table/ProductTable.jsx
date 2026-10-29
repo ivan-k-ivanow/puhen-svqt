@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import CategoryFilter from '../category-filter/CategoryFilter';
 import { Link } from 'react-router';
 import './ProductTable.css';
+import { getProducts, reorderProducts, deleteProduct } from '../../../services/products';
+    
 
 export default function ProductTable() {
     const [products, setProducts] = useState([]);
@@ -18,31 +20,22 @@ export default function ProductTable() {
         products.length !== savedOrderIds.length ||
         products.some((product, index) => product.id !== savedOrderIds[index]);
 
-    const getProducts = async () => {
-        try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/products`,
-                { credentials: 'include' }
-            );
-
-            if (!response.ok) {
-                throw new Error('Грешка при зареждането на продуктите.');
-            }
-
-            const data = await response.json();
-
-            setProducts(data);
-            setSavedOrderIds(data.map(product => product.id));
-        } catch (error) {
-            setError(error);
-            console.error('Error fetching products:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     useEffect(() => {
-        getProducts();
+        const fetchProducts = async () => {
+            try {
+                const data = await getProducts();
+
+                setProducts(data);
+                setSavedOrderIds(data.map(product => product.id));
+            } catch (error) {
+                setError(error);
+                console.error('Error fetching products:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
     }, []);
 
     const handleMoveProduct = (index, direction) => {
@@ -74,28 +67,7 @@ export default function ProductTable() {
         setMessage('');
 
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/products/reorder`,
-                {
-                    method: 'PATCH',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        productIds: products.map(product => product.id)
-                    })
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    data.message || 'Грешка при запазването на реда.'
-                );
-            }
-
+            const data = await reorderProducts(products.map(product => product.id));
             setSavedOrderIds(products.map(product => product.id));
             setMessage('Редът на продуктите е запазен успешно!');
         } catch (error) {
@@ -128,18 +100,7 @@ export default function ProductTable() {
         if (!confirmed) return;
 
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/products/${productId}`,
-                {
-                    method: 'DELETE',
-                    credentials: 'include'
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Грешка при изтриването на продукта.');
-            }
-
+            await deleteProduct(productId);
             setProducts(previous =>
                 previous.filter(product => product.id !== productId)
             );
@@ -151,6 +112,7 @@ export default function ProductTable() {
             console.error('Error deleting product:', error);
             setMessage(error.message);
         }
+        
     };
 
 

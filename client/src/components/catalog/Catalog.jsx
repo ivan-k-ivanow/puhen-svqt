@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "./product-card/ProductCard";
 import ProductFilters from "./product-filters.jsx/ProductFilters";
 import "./Catalog.css";
+import { getProducts } from '../../services/products';
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -10,8 +11,7 @@ export default function Products() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products`);
-                const data = await res.json();
+                const data = await getProducts();
                 setProducts(data);
             } catch (error) {
                 console.error(error);
