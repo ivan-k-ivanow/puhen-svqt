@@ -10,7 +10,6 @@ export default function AdminLogin() {
             <div className="admin-page">
 
                 <AdminHeader />
-                <AdminTestInfo />
                 <AdminLoginForm />
             </div>
         </>
