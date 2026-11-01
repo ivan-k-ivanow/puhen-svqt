@@ -1,6 +1,7 @@
 # Puhen Svqt - Handmade Gifts
 
 **Live Website:** [https://puhensvqt.com](https://puhensvqt.com)
+**Admin Panel:** https://puhensvqt.com/admin/login
 **Backend API:** [https://api.puhensvqt.com](https://api.puhensvqt.com)
 **GitHub Repository:** [https://github.com/ivan-k-ivanow/puhen-svqt](https://github.com/ivan-k-ivanow/puhen-svqt)
 
