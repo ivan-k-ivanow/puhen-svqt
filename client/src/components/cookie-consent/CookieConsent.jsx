@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import "./cookie-consent.css"
-import { updateConsent } from "../../analytics";
+import { updateConsent } from "../../analytics.js";
 
 const COOKIE_CONSENT_KEY = "puhen-svqt-cookie-consent";
 
