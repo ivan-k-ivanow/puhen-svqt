@@ -1,58 +1,73 @@
 .products-filters {
     display: flex;
-    justify-content: center;
-    gap: 15px;
-    padding-bottom: 70px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.products-filters button {
-    padding: 8px 16px;
-    border: 1px solid #8f6a5e;
-    border-radius: 25px;
-    background-color: #fcf0e8;
-    cursor: pointer;
+.products-filters .product-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 6px 0 16px;
+    border: 1px solid #e8d5c8;
+    border-radius: 999px;
+    background: #fff;
+    color: #5c463e;
     font-family: "Chocolate Classical Sans", sans-serif;
-    font-size: 1rem;
+    font-size: 15px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
 
-.products-filters button:hover {
-    background-color: #ebdacf;
-    scale: 1.05;
-    transition: 0.1s;
+.products-filters .product-filter:hover {
+    border-color: #8f6a5e;
 }
 
-.products-filters button.active {
-    background-color: #8f6a5e;
-    color: white;
+.product-filter-count {
+    min-width: 26px;
+    height: 26px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: #fcf0e8;
+    color: #7a5c52;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+    transition: background 0.2s, color 0.2s;
+}
+
+.products-filters .product-filter.active {
+    background: #8f6a5e;
+    border-color: #8f6a5e;
+    color: #fff;
+}
+
+.products-filters .product-filter.active .product-filter-count {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+.products-filters .product-filter:focus-visible {
+    outline: 3px solid #8f6a5e;
+    outline-offset: 3px;
 }
 
 @media (max-width: 768px) {
     .products-filters {
-        justify-content: flex-start;
-        flex-direction: row;
-        gap: 10px;
-        width: 100%;
-        padding: 10px 0;
-        overflow-x: auto;
         flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
-    }
-
-    .products-filters button:first-child {
-        margin-left: 25px;
-    }
-
-    .products-filters button:last-child {
-        margin-right: 25px;
+        margin: 0 -16px;
+        padding: 2px 16px;
     }
 
     .products-filters::-webkit-scrollbar {
         display: none;
-    }
-
-    .products-filters button {
-        white-space: nowrap;
-        font-size: 1em;
-        color: #8f6a5d;
     }
 }
