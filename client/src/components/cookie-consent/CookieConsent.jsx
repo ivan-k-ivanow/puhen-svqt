@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import "./cookie-consent.css"
+import { updateConsent } from "../../analytics";
 
 const COOKIE_CONSENT_KEY = "puhen-svqt-cookie-consent";
 
@@ -11,6 +12,7 @@ export default function CookieConsent() {
 
     function handleConsent(choice) {
         localStorage.setItem(COOKIE_CONSENT_KEY, choice);
+        updateConsent(choice);
         setIsVisible(false);
     }
 

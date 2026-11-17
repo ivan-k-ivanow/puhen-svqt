@@ -11,6 +11,7 @@ import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import CookieConsent from './components/cookie-consent/CookieConsent'
 import ScrollToTop from './components/scroll-to-top/ScrollToTop'
+import RouteTracker from './components/analytics/RouteTracker'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
     <>
       <AuthProvider>
         <ScrollToTop />
+        <RouteTracker />
         <Routes>
           <Route path="/" element={<><Home /> <CookieConsent /></>} />
           <Route path="/products" element={<><ProductPage /> <CookieConsent /></>} />
