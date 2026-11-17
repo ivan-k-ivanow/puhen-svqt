@@ -91,9 +91,8 @@
 
 @media (max-width: 768px) {
     .footer-container {
-        flex-direction: column;
         align-items: center;
-        gap: 30px;
+        gap: 5px;
         text-align: center;
     }
 
@@ -110,5 +109,9 @@
     .footer-contact textarea {
         width: 100%;
         max-width: 300px;
+    }
+
+    .social-links {
+        justify-content: center;
     }
 }
