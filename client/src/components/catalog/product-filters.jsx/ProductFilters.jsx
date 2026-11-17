@@ -2,33 +2,35 @@ import "./ProductFilters.css";
 
 export default function ProductFilters({
     categories,
+    totalCount,
     selectedCategory,
     onCategoryChange,
 }) {
-    return (
-        <div className="products-filters">
-            <button
-                type="button"
-                className={`product-filter ${
-                    selectedCategory === "all" ? "active" : ""
-                }`}
-                onClick={() => onCategoryChange("all")}
-            >
-                Всички
-            </button>
+    const chips = [
+        { id: "all", name: "Всички", count: totalCount },
+        ...categories,
+    ];
 
-            {categories.map((category) => (
-                <button
-                    type="button"
-                    key={category.id}
-                    className={`product-filter ${
-                        selectedCategory === category.id ? "active" : ""
-                    }`}
-                    onClick={() => onCategoryChange(category.id)}
-                >
-                    {category.name}
-                </button>
-            ))}
+    return (
+        <div className="products-filters" role="group" aria-label="Категории">
+            {chips.map((category) => {
+                const active = selectedCategory === category.id;
+
+                return (
+                    <button
+                        type="button"
+                        key={category.id}
+                        className={`product-filter ${active ? "active" : ""}`}
+                        aria-pressed={active}
+                        onClick={() => onCategoryChange(category.id)}
+                    >
+                        <span>{category.name}</span>
+                        <span className="product-filter-count">
+                            {category.count}
+                        </span>
+                    </button>
+                );
+            })}
         </div>
     );
 }
