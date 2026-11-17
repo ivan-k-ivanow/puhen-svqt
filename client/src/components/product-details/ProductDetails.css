@@ -146,13 +146,17 @@
         padding: 0 16px;
     }
 
+    .product-details-page .product-name {
+        display: none;
+    }
+
     .product-details-page .product-name-mobile {
         display: block;
         font-family: "Pacifico", cursive;
         font-weight: 400;
         font-size: 2.5rem;
         color: #8f6a5d;
-        padding: 0;
+        line-height: 1.2;
     }
 
     .product-details-page .product-price {
