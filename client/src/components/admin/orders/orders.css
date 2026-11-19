@@ -201,6 +201,12 @@
   }
 }
 
+@media (max-width: 640px) {
+  .orders-input {
+    font-size: 16px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .orders-page * {
     transition: none !important;

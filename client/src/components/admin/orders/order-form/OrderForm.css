@@ -175,8 +175,74 @@
     grid-template-columns: 1fr;
   }
 
+  /* Всеки продукт в отделна рамка: продуктът на цял ред, под него брой, цена и × */
+  .order-item--head {
+    display: none;
+  }
+
+  .order-item-block {
+    padding: 12px;
+    border: 1px solid #efe3da;
+    border-radius: 12px;
+    background: #fffaf7;
+  }
+
   .order-item {
-    grid-template-columns: minmax(0, 1fr) 60px 84px 28px;
-    gap: 6px;
+    grid-template-columns: 80px minmax(0, 1fr) 36px;
+    grid-template-areas:
+      "product  product  product"
+      "qtyLabel priceLabel ."
+      "qty      price    remove";
+    gap: 4px 8px;
+  }
+
+  .order-item > select { grid-area: product; margin-bottom: 4px; }
+  .order-item > label:nth-of-type(2) { grid-area: qtyLabel; }
+  .order-item > label:nth-of-type(3) { grid-area: priceLabel; }
+  .order-item > input:nth-of-type(1) { grid-area: qty; }
+  .order-item > input:nth-of-type(2) { grid-area: price; }
+  .order-item > button { grid-area: remove; justify-self: center; }
+
+  /* Надписите „Брой“ и „Цена“ се показват над полетата */
+  .order-item > label:nth-of-type(2),
+  .order-item > label:nth-of-type(3) {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    font-size: 0.8rem;
+    color: #7a5c52;
+  }
+
+  /* Общо отгоре, под него „Запази“ и „Отказ“ на цялата ширина */
+  .order-form-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .order-form-total {
+    justify-content: space-between;
+  }
+
+  .order-form-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .order-form-actions .orders-btn {
+    width: 100%;
+    height: 48px;
+    font-size: 1rem;
+  }
+
+  .order-form-actions .order-cancel {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+    font-size: 0.95rem;
   }
 }
+
