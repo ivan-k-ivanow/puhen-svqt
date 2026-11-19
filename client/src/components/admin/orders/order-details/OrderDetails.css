@@ -1,0 +1,329 @@
+.order-details-title {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.order-details-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Път на поръчката */
+.order-progress {
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.order-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.order-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #7a5c52;
+  text-align: center;
+}
+
+.order-step::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -50%;
+  right: 50%;
+  height: 2px;
+  background: #ead9cd;
+}
+
+.order-step:first-child::before {
+  display: none;
+}
+
+.order-step.done::before,
+.order-step.current::before {
+  background: #8f6a5e;
+}
+
+.order-step-dot {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  background: #fff;
+  border: 2px solid #ead9cd;
+  color: #b9917f;
+}
+
+.order-step.done .order-step-dot {
+  background: #8f6a5e;
+  border-color: #8f6a5e;
+  color: #fff;
+}
+
+.order-step.current {
+  color: #5c463e;
+  font-weight: 600;
+}
+
+.order-step.current .order-step-dot {
+  border-color: #8f6a5e;
+  color: #8f6a5e;
+  box-shadow: 0 0 0 4px #8f6a5e22;
+}
+
+.order-steps--cancelled .order-step {
+  opacity: 0.4;
+}
+
+.order-progress-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  border-top: 1px solid #f0e4db;
+}
+
+.order-next {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.order-field-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.875rem;
+}
+
+.order-field-inline .orders-input {
+  width: 240px;
+}
+
+.order-final {
+  margin: 0;
+}
+
+.order-secondary-actions {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* Двете колони отдолу */
+.order-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 20px;
+  align-items: start;
+}
+
+.order-details-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.order-box {
+  padding: 22px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-box h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #8f6a5e;
+}
+
+.order-box p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.order-box .orders-text-btn {
+  align-self: flex-start;
+}
+
+.order-box-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.order-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 60px 90px 90px;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f4ebe4;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-line > span:not(:first-child) {
+  text-align: right;
+}
+
+.order-line--head {
+  padding-top: 0;
+  font-size: 0.8rem;
+  color: #7a5c52;
+}
+
+.order-line-link {
+  color: #5c463e;
+  text-decoration: underline;
+  text-decoration-color: #d8c7ba;
+  text-underline-offset: 3px;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-total span {
+  color: #7a5c52;
+}
+
+.order-total strong {
+  font-size: 1.4rem;
+  color: #8f6a5e;
+}
+
+.order-notes {
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.order-kv {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.order-kv dt {
+  color: #7a5c52;
+}
+
+.order-kv dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.order-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.order-badge--paid {
+  background: #e3f1e6;
+  color: #2e6b40;
+}
+
+.order-badge--unpaid {
+  background: #fcefd9;
+  color: #7d5210;
+}
+
+/* История */
+.order-history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+
+.order-history li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 12px;
+  padding-bottom: 14px;
+}
+
+.order-history li:last-child {
+  padding-bottom: 0;
+}
+
+.order-history li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 14px;
+  bottom: -2px;
+  width: 2px;
+  background: #f0e4db;
+}
+
+.order-history li:last-child::before {
+  display: none;
+}
+
+.order-history-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: #8f6a5e;
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.order-delete {
+  align-self: flex-start;
+}
+
+@media (max-width: 900px) {
+  .order-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 18px;
+  }
+
+  .order-step:nth-child(4)::before {
+    display: none;
+  }
+
+  .order-field-inline .orders-input {
+    width: 100%;
+  }
+}

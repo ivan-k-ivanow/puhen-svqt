@@ -1,0 +1,3040 @@
+From 153005ba6adfff83fdcf2fe8d13b1af20ab5ef04 Mon Sep 17 00:00:00 2001
+From: Ivan <i.ivanow.k@gmail.com>
+Date: Thu, 19 Nov 2026 13:51:06 +0200
+Subject: [PATCH] Add orders: admin list, create/edit form and order page
+
+- Prisma models Order, OrderItem, OrderHistory with status, courier and payment enums
+- Admin API /api/admin/orders: list, details, create, update, status, paid, delete
+- Status changes and payments are logged in the order history
+- Admin pages: orders list with status tabs, order form (create/edit), order details
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012mDMZtcQFianp73xrbzpZ3
+---
+ client/src/App.jsx                            |   8 +
+ .../AdminNavigation/AdminNavigation.jsx       |   1 +
+ .../orders/order-details/OrderDetails.css     | 329 +++++++++++++
+ .../orders/order-details/OrderDetails.jsx     | 371 ++++++++++++++
+ .../admin/orders/order-form/OrderForm.css     | 182 +++++++
+ .../admin/orders/order-form/OrderForm.jsx     | 456 ++++++++++++++++++
+ .../admin/orders/order-list/OrderList.css     | 187 +++++++
+ .../admin/orders/order-list/OrderList.jsx     | 282 +++++++++++
+ client/src/components/admin/orders/orders.css | 208 ++++++++
+ client/src/pages/admin/AdminCreateOrder.jsx   |  11 +
+ client/src/pages/admin/AdminEditOrder.jsx     |  38 ++
+ client/src/pages/admin/AdminOrder.jsx         |  11 +
+ client/src/pages/admin/AdminOrders.jsx        |  11 +
+ client/src/services/orders.js                 |  78 +++
+ client/src/utils/orders.js                    | 144 ++++++
+ prisma/schema.prisma                          |  82 ++++
+ .../controllers/admin-orders-controller.js    | 116 +++++
+ server/src/repositories/order-repository.js   |  79 +++
+ server/src/routes/routes.js                   |   2 +
+ server/src/schemas/order-schema.js            |  77 +++
+ server/src/services/order-service.js          | 150 ++++++
+ 21 files changed, 2823 insertions(+)
+ create mode 100644 client/src/components/admin/orders/order-details/OrderDetails.css
+ create mode 100644 client/src/components/admin/orders/order-details/OrderDetails.jsx
+ create mode 100644 client/src/components/admin/orders/order-form/OrderForm.css
+ create mode 100644 client/src/components/admin/orders/order-form/OrderForm.jsx
+ create mode 100644 client/src/components/admin/orders/order-list/OrderList.css
+ create mode 100644 client/src/components/admin/orders/order-list/OrderList.jsx
+ create mode 100644 client/src/components/admin/orders/orders.css
+ create mode 100644 client/src/pages/admin/AdminCreateOrder.jsx
+ create mode 100644 client/src/pages/admin/AdminEditOrder.jsx
+ create mode 100644 client/src/pages/admin/AdminOrder.jsx
+ create mode 100644 client/src/pages/admin/AdminOrders.jsx
+ create mode 100644 client/src/services/orders.js
+ create mode 100644 client/src/utils/orders.js
+ create mode 100644 server/src/controllers/admin-orders-controller.js
+ create mode 100644 server/src/repositories/order-repository.js
+ create mode 100644 server/src/schemas/order-schema.js
+ create mode 100644 server/src/services/order-service.js
+
+diff --git a/client/src/App.jsx b/client/src/App.jsx
+index 85034e9..77b2f17 100644
+--- a/client/src/App.jsx
++++ b/client/src/App.jsx
+@@ -7,6 +7,10 @@ import Home from './pages/home/Home'
+ import Product from './pages/product/Product'
+ import ProductPage from './pages/product-catalog/ProductCatalog'
+ import AdminEditProduct from './pages/admin/AdminEditProduct'
++import AdminOrders from './pages/admin/AdminOrders'
++import AdminCreateOrder from './pages/admin/AdminCreateOrder'
++import AdminEditOrder from './pages/admin/AdminEditOrder'
++import AdminOrder from './pages/admin/AdminOrder'
+ import AuthProvider from './contexts/AuthProvider'
+ import ProtectedRoute from './components/auth/ProtectedRoute'
+ import CookieConsent from './components/cookie-consent/CookieConsent'
+@@ -32,6 +36,10 @@ function App() {
+             <Route path="/admin/products/create" element={<AdminCreateProduct />} />
+             <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
+             <Route path="/admin/categories/create" element={<AdminCreateCategory />} />
++            <Route path="/admin/orders" element={<AdminOrders />} />
++            <Route path="/admin/orders/create" element={<AdminCreateOrder />} />
++            <Route path="/admin/orders/edit/:id" element={<AdminEditOrder />} />
++            <Route path="/admin/orders/:id" element={<AdminOrder />} />
+           </Route>
+ 
+         </Routes>
+diff --git a/client/src/components/admin/admin-header/AdminNavigation/AdminNavigation.jsx b/client/src/components/admin/admin-header/AdminNavigation/AdminNavigation.jsx
+index 020f157..3f17383 100644
+--- a/client/src/components/admin/admin-header/AdminNavigation/AdminNavigation.jsx
++++ b/client/src/components/admin/admin-header/AdminNavigation/AdminNavigation.jsx
+@@ -23,6 +23,7 @@ export default function AdminNavigation() {
+                 {isAdmin ? (<>
+                     <Link to="/" className="admin-nav-btn">Начало</Link>
+                     <Link to="/admin/dashboard" className="admin-nav-btn">Админ панел</Link>
++                    <Link to="/admin/orders" className="admin-nav-btn">Поръчки</Link>
+                     <Link to="/admin/products/create" className="admin-nav-btn">Добави продукт</Link>
+                     <Link to="/admin/categories/create" className="admin-nav-btn"> Създай категория </Link>
+ 
+diff --git a/client/src/components/admin/orders/order-details/OrderDetails.css b/client/src/components/admin/orders/order-details/OrderDetails.css
+new file mode 100644
+index 0000000..11b9041
+--- /dev/null
++++ b/client/src/components/admin/orders/order-details/OrderDetails.css
+@@ -0,0 +1,329 @@
++.order-details-title {
++  margin-top: 8px;
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  flex-wrap: wrap;
++}
++
++.order-details-heading {
++  display: flex;
++  align-items: center;
++  gap: 14px;
++  flex-wrap: wrap;
++}
++
++/* Път на поръчката */
++.order-progress {
++  padding: 24px 26px;
++  display: flex;
++  flex-direction: column;
++  gap: 22px;
++}
++
++.order-steps {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: grid;
++  grid-template-columns: repeat(6, minmax(0, 1fr));
++}
++
++.order-step {
++  position: relative;
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 8px;
++  font-size: 0.85rem;
++  color: #7a5c52;
++  text-align: center;
++}
++
++.order-step::before {
++  content: "";
++  position: absolute;
++  top: 15px;
++  left: -50%;
++  right: 50%;
++  height: 2px;
++  background: #ead9cd;
++}
++
++.order-step:first-child::before {
++  display: none;
++}
++
++.order-step.done::before,
++.order-step.current::before {
++  background: #8f6a5e;
++}
++
++.order-step-dot {
++  position: relative;
++  z-index: 1;
++  width: 32px;
++  height: 32px;
++  border-radius: 50%;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  font-weight: 600;
++  background: #fff;
++  border: 2px solid #ead9cd;
++  color: #b9917f;
++}
++
++.order-step.done .order-step-dot {
++  background: #8f6a5e;
++  border-color: #8f6a5e;
++  color: #fff;
++}
++
++.order-step.current {
++  color: #5c463e;
++  font-weight: 600;
++}
++
++.order-step.current .order-step-dot {
++  border-color: #8f6a5e;
++  color: #8f6a5e;
++  box-shadow: 0 0 0 4px #8f6a5e22;
++}
++
++.order-steps--cancelled .order-step {
++  opacity: 0.4;
++}
++
++.order-progress-actions {
++  display: flex;
++  align-items: flex-end;
++  justify-content: space-between;
++  gap: 20px;
++  flex-wrap: wrap;
++  padding-top: 18px;
++  border-top: 1px solid #f0e4db;
++}
++
++.order-next {
++  display: flex;
++  align-items: flex-end;
++  gap: 12px;
++  flex-wrap: wrap;
++}
++
++.order-field-inline {
++  display: flex;
++  flex-direction: column;
++  gap: 6px;
++  font-size: 0.875rem;
++}
++
++.order-field-inline .orders-input {
++  width: 240px;
++}
++
++.order-final {
++  margin: 0;
++}
++
++.order-secondary-actions {
++  display: flex;
++  gap: 18px;
++  flex-wrap: wrap;
++}
++
++/* Двете колони отдолу */
++.order-details-grid {
++  display: grid;
++  grid-template-columns: minmax(0, 1fr) 380px;
++  gap: 20px;
++  align-items: start;
++}
++
++.order-details-column {
++  display: flex;
++  flex-direction: column;
++  gap: 20px;
++  min-width: 0;
++}
++
++.order-box {
++  padding: 22px 26px;
++  display: flex;
++  flex-direction: column;
++  gap: 14px;
++}
++
++.order-box h3 {
++  margin: 0;
++  font-size: 1.1rem;
++  font-weight: 400;
++  color: #8f6a5e;
++}
++
++.order-box p {
++  margin: 0;
++  font-size: 0.9rem;
++}
++
++.order-box .orders-text-btn {
++  align-self: flex-start;
++}
++
++.order-box-head {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 12px;
++}
++
++.order-line {
++  display: grid;
++  grid-template-columns: minmax(0, 1fr) 60px 90px 90px;
++  gap: 12px;
++  padding: 10px 0;
++  border-bottom: 1px solid #f4ebe4;
++  font-size: 0.9rem;
++  font-variant-numeric: tabular-nums;
++}
++
++.order-line > span:not(:first-child) {
++  text-align: right;
++}
++
++.order-line--head {
++  padding-top: 0;
++  font-size: 0.8rem;
++  color: #7a5c52;
++}
++
++.order-line-link {
++  color: #5c463e;
++  text-decoration: underline;
++  text-decoration-color: #d8c7ba;
++  text-underline-offset: 3px;
++}
++
++.order-total {
++  display: flex;
++  justify-content: space-between;
++  align-items: baseline;
++  font-variant-numeric: tabular-nums;
++}
++
++.order-total span {
++  color: #7a5c52;
++}
++
++.order-total strong {
++  font-size: 1.4rem;
++  color: #8f6a5e;
++}
++
++.order-notes {
++  line-height: 1.6;
++  white-space: pre-line;
++}
++
++.order-kv {
++  display: grid;
++  grid-template-columns: 110px minmax(0, 1fr);
++  gap: 8px 12px;
++  margin: 0;
++  font-size: 0.9rem;
++}
++
++.order-kv dt {
++  color: #7a5c52;
++}
++
++.order-kv dd {
++  margin: 0;
++  overflow-wrap: anywhere;
++}
++
++.order-badge {
++  padding: 4px 10px;
++  border-radius: 999px;
++  font-size: 0.8rem;
++}
++
++.order-badge--paid {
++  background: #e3f1e6;
++  color: #2e6b40;
++}
++
++.order-badge--unpaid {
++  background: #fcefd9;
++  color: #7d5210;
++}
++
++/* История */
++.order-history {
++  list-style: none;
++  margin: 0;
++  padding: 0;
++  display: flex;
++  flex-direction: column;
++  font-size: 0.9rem;
++}
++
++.order-history li {
++  position: relative;
++  display: grid;
++  grid-template-columns: 14px minmax(0, 1fr);
++  gap: 12px;
++  padding-bottom: 14px;
++}
++
++.order-history li:last-child {
++  padding-bottom: 0;
++}
++
++.order-history li::before {
++  content: "";
++  position: absolute;
++  left: 6px;
++  top: 14px;
++  bottom: -2px;
++  width: 2px;
++  background: #f0e4db;
++}
++
++.order-history li:last-child::before {
++  display: none;
++}
++
++.order-history-dot {
++  width: 10px;
++  height: 10px;
++  margin-top: 4px;
++  border-radius: 50%;
++  background: #8f6a5e;
++  box-shadow: 0 0 0 3px #fff;
++}
++
++.order-delete {
++  align-self: flex-start;
++}
++
++@media (max-width: 900px) {
++  .order-details-grid {
++    grid-template-columns: 1fr;
++  }
++
++  .order-steps {
++    grid-template-columns: repeat(3, minmax(0, 1fr));
++    row-gap: 18px;
++  }
++
++  .order-step:nth-child(4)::before {
++    display: none;
++  }
++
++  .order-field-inline .orders-input {
++    width: 100%;
++  }
++}
+diff --git a/client/src/components/admin/orders/order-details/OrderDetails.jsx b/client/src/components/admin/orders/order-details/OrderDetails.jsx
+new file mode 100644
+index 0000000..9a74a63
+--- /dev/null
++++ b/client/src/components/admin/orders/order-details/OrderDetails.jsx
+@@ -0,0 +1,371 @@
++import { useEffect, useState } from 'react';
++import { Link, useNavigate, useParams } from 'react-router';
++import {
++    getOrderById,
++    updateOrderStatus,
++    updateOrderPaid,
++    deleteOrder,
++} from '../../../../services/orders';
++import {
++    STATUS_FLOW,
++    STATUS_LABELS,
++    NEXT_STEP_LABELS,
++    CHANNEL_LABELS,
++    COURIER_LABELS,
++    PAYMENT_LABELS,
++    statusClass,
++    formatOrderNumber,
++    formatMoney,
++    formatDate,
++    formatDateTime,
++    deadlineInfo,
++} from '../../../../utils/orders';
++import '../orders.css';
++import './OrderDetails.css';
++
++function CheckIcon() {
++    return (
++        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
++            strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
++            <path d="M5 12l5 5 9-10" />
++        </svg>
++    );
++}
++
++export default function OrderDetails() {
++    const { id } = useParams();
++    const navigate = useNavigate();
++
++    const [order, setOrder] = useState(null);
++    const [isLoading, setIsLoading] = useState(true);
++    const [isSaving, setIsSaving] = useState(false);
++    const [error, setError] = useState('');
++    const [trackingDraft, setTrackingDraft] = useState('');
++
++    useEffect(() => {
++        async function loadOrder() {
++            try {
++                const data = await getOrderById(id);
++                setOrder(data);
++                setTrackingDraft(data.trackingNumber ?? '');
++            } catch (err) {
++                setError(err.message);
++            } finally {
++                setIsLoading(false);
++            }
++        }
++
++        loadOrder();
++    }, [id]);
++
++    // Общо за всички действия: изпраща заявката и обновява поръчката.
++    const run = async (action) => {
++        setIsSaving(true);
++        setError('');
++
++        try {
++            setOrder(await action());
++        } catch (err) {
++            setError(err.message);
++        } finally {
++            setIsSaving(false);
++        }
++    };
++
++    if (isLoading) {
++        return <div className="orders-page"><p>Зареждане...</p></div>;
++    }
++
++    if (!order) {
++        return (
++            <div className="orders-page">
++                <Link to="/admin/orders" className="orders-back">← Всички поръчки</Link>
++                <p className="orders-message orders-message--error">
++                    {error || 'Поръчката не е намерена.'}
++                </p>
++            </div>
++        );
++    }
++
++    const isCancelled = order.status === 'CANCELLED';
++    const stepIndex = STATUS_FLOW.indexOf(order.status);
++    const nextStatus = !isCancelled ? STATUS_FLOW[stepIndex + 1] : undefined;
++    const previousStatus = !isCancelled && stepIndex > 0 ? STATUS_FLOW[stepIndex - 1] : undefined;
++    const needsTracking = nextStatus === 'SHIPPED' && order.courier !== 'PICKUP';
++
++    // При възстановяване връщаме последния статус преди отказа.
++    const statusBeforeCancel =
++        order.history.find(entry => entry.status && entry.status !== 'CANCELLED')?.status ?? 'NEW';
++
++    const due = deadlineInfo(order);
++
++    const handleNext = () => {
++        run(() => updateOrderStatus(order.id, nextStatus, needsTracking ? trackingDraft.trim() : undefined));
++    };
++
++    const handleCancel = () => {
++        if (window.confirm('Сигурни ли сте, че искате да откажете поръчката?')) {
++            run(() => updateOrderStatus(order.id, 'CANCELLED'));
++        }
++    };
++
++    const handleDelete = async () => {
++        if (!window.confirm('Поръчката ще бъде изтрита завинаги. Продължаване?')) {
++            return;
++        }
++
++        try {
++            await deleteOrder(order.id);
++            navigate('/admin/orders');
++        } catch (err) {
++            setError(err.message);
++        }
++    };
++
++    return (
++        <div className="orders-page">
++            <div>
++                <Link to="/admin/orders" className="orders-back">← Всички поръчки</Link>
++
++                <div className="order-details-title">
++                    <div className="order-details-heading">
++                        <h2>Поръчка {formatOrderNumber(order.number)}</h2>
++                        <span className={statusClass(order.status)}>
++                            {STATUS_LABELS[order.status]}
++                        </span>
++                    </div>
++
++                    <div className="order-details-heading">
++                        <span className="orders-muted">
++                            Създадена {formatDateTime(order.createdAt)}
++                        </span>
++                        <Link to={`/admin/orders/edit/${order.id}`} className="admin-nav-btn">
++                            Редактирай
++                        </Link>
++                    </div>
++                </div>
++            </div>
++
++            {/* Път на поръчката и следваща стъпка */}
++            <section className="orders-card order-progress">
++                <ol className={`order-steps ${isCancelled ? 'order-steps--cancelled' : ''}`}>
++                    {STATUS_FLOW.map((status, index) => {
++                        const isDone = !isCancelled && index < stepIndex;
++                        const isCurrent = !isCancelled && index === stepIndex;
++
++                        return (
++                            <li
++                                key={status}
++                                className={`order-step ${isDone ? 'done' : ''} ${isCurrent ? 'current' : ''}`}
++                                aria-current={isCurrent ? 'step' : undefined}
++                            >
++                                <span className="order-step-dot">
++                                    {isDone ? <CheckIcon /> : index + 1}
++                                </span>
++                                <span>{STATUS_LABELS[status]}</span>
++                            </li>
++                        );
++                    })}
++                </ol>
++
++                <div className="order-progress-actions">
++                    {nextStatus && (
++                        <div className="order-next">
++                            {needsTracking && (
++                                <div className="order-field-inline">
++                                    <label htmlFor="trackingNumber">Номер на товарителница</label>
++                                    <input
++                                        id="trackingNumber"
++                                        className="orders-input"
++                                        type="text"
++                                        maxLength={50}
++                                        placeholder="напр. 1051 6024 8833"
++                                        value={trackingDraft}
++                                        onChange={event => setTrackingDraft(event.target.value)}
++                                    />
++                                </div>
++                            )}
++
++                            <button
++                                type="button"
++                                className="orders-btn"
++                                disabled={isSaving || (needsTracking && !trackingDraft.trim())}
++                                onClick={handleNext}
++                            >
++                                {NEXT_STEP_LABELS[nextStatus]}
++                            </button>
++                        </div>
++                    )}
++
++                    {!nextStatus && (
++                        <p className="order-final">
++                            {isCancelled ? 'Поръчката е отказана.' : 'Поръчката е доставена.'}
++                        </p>
++                    )}
++
++                    <div className="order-secondary-actions">
++                        {previousStatus && (
++                            <button
++                                type="button"
++                                className="orders-text-btn"
++                                disabled={isSaving}
++                                onClick={() => run(() => updateOrderStatus(order.id, previousStatus))}
++                            >
++                                ← Върни на „{STATUS_LABELS[previousStatus]}“
++                            </button>
++                        )}
++
++                        {!isCancelled && order.status !== 'DELIVERED' && (
++                            <button
++                                type="button"
++                                className="orders-text-btn orders-text-btn--danger"
++                                disabled={isSaving}
++                                onClick={handleCancel}
++                            >
++                                Откажи поръчката
++                            </button>
++                        )}
++
++                        {isCancelled && (
++                            <button
++                                type="button"
++                                className="orders-text-btn"
++                                disabled={isSaving}
++                                onClick={() => run(() => updateOrderStatus(order.id, statusBeforeCancel))}
++                            >
++                                Възстанови поръчката
++                            </button>
++                        )}
++                    </div>
++                </div>
++            </section>
++
++            {error && <p className="orders-message orders-message--error">{error}</p>}
++
++            <div className="order-details-grid">
++                <div className="order-details-column">
++                    <section className="orders-card order-box">
++                        <h3>Продукти</h3>
++
++                        <div className="order-lines">
++                            <div className="order-line order-line--head" aria-hidden="true">
++                                <span>Продукт</span>
++                                <span>Брой</span>
++                                <span>Ед. цена</span>
++                                <span>Сума</span>
++                            </div>
++
++                            {order.items.map(item => (
++                                <div className="order-line" key={item.id}>
++                                    <span>
++                                        {item.product?.slug ? (
++                                            <Link to={`/products/${item.product.slug}`} className="order-line-link">
++                                                {item.name}
++                                            </Link>
++                                        ) : (
++                                            item.name
++                                        )}
++                                    </span>
++                                    <span>{item.quantity}</span>
++                                    <span>{formatMoney(item.unitPrice)}</span>
++                                    <span>{formatMoney(item.quantity * Number(item.unitPrice))}</span>
++                                </div>
++                            ))}
++                        </div>
++
++                        <div className="order-total">
++                            <span>Общо</span>
++                            <strong>{formatMoney(order.total)}</strong>
++                        </div>
++                    </section>
++
++                    {order.notes && (
++                        <section className="orders-card order-box">
++                            <h3>Бележка</h3>
++                            <p className="order-notes">{order.notes}</p>
++                        </section>
++                    )}
++
++                    <section className="orders-card order-box">
++                        <h3>Клиент</h3>
++                        <dl className="order-kv">
++                            <dt>Име</dt>
++                            <dd>{order.customerName}</dd>
++                            <dt>Телефон</dt>
++                            <dd>{order.customerPhone}</dd>
++                            <dt>Откъде</dt>
++                            <dd>{CHANNEL_LABELS[order.channel]}</dd>
++                        </dl>
++                    </section>
++                </div>
++
++                <div className="order-details-column">
++                    <section className="orders-card order-box">
++                        <h3>Срок</h3>
++                        <p>
++                            <span className={due.className}>{due.text}</span>
++                            {due.date && <span className="orders-muted"> · {formatDate(order.deadline)}</span>}
++                        </p>
++                    </section>
++
++                    <section className="orders-card order-box">
++                        <h3>Доставка</h3>
++                        <dl className="order-kv">
++                            <dt>Куриер</dt>
++                            <dd>{COURIER_LABELS[order.courier]}</dd>
++                            {order.courier !== 'PICKUP' && (
++                                <>
++                                    <dt>Адрес</dt>
++                                    <dd>{order.deliveryAddress || '—'}</dd>
++                                    <dt>Товарителница</dt>
++                                    <dd>{order.trackingNumber ? `№ ${order.trackingNumber}` : 'Още не е изпратена'}</dd>
++                                </>
++                            )}
++                        </dl>
++                    </section>
++
++                    <section className="orders-card order-box">
++                        <div className="order-box-head">
++                            <h3>Плащане</h3>
++                            <span className={order.isPaid ? 'order-badge order-badge--paid' : 'order-badge order-badge--unpaid'}>
++                                {order.isPaid ? 'Платено' : 'Чака плащане'}
++                            </span>
++                        </div>
++                        <p>{PAYMENT_LABELS[order.paymentMethod]} · {formatMoney(order.total)}</p>
++                        <button
++                            type="button"
++                            className="orders-text-btn"
++                            disabled={isSaving}
++                            onClick={() => run(() => updateOrderPaid(order.id, !order.isPaid))}
++                        >
++                            {order.isPaid ? 'Отбележи като неплатена' : 'Отбележи като платена'}
++                        </button>
++                    </section>
++
++                    <section className="orders-card order-box">
++                        <h3>История</h3>
++                        <ul className="order-history">
++                            {order.history.map(entry => (
++                                <li key={entry.id}>
++                                    <span className="order-history-dot" />
++                                    <div>
++                                        <div>{entry.message}</div>
++                                        <div className="orders-muted">{formatDateTime(entry.createdAt)}</div>
++                                    </div>
++                                </li>
++                            ))}
++                        </ul>
++                    </section>
++
++                    <button
++                        type="button"
++                        className="orders-text-btn orders-text-btn--danger order-delete"
++                        onClick={handleDelete}
++                    >
++                        Изтрий поръчката
++                    </button>
++                </div>
++            </div>
++        </div>
++    );
++}
+diff --git a/client/src/components/admin/orders/order-form/OrderForm.css b/client/src/components/admin/orders/order-form/OrderForm.css
+new file mode 100644
+index 0000000..df06917
+--- /dev/null
++++ b/client/src/components/admin/orders/order-form/OrderForm.css
+@@ -0,0 +1,182 @@
++.order-form-page {
++  max-width: 760px;
++}
++
++.order-form {
++  padding: 28px 32px;
++  display: flex;
++  flex-direction: column;
++}
++
++.order-form-section {
++  display: flex;
++  flex-direction: column;
++  gap: 12px;
++  padding: 22px 0;
++  border-top: 1px solid #f0e4db;
++}
++
++.order-form-section:first-child {
++  border-top: 0;
++  padding-top: 0;
++}
++
++.order-form-section h3 {
++  margin: 0;
++  font-size: 1.1rem;
++  font-weight: 400;
++  color: #8f6a5e;
++}
++
++.order-form-grid {
++  display: grid;
++  gap: 12px;
++}
++
++.order-form-grid--2 {
++  grid-template-columns: repeat(2, minmax(0, 1fr));
++}
++
++.order-form-grid--deadline {
++  grid-template-columns: 200px minmax(0, 1fr);
++}
++
++.order-field {
++  display: flex;
++  flex-direction: column;
++  gap: 6px;
++  min-width: 0;
++}
++
++.order-field label {
++  font-size: 0.875rem;
++  color: #5c463e;
++}
++
++.order-field textarea {
++  resize: vertical;
++  min-height: 84px;
++}
++
++.order-required {
++  color: #b45f5f;
++}
++
++/* Редове с продукти */
++.order-item-block {
++  display: flex;
++  flex-direction: column;
++  gap: 8px;
++}
++
++.order-item {
++  display: grid;
++  grid-template-columns: minmax(0, 1fr) 72px 104px 28px;
++  gap: 10px;
++  align-items: center;
++}
++
++.order-item--head {
++  font-size: 0.8rem;
++  color: #7a5c52;
++}
++
++.order-item-remove {
++  width: 28px;
++  height: 28px;
++  padding: 0;
++  border: 0;
++  border-radius: 50%;
++  background: transparent;
++  color: #8f6a5e;
++  font-size: 1.1rem;
++  line-height: 1;
++  cursor: pointer;
++}
++
++.order-item-remove:hover {
++  background: #8f6a5e;
++  color: #fff;
++}
++
++.order-item-remove:disabled {
++  opacity: 0.25;
++  pointer-events: none;
++}
++
++.order-add-item {
++  align-self: flex-start;
++  font-weight: 700;
++}
++
++.order-check {
++  display: flex;
++  align-items: center;
++  gap: 8px;
++  font-size: 0.9rem;
++  cursor: pointer;
++}
++
++.order-check input {
++  width: 18px;
++  height: 18px;
++  accent-color: #8f6a5e;
++}
++
++/* Общо и бутони */
++.order-form-footer {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  flex-wrap: wrap;
++  padding-top: 20px;
++  border-top: 1px solid #f0e4db;
++}
++
++.order-form-total {
++  display: flex;
++  align-items: baseline;
++  gap: 10px;
++  font-variant-numeric: tabular-nums;
++}
++
++.order-form-total span {
++  color: #7a5c52;
++}
++
++.order-form-total strong {
++  font-size: 1.5rem;
++  color: #8f6a5e;
++}
++
++.order-form-actions {
++  display: flex;
++  gap: 10px;
++}
++
++.order-cancel {
++  display: inline-flex;
++  align-items: center;
++  padding: 10px 18px;
++}
++
++.order-form .orders-message {
++  margin-top: 12px;
++}
++
++@media (max-width: 640px) {
++  .order-form {
++    padding: 20px 16px;
++  }
++
++  .order-form-grid--2,
++  .order-form-grid--deadline {
++    grid-template-columns: 1fr;
++  }
++
++  .order-item {
++    grid-template-columns: minmax(0, 1fr) 60px 84px 28px;
++    gap: 6px;
++  }
++}
+diff --git a/client/src/components/admin/orders/order-form/OrderForm.jsx b/client/src/components/admin/orders/order-form/OrderForm.jsx
+new file mode 100644
+index 0000000..7100a52
+--- /dev/null
++++ b/client/src/components/admin/orders/order-form/OrderForm.jsx
+@@ -0,0 +1,456 @@
++import { useEffect, useState } from 'react';
++import { Link, useNavigate } from 'react-router';
++import { getProducts } from '../../../../services/products';
++import { createOrder, updateOrder } from '../../../../services/orders';
++import {
++    STATUSES,
++    STATUS_LABELS,
++    CHANNEL_LABELS,
++    COURIER_LABELS,
++    PAYMENT_LABELS,
++    formatOrderNumber,
++    formatMoney,
++    toDateInput,
++} from '../../../../utils/orders';
++import '../orders.css';
++import './OrderForm.css';
++
++const CUSTOM_PRODUCT = 'custom';
++
++let nextKey = 1;
++
++function emptyItem() {
++    return { key: nextKey++, productId: '', isCustom: false, name: '', quantity: 1, unitPrice: '' };
++}
++
++function itemFromOrder(item) {
++    return {
++        key: nextKey++,
++        productId: item.productId || '',
++        isCustom: !item.productId,
++        name: item.name,
++        quantity: item.quantity,
++        unitPrice: String(Number(item.unitPrice)),
++    };
++}
++
++function toNumber(value) {
++    const number = parseFloat(String(value).replace(',', '.'));
++    return Number.isFinite(number) ? number : 0;
++}
++
++function ChoicePills({ label, options, value, onChange }) {
++    return (
++        <div className="orders-pills" role="group" aria-label={label}>
++            {Object.entries(options).map(([optionValue, optionLabel]) => (
++                <button
++                    type="button"
++                    key={optionValue}
++                    className={`orders-pill ${value === optionValue ? 'active' : ''}`}
++                    aria-pressed={value === optionValue}
++                    onClick={() => onChange(optionValue)}
++                >
++                    {optionLabel}
++                </button>
++            ))}
++        </div>
++    );
++}
++
++// Без `order` е форма за нова поръчка, с `order` – за редакция.
++export default function OrderForm({ order }) {
++    const navigate = useNavigate();
++    const isEdit = Boolean(order);
++
++    const [products, setProducts] = useState([]);
++    const [form, setForm] = useState(() => ({
++        customerName: order?.customerName ?? '',
++        customerPhone: order?.customerPhone ?? '',
++        channel: order?.channel ?? 'INSTAGRAM',
++        courier: order?.courier ?? 'ECONT',
++        deliveryAddress: order?.deliveryAddress ?? '',
++        paymentMethod: order?.paymentMethod ?? 'CASH_ON_DELIVERY',
++        deadline: toDateInput(order?.deadline),
++        notes: order?.notes ?? '',
++        status: order?.status ?? 'NEW',
++        trackingNumber: order?.trackingNumber ?? '',
++        isPaid: order?.isPaid ?? false,
++    }));
++    const [items, setItems] = useState(() =>
++        order?.items?.length ? order.items.map(itemFromOrder) : [emptyItem()]
++    );
++    const [error, setError] = useState('');
++    const [isSaving, setIsSaving] = useState(false);
++
++    useEffect(() => {
++        getProducts()
++            .then(setProducts)
++            .catch(err => setError(err.message));
++    }, []);
++
++    const setField = (field, value) => {
++        setForm(current => ({ ...current, [field]: value }));
++    };
++
++    const setItem = (key, patch) => {
++        setItems(current =>
++            current.map(item => (item.key === key ? { ...item, ...patch } : item))
++        );
++    };
++
++    const handleProductChange = (item, value) => {
++        if (value === CUSTOM_PRODUCT) {
++            setItem(item.key, { productId: '', isCustom: true, name: '' });
++            return;
++        }
++
++        const product = products.find(p => p.id === value);
++
++        setItem(item.key, {
++            productId: value,
++            isCustom: false,
++            name: product?.name ?? '',
++            // Цената се попълва от продукта, но може да се промени.
++            unitPrice: product ? String(Number(product.price)) : item.unitPrice,
++        });
++    };
++
++    // Продукт от стара поръчка, който вече не е в каталога.
++    const missingProducts = items.filter(
++        item => item.productId && !products.some(product => product.id === item.productId)
++    );
++
++    const total = items.reduce(
++        (sum, item) => sum + toNumber(item.quantity) * toNumber(item.unitPrice),
++        0
++    );
++
++    const handleSubmit = async (event) => {
++        event.preventDefault();
++        setError('');
++
++        const payload = {
++            ...form,
++            deliveryAddress: form.courier === 'PICKUP' ? '' : form.deliveryAddress,
++            items: items
++                .filter(item => item.name.trim())
++                .map(item => ({
++                    productId: item.productId || null,
++                    name: item.name.trim(),
++                    quantity: toNumber(item.quantity),
++                    unitPrice: toNumber(item.unitPrice),
++                })),
++        };
++
++        if (!isEdit) {
++            delete payload.status;
++            delete payload.trackingNumber;
++            delete payload.isPaid;
++        }
++
++        if (payload.items.length === 0) {
++            setError('Добавете поне един продукт.');
++            return;
++        }
++
++        setIsSaving(true);
++
++        try {
++            const saved = isEdit
++                ? await updateOrder(order.id, payload)
++                : await createOrder(payload);
++
++            navigate(`/admin/orders/${saved.id}`);
++        } catch (err) {
++            setError(err.message);
++            setIsSaving(false);
++        }
++    };
++
++    const backLink = isEdit ? `/admin/orders/${order.id}` : '/admin/orders';
++
++    return (
++        <div className="orders-page order-form-page">
++            <div>
++                <Link to={backLink} className="orders-back">
++                    ← {isEdit ? 'Обратно към поръчката' : 'Всички поръчки'}
++                </Link>
++                <h2>
++                    {isEdit ? `Редакция на ${formatOrderNumber(order.number)}` : 'Нова поръчка'}
++                </h2>
++            </div>
++
++            <form className="orders-card order-form" onSubmit={handleSubmit}>
++                <section className="order-form-section">
++                    <h3>Клиент</h3>
++
++                    <div className="order-form-grid order-form-grid--2">
++                        <div className="order-field">
++                            <label htmlFor="customerName">
++                                Име <span className="order-required">*</span>
++                            </label>
++                            <input
++                                id="customerName"
++                                className="orders-input"
++                                type="text"
++                                required
++                                maxLength={100}
++                                placeholder="Име и фамилия"
++                                value={form.customerName}
++                                onChange={event => setField('customerName', event.target.value)}
++                            />
++                        </div>
++
++                        <div className="order-field">
++                            <label htmlFor="customerPhone">
++                                Телефон <span className="order-required">*</span>
++                            </label>
++                            <input
++                                id="customerPhone"
++                                className="orders-input"
++                                type="tel"
++                                required
++                                maxLength={30}
++                                placeholder="08X XXX XXXX"
++                                value={form.customerPhone}
++                                onChange={event => setField('customerPhone', event.target.value)}
++                            />
++                        </div>
++                    </div>
++
++                    <ChoicePills
++                        label="Откъде дойде поръчката"
++                        options={CHANNEL_LABELS}
++                        value={form.channel}
++                        onChange={value => setField('channel', value)}
++                    />
++                </section>
++
++                <section className="order-form-section">
++                    <h3>Продукти</h3>
++
++                    <div className="order-item order-item--head" aria-hidden="true">
++                        <span>Продукт</span>
++                        <span>Брой</span>
++                        <span>Цена €</span>
++                        <span />
++                    </div>
++
++                    {items.map(item => (
++                        <div className="order-item-block" key={item.key}>
++                            <div className="order-item">
++                                <label htmlFor={`product-${item.key}`} className="visually-hidden">
++                                    Продукт
++                                </label>
++                                <select
++                                    id={`product-${item.key}`}
++                                    className="orders-input"
++                                    value={item.isCustom ? CUSTOM_PRODUCT : item.productId}
++                                    onChange={event => handleProductChange(item, event.target.value)}
++                                >
++                                    <option value="">Избери продукт</option>
++                                    {products.map(product => (
++                                        <option key={product.id} value={product.id}>
++                                            {product.name}
++                                        </option>
++                                    ))}
++                                    {missingProducts.map(missing => (
++                                        <option key={missing.productId} value={missing.productId}>
++                                            {missing.name}
++                                        </option>
++                                    ))}
++                                    <option value={CUSTOM_PRODUCT}>Друго (по поръчка)</option>
++                                </select>
++
++                                <label htmlFor={`quantity-${item.key}`} className="visually-hidden">
++                                    Брой
++                                </label>
++                                <input
++                                    id={`quantity-${item.key}`}
++                                    className="orders-input"
++                                    type="number"
++                                    min="1"
++                                    value={item.quantity}
++                                    onChange={event => setItem(item.key, { quantity: event.target.value })}
++                                />
++
++                                <label htmlFor={`price-${item.key}`} className="visually-hidden">
++                                    Цена
++                                </label>
++                                <input
++                                    id={`price-${item.key}`}
++                                    className="orders-input"
++                                    type="number"
++                                    min="0"
++                                    step="0.01"
++                                    placeholder="0.00"
++                                    value={item.unitPrice}
++                                    onChange={event => setItem(item.key, { unitPrice: event.target.value })}
++                                />
++
++                                <button
++                                    type="button"
++                                    className="order-item-remove"
++                                    aria-label="Премахни продукта"
++                                    disabled={items.length === 1}
++                                    onClick={() =>
++                                        setItems(current => current.filter(x => x.key !== item.key))
++                                    }
++                                >
++                                    ×
++                                </button>
++                            </div>
++
++                            {item.isCustom && (
++                                <div className="order-field">
++                                    <label htmlFor={`custom-${item.key}`}>Какво е поръчано</label>
++                                    <input
++                                        id={`custom-${item.key}`}
++                                        className="orders-input"
++                                        type="text"
++                                        maxLength={150}
++                                        placeholder="напр. Букет в синьо с плюшено зайче"
++                                        value={item.name}
++                                        onChange={event => setItem(item.key, { name: event.target.value })}
++                                    />
++                                </div>
++                            )}
++                        </div>
++                    ))}
++
++                    <button
++                        type="button"
++                        className="orders-text-btn order-add-item"
++                        onClick={() => setItems(current => [...current, emptyItem()])}
++                    >
++                        + Добави продукт
++                    </button>
++                </section>
++
++                <section className="order-form-section">
++                    <h3>Доставка и плащане</h3>
++
++                    <ChoicePills
++                        label="Куриер"
++                        options={COURIER_LABELS}
++                        value={form.courier}
++                        onChange={value => setField('courier', value)}
++                    />
++
++                    {form.courier !== 'PICKUP' && (
++                        <div className="order-field">
++                            <label htmlFor="deliveryAddress">Град и офис или адрес</label>
++                            <input
++                                id="deliveryAddress"
++                                className="orders-input"
++                                type="text"
++                                maxLength={300}
++                                placeholder="напр. София, офис Еконт Лозенец"
++                                value={form.deliveryAddress}
++                                onChange={event => setField('deliveryAddress', event.target.value)}
++                            />
++                        </div>
++                    )}
++
++                    <ChoicePills
++                        label="Плащане"
++                        options={PAYMENT_LABELS}
++                        value={form.paymentMethod}
++                        onChange={value => setField('paymentMethod', value)}
++                    />
++                </section>
++
++                <section className="order-form-section">
++                    <div className="order-form-grid order-form-grid--deadline">
++                        <div className="order-field">
++                            <label htmlFor="deadline">Краен срок</label>
++                            <input
++                                id="deadline"
++                                className="orders-input"
++                                type="date"
++                                value={form.deadline}
++                                onChange={event => setField('deadline', event.target.value)}
++                            />
++                        </div>
++
++                        <div className="order-field">
++                            <label htmlFor="notes">Бележка</label>
++                            <textarea
++                                id="notes"
++                                className="orders-input"
++                                rows={3}
++                                maxLength={2000}
++                                placeholder="Персонализация, цветове, надпис на картичката…"
++                                value={form.notes}
++                                onChange={event => setField('notes', event.target.value)}
++                            />
++                        </div>
++                    </div>
++                </section>
++
++                {isEdit && (
++                    <section className="order-form-section">
++                        <h3>Статус и проследяване</h3>
++
++                        <div className="order-form-grid order-form-grid--2">
++                            <div className="order-field">
++                                <label htmlFor="status">Статус</label>
++                                <select
++                                    id="status"
++                                    className="orders-input"
++                                    value={form.status}
++                                    onChange={event => setField('status', event.target.value)}
++                                >
++                                    {STATUSES.map(status => (
++                                        <option key={status} value={status}>
++                                            {STATUS_LABELS[status]}
++                                        </option>
++                                    ))}
++                                </select>
++                            </div>
++
++                            <div className="order-field">
++                                <label htmlFor="trackingNumber">Номер на товарителница</label>
++                                <input
++                                    id="trackingNumber"
++                                    className="orders-input"
++                                    type="text"
++                                    maxLength={50}
++                                    value={form.trackingNumber}
++                                    onChange={event => setField('trackingNumber', event.target.value)}
++                                />
++                            </div>
++                        </div>
++
++                        <label className="order-check">
++                            <input
++                                type="checkbox"
++                                checked={form.isPaid}
++                                onChange={event => setField('isPaid', event.target.checked)}
++                            />
++                            Платено
++                        </label>
++                    </section>
++                )}
++
++                {error && <p className="orders-message orders-message--error">{error}</p>}
++
++                <div className="order-form-footer">
++                    <div className="order-form-total">
++                        <span>Общо</span>
++                        <strong>{formatMoney(total)}</strong>
++                    </div>
++
++                    <div className="order-form-actions">
++                        <Link to={backLink} className="admin-nav-btn order-cancel">
++                            Отказ
++                        </Link>
++                        <button type="submit" className="orders-btn" disabled={isSaving}>
++                            {isSaving ? 'Запазване...' : 'Запази поръчката'}
++                        </button>
++                    </div>
++                </div>
++            </form>
++        </div>
++    );
++}
+diff --git a/client/src/components/admin/orders/order-list/OrderList.css b/client/src/components/admin/orders/order-list/OrderList.css
+new file mode 100644
+index 0000000..e0f3d71
+--- /dev/null
++++ b/client/src/components/admin/orders/order-list/OrderList.css
+@@ -0,0 +1,187 @@
++.order-list-top {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 16px;
++  flex-wrap: wrap;
++}
++
++.order-list-top p {
++  margin-top: 4px;
++}
++
++/* Табове по статус */
++.order-tabs {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 8px;
++}
++
++.order-tab {
++  display: inline-flex;
++  align-items: center;
++  gap: 8px;
++  height: 38px;
++  padding: 0 6px 0 14px;
++  border: 1px solid #8f6a5e;
++  border-radius: 25px;
++  background: #fcf0e8;
++  color: #5c463e;
++  font-size: 0.9rem;
++  cursor: pointer;
++  transition: background 0.15s, color 0.15s;
++}
++
++.order-tab:hover {
++  background: #ebdacf;
++}
++
++.order-tab.active {
++  background: #8f6a5e;
++  color: #fff;
++}
++
++.order-tab-count {
++  min-width: 24px;
++  height: 24px;
++  padding: 0 7px;
++  border-radius: 999px;
++  background: #fff;
++  color: #7a5c52;
++  font-size: 0.78rem;
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  font-variant-numeric: tabular-nums;
++}
++
++.order-tab.active .order-tab-count {
++  background: rgba(255, 255, 255, 0.22);
++  color: #fff;
++}
++
++/* Търсене и филтри */
++.order-filters {
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  gap: 12px;
++}
++
++.order-search {
++  flex: 1 1 320px;
++}
++
++.order-select {
++  width: auto;
++}
++
++/* Таблица */
++.order-table {
++  overflow: hidden;
++}
++
++.order-row {
++  display: grid;
++  grid-template-columns: 90px minmax(0, 1.3fr) minmax(0, 1.5fr) 140px 130px minmax(0, 1fr) 120px;
++  gap: 14px;
++  align-items: center;
++  padding: 14px 20px;
++  border-bottom: 1px solid #f4ebe4;
++  font-size: 0.9rem;
++}
++
++.order-row:last-child {
++  border-bottom: 0;
++}
++
++.order-row:not(.order-row--head):hover {
++  background: #fffaf7;
++}
++
++.order-row--head {
++  padding: 12px 20px;
++  font-size: 0.75rem;
++  letter-spacing: 0.4px;
++  text-transform: uppercase;
++  color: #7a5c52;
++  border-bottom: 1px solid #efe3da;
++}
++
++.order-number {
++  font-weight: 700;
++  color: #8f6a5e;
++  font-variant-numeric: tabular-nums;
++}
++
++.order-number:hover {
++  text-decoration: underline;
++}
++
++.order-cell {
++  display: flex;
++  flex-direction: column;
++  min-width: 0;
++}
++
++.order-sub {
++  margin-top: 2px;
++  font-size: 0.8rem;
++  color: #7a5c52;
++}
++
++.order-ellipsis {
++  white-space: nowrap;
++  overflow: hidden;
++  text-overflow: ellipsis;
++}
++
++.order-amount {
++  text-align: right;
++  font-weight: 600;
++  font-variant-numeric: tabular-nums;
++}
++
++.order-amount .order-sub {
++  font-weight: 400;
++}
++
++.order-status-select {
++  appearance: none;
++  -webkit-appearance: none;
++  border: 1px solid transparent;
++  padding: 5px 12px;
++  cursor: pointer;
++  transition: border-color 0.15s;
++}
++
++.order-status-select:hover {
++  border-color: currentColor;
++}
++
++.order-empty {
++  padding: 40px 20px;
++  text-align: center;
++  color: #7a5c52;
++}
++
++/* На по-тесен екран всяка поръчка става карта */
++@media (max-width: 900px) {
++  .order-row--head {
++    display: none;
++  }
++
++  .order-row {
++    grid-template-columns: 1fr auto;
++    gap: 6px 12px;
++  }
++
++  .order-row > :nth-child(3),
++  .order-row > :nth-child(6) {
++    grid-column: 1 / -1;
++  }
++
++  .order-amount {
++    text-align: left;
++  }
++}
+diff --git a/client/src/components/admin/orders/order-list/OrderList.jsx b/client/src/components/admin/orders/order-list/OrderList.jsx
+new file mode 100644
+index 0000000..c25a4c1
+--- /dev/null
++++ b/client/src/components/admin/orders/order-list/OrderList.jsx
+@@ -0,0 +1,282 @@
++import { useEffect, useMemo, useState } from 'react';
++import { Link } from 'react-router';
++import { getOrders, updateOrderStatus } from '../../../../services/orders';
++import {
++    STATUSES,
++    STATUS_LABELS,
++    STATUS_TAB_LABELS,
++    CLOSED_STATUSES,
++    CHANNEL_LABELS,
++    COURIER_LABELS,
++    PAYMENT_LABELS,
++    statusClass,
++    formatOrderNumber,
++    formatMoney,
++    deadlineInfo,
++    daysUntil,
++} from '../../../../utils/orders';
++import '../orders.css';
++import './OrderList.css';
++
++function deliveryText(order) {
++    const courier = COURIER_LABELS[order.courier];
++    return order.trackingNumber ? `${courier} · № ${order.trackingNumber}` : courier;
++}
++
++function paymentText(order) {
++    const method = PAYMENT_LABELS[order.paymentMethod];
++    return order.isPaid ? `${method} · платено` : method;
++}
++
++export default function OrderList() {
++    const [orders, setOrders] = useState([]);
++    const [isLoading, setIsLoading] = useState(true);
++    const [error, setError] = useState('');
++    const [tab, setTab] = useState('active');
++    const [search, setSearch] = useState('');
++    const [courier, setCourier] = useState('');
++    const [sort, setSort] = useState('deadline');
++
++    useEffect(() => {
++        async function loadOrders() {
++            try {
++                setOrders(await getOrders());
++            } catch (err) {
++                setError(err.message);
++            } finally {
++                setIsLoading(false);
++            }
++        }
++
++        loadOrders();
++    }, []);
++
++    const activeOrders = orders.filter(order => !CLOSED_STATUSES.includes(order.status));
++
++    const urgentCount = activeOrders.filter(
++        order => order.deadline && daysUntil(order.deadline) <= 3
++    ).length;
++
++    const tabs = [
++        { value: 'active', label: 'Активни', count: activeOrders.length },
++        { value: 'all', label: 'Всички', count: orders.length },
++        ...STATUSES.map(status => ({
++            value: status,
++            label: STATUS_TAB_LABELS[status],
++            count: orders.filter(order => order.status === status).length,
++        })),
++    ];
++
++    const visibleOrders = useMemo(() => {
++        const query = search.trim().toLowerCase();
++        const digits = query.replace(/\s/g, '');
++
++        const filtered = orders.filter(order => {
++            if (tab === 'active' && CLOSED_STATUSES.includes(order.status)) return false;
++            if (tab !== 'active' && tab !== 'all' && order.status !== tab) return false;
++            if (courier && order.courier !== courier) return false;
++
++            if (query) {
++                const matches =
++                    order.customerName.toLowerCase().includes(query) ||
++                    order.customerPhone.replace(/\s/g, '').includes(digits) ||
++                    formatOrderNumber(order.number).toLowerCase().includes(query);
++
++                if (!matches) return false;
++            }
++
++            return true;
++        });
++
++        return [...filtered].sort((a, b) => {
++            if (sort === 'newest') {
++                return new Date(b.createdAt) - new Date(a.createdAt);
++            }
++
++            // Поръчките без срок отиват най-отдолу.
++            if (!a.deadline) return 1;
++            if (!b.deadline) return -1;
++            return new Date(a.deadline) - new Date(b.deadline);
++        });
++    }, [orders, tab, search, courier, sort]);
++
++    const handleStatusChange = async (order, status) => {
++        const previousStatus = order.status;
++
++        // Сменяме веднага на екрана и връщаме, ако сървърът откаже.
++        setOrders(current =>
++            current.map(item => (item.id === order.id ? { ...item, status } : item))
++        );
++
++        try {
++            await updateOrderStatus(order.id, status);
++        } catch (err) {
++            setError(err.message);
++            setOrders(current =>
++                current.map(item =>
++                    item.id === order.id ? { ...item, status: previousStatus } : item
++                )
++            );
++        }
++    };
++
++    return (
++        <div className="orders-page">
++            <div className="order-list-top">
++                <div>
++                    <h2>Поръчки</h2>
++                    {!isLoading && (
++                        <p className="orders-muted">
++                            {activeOrders.length} активни · {urgentCount} със срок до 3 дни
++                        </p>
++                    )}
++                </div>
++
++                <Link to="/admin/orders/create" className="orders-btn">
++                    + Нова поръчка
++                </Link>
++            </div>
++
++            <div className="order-tabs" role="group" aria-label="Статус">
++                {tabs.map(item => (
++                    <button
++                        type="button"
++                        key={item.value}
++                        className={`order-tab ${tab === item.value ? 'active' : ''}`}
++                        aria-pressed={tab === item.value}
++                        onClick={() => setTab(item.value)}
++                    >
++                        <span>{item.label}</span>
++                        <span className="order-tab-count">{item.count}</span>
++                    </button>
++                ))}
++            </div>
++
++            <div className="order-filters">
++                <label htmlFor="order-search" className="visually-hidden">
++                    Търсене
++                </label>
++                <input
++                    id="order-search"
++                    type="search"
++                    className="orders-input order-search"
++                    placeholder="Търси по име, телефон или номер"
++                    value={search}
++                    onChange={event => setSearch(event.target.value)}
++                />
++
++                <label htmlFor="order-courier" className="orders-muted">Куриер</label>
++                <select
++                    id="order-courier"
++                    className="orders-input order-select"
++                    value={courier}
++                    onChange={event => setCourier(event.target.value)}
++                >
++                    <option value="">Всички</option>
++                    {Object.entries(COURIER_LABELS).map(([value, label]) => (
++                        <option key={value} value={value}>{label}</option>
++                    ))}
++                </select>
++
++                <label htmlFor="order-sort" className="orders-muted">Подреди по</label>
++                <select
++                    id="order-sort"
++                    className="orders-input order-select"
++                    value={sort}
++                    onChange={event => setSort(event.target.value)}
++                >
++                    <option value="deadline">Краен срок</option>
++                    <option value="newest">Най-нови</option>
++                </select>
++            </div>
++
++            {error && <p className="orders-message orders-message--error">{error}</p>}
++
++            <div className="orders-card order-table">
++                <div className="order-row order-row--head" aria-hidden="true">
++                    <span>Номер</span>
++                    <span>Клиент</span>
++                    <span>Продукти</span>
++                    <span>Краен срок</span>
++                    <span>Статус</span>
++                    <span>Доставка</span>
++                    <span className="order-amount">Сума</span>
++                </div>
++
++                {isLoading && <p className="order-empty">Зареждане...</p>}
++
++                {!isLoading && visibleOrders.length === 0 && (
++                    <p className="order-empty">
++                        {orders.length === 0
++                            ? 'Още няма поръчки. Добавете първата с „+ Нова поръчка“.'
++                            : 'Няма поръчки, които отговарят на търсенето.'}
++                    </p>
++                )}
++
++                {visibleOrders.map(order => {
++                    const due = deadlineInfo(order);
++                    const [firstItem, ...otherItems] = order.items;
++
++                    return (
++                        <div className="order-row" key={order.id}>
++                            <Link to={`/admin/orders/${order.id}`} className="order-number">
++                                {formatOrderNumber(order.number)}
++                            </Link>
++
++                            <div className="order-cell">
++                                <span className="order-ellipsis">{order.customerName}</span>
++                                <span className="order-sub">
++                                    {order.customerPhone} · {CHANNEL_LABELS[order.channel]}
++                                </span>
++                            </div>
++
++                            <div className="order-cell">
++                                <span className="order-ellipsis">
++                                    {firstItem?.name}
++                                    {firstItem && firstItem.quantity > 1 && ` ×${firstItem.quantity}`}
++                                </span>
++                                {otherItems.length > 0 && (
++                                    <span className="order-sub order-ellipsis">
++                                        + {otherItems.length} още: {otherItems.map(item => item.name).join(', ')}
++                                    </span>
++                                )}
++                            </div>
++
++                            <div className="order-cell">
++                                <span className={due.className}>{due.text}</span>
++                                {due.date && <span className="order-sub">{due.date}</span>}
++                            </div>
++
++                            <div>
++                                <label htmlFor={`status-${order.id}`} className="visually-hidden">
++                                    Статус на {formatOrderNumber(order.number)}
++                                </label>
++                                <select
++                                    id={`status-${order.id}`}
++                                    className={`order-status-select ${statusClass(order.status)}`}
++                                    value={order.status}
++                                    onChange={event => handleStatusChange(order, event.target.value)}
++                                >
++                                    {STATUSES.map(status => (
++                                        <option key={status} value={status}>
++                                            {STATUS_LABELS[status]}
++                                        </option>
++                                    ))}
++                                </select>
++                            </div>
++
++                            <div className="order-cell">
++                                <span className="order-ellipsis">{deliveryText(order)}</span>
++                            </div>
++
++                            <div className="order-cell order-amount">
++                                <span>{formatMoney(order.total)}</span>
++                                <span className="order-sub">{paymentText(order)}</span>
++                            </div>
++                        </div>
++                    );
++                })}
++            </div>
++        </div>
++    );
++}
+diff --git a/client/src/components/admin/orders/orders.css b/client/src/components/admin/orders/orders.css
+new file mode 100644
+index 0000000..f22ac72
+--- /dev/null
++++ b/client/src/components/admin/orders/orders.css
+@@ -0,0 +1,208 @@
++/* Общи стилове за страниците с поръчки */
++
++.orders-page {
++  width: 100%;
++  max-width: 1160px;
++  margin: 0 auto;
++  padding: 40px 0 70px;
++  display: flex;
++  flex-direction: column;
++  gap: 20px;
++  color: #5c463e;
++}
++
++.orders-page button,
++.orders-page input,
++.orders-page select,
++.orders-page textarea {
++  font-family: "Chocolate Classical Sans", sans-serif;
++}
++
++.orders-page h2 {
++  margin: 0;
++  font-size: 1.9rem;
++  font-weight: 400;
++  color: #8f6a5e;
++}
++
++.orders-back {
++  font-size: 0.875rem;
++  color: #8f6a5e;
++}
++
++.orders-back:hover {
++  text-decoration: underline;
++}
++
++.orders-muted {
++  font-size: 0.85rem;
++  color: #7a5c52;
++}
++
++.orders-card {
++  background: #fff;
++  border-radius: 16px;
++  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
++}
++
++.orders-btn {
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  gap: 6px;
++  padding: 11px 18px;
++  border: none;
++  border-radius: 10px;
++  background: #8f6a5e;
++  color: #fff;
++  font-size: 0.95rem;
++  cursor: pointer;
++  transition: background 0.25s;
++}
++
++.orders-btn:hover {
++  background: #5c463e;
++  color: #fff;
++}
++
++.orders-btn:disabled {
++  opacity: 0.5;
++  cursor: default;
++  background: #8f6a5e;
++}
++
++.orders-text-btn {
++  background: none;
++  border: none;
++  padding: 0;
++  color: #8f6a5e;
++  font-size: 0.875rem;
++  cursor: pointer;
++}
++
++.orders-text-btn:hover {
++  text-decoration: underline;
++}
++
++.orders-text-btn--danger {
++  color: #a12626;
++}
++
++.orders-input {
++  width: 100%;
++  padding: 10px 12px;
++  border-radius: 10px;
++  border: 1px solid #8f6a5e33;
++  background: #fff;
++  color: #5c463e;
++  font-size: 0.9rem;
++  outline: none;
++  transition: border 0.2s, box-shadow 0.2s;
++}
++
++.orders-input:focus {
++  border-color: #8f6a5e;
++  box-shadow: 0 0 0 3px #8f6a5e22;
++}
++
++.orders-page button:focus-visible,
++.orders-page a:focus-visible,
++.orders-input:focus-visible {
++  outline: 3px solid #8f6a5e;
++  outline-offset: 2px;
++}
++
++.visually-hidden {
++  position: absolute;
++  width: 1px;
++  height: 1px;
++  overflow: hidden;
++  clip: rect(0 0 0 0);
++  white-space: nowrap;
++}
++
++/* Хапчета за избор (канал, куриер, плащане) */
++.orders-pills {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 8px;
++}
++
++.orders-pill {
++  padding: 7px 14px;
++  border: 1px solid #8f6a5e;
++  border-radius: 25px;
++  background: #fcf0e8;
++  color: #5c463e;
++  font-size: 0.9rem;
++  cursor: pointer;
++  transition: background 0.15s, color 0.15s;
++}
++
++.orders-pill:hover {
++  background: #ebdacf;
++}
++
++.orders-pill.active {
++  background: #8f6a5e;
++  color: #fff;
++}
++
++/* Етикети за статус */
++.order-status {
++  display: inline-flex;
++  align-items: center;
++  gap: 6px;
++  padding: 4px 10px;
++  border-radius: 999px;
++  font-size: 0.8rem;
++  white-space: nowrap;
++}
++
++.order-status::before {
++  content: "";
++  width: 6px;
++  height: 6px;
++  border-radius: 50%;
++  background: currentColor;
++}
++
++.order-status--new { background: #e6eef8; color: #2f5b8a; }
++.order-status--confirmed { background: #efe7f6; color: #5f4380; }
++.order-status--in-progress { background: #fcefd9; color: #7d5210; }
++.order-status--ready { background: #e3f1e6; color: #2e6b40; }
++.order-status--shipped { background: #e3f0f2; color: #265f6a; }
++.order-status--delivered { background: #eeeceb; color: #555; }
++.order-status--cancelled { background: #fbe9e9; color: #963131; }
++
++/* Краен срок */
++.due { color: #5c463e; }
++.due--late { color: #a12626; font-weight: 600; }
++.due--soon { color: #8a5512; font-weight: 600; }
++.due--done,
++.due--none { color: #7a5c52; }
++
++.orders-message {
++  padding: 10px 12px;
++  border-radius: 8px;
++  font-size: 0.9rem;
++  text-align: center;
++}
++
++.orders-message--error {
++  color: #a12626;
++  background: #fdeaea;
++  border: 1px solid #f1bcbc;
++}
++
++@media (max-width: 1200px) {
++  .orders-page {
++    padding: 30px 16px 60px;
++  }
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .orders-page * {
++    transition: none !important;
++  }
++}
+diff --git a/client/src/pages/admin/AdminCreateOrder.jsx b/client/src/pages/admin/AdminCreateOrder.jsx
+new file mode 100644
+index 0000000..cd193b6
+--- /dev/null
++++ b/client/src/pages/admin/AdminCreateOrder.jsx
+@@ -0,0 +1,11 @@
++import AdminHeader from "../../components/admin/admin-header/AdminHeader";
++import OrderForm from "../../components/admin/orders/order-form/OrderForm";
++
++export default function AdminCreateOrder() {
++    return (
++        <div className="admin-page">
++            <AdminHeader />
++            <OrderForm />
++        </div>
++    );
++}
+diff --git a/client/src/pages/admin/AdminEditOrder.jsx b/client/src/pages/admin/AdminEditOrder.jsx
+new file mode 100644
+index 0000000..a008630
+--- /dev/null
++++ b/client/src/pages/admin/AdminEditOrder.jsx
+@@ -0,0 +1,38 @@
++import { useEffect, useState } from "react";
++import { Link, useParams } from "react-router";
++import AdminHeader from "../../components/admin/admin-header/AdminHeader";
++import OrderForm from "../../components/admin/orders/order-form/OrderForm";
++import { getOrderById } from "../../services/orders";
++
++export default function AdminEditOrder() {
++    const { id } = useParams();
++    const [order, setOrder] = useState(null);
++    const [error, setError] = useState("");
++
++    useEffect(() => {
++        getOrderById(id)
++            .then(setOrder)
++            .catch(err => setError(err.message));
++    }, [id]);
++
++    return (
++        <div className="admin-page">
++            <AdminHeader />
++
++            {order && <OrderForm key={order.id} order={order} />}
++
++            {!order && (
++                <div className="orders-page">
++                    {error ? (
++                        <>
++                            <Link to="/admin/orders" className="orders-back">← Всички поръчки</Link>
++                            <p className="orders-message orders-message--error">{error}</p>
++                        </>
++                    ) : (
++                        <p>Зареждане...</p>
++                    )}
++                </div>
++            )}
++        </div>
++    );
++}
+diff --git a/client/src/pages/admin/AdminOrder.jsx b/client/src/pages/admin/AdminOrder.jsx
+new file mode 100644
+index 0000000..34ffef0
+--- /dev/null
++++ b/client/src/pages/admin/AdminOrder.jsx
+@@ -0,0 +1,11 @@
++import AdminHeader from "../../components/admin/admin-header/AdminHeader";
++import OrderDetails from "../../components/admin/orders/order-details/OrderDetails";
++
++export default function AdminOrder() {
++    return (
++        <div className="admin-page">
++            <AdminHeader />
++            <OrderDetails />
++        </div>
++    );
++}
+diff --git a/client/src/pages/admin/AdminOrders.jsx b/client/src/pages/admin/AdminOrders.jsx
+new file mode 100644
+index 0000000..b56137e
+--- /dev/null
++++ b/client/src/pages/admin/AdminOrders.jsx
+@@ -0,0 +1,11 @@
++import AdminHeader from "../../components/admin/admin-header/AdminHeader";
++import OrderList from "../../components/admin/orders/order-list/OrderList";
++
++export default function AdminOrders() {
++    return (
++        <div className="admin-page">
++            <AdminHeader />
++            <OrderList />
++        </div>
++    );
++}
+diff --git a/client/src/services/orders.js b/client/src/services/orders.js
+new file mode 100644
+index 0000000..a0485de
+--- /dev/null
++++ b/client/src/services/orders.js
+@@ -0,0 +1,78 @@
++const BASE_URL = `${import.meta.env.VITE_API_URL}/api/admin/orders`;
++
++async function request(url, options = {}, fallbackMessage) {
++    const response = await fetch(url, {
++        credentials: 'include',
++        ...options,
++        headers: options.body
++            ? { 'Content-Type': 'application/json', ...options.headers }
++            : options.headers,
++    });
++
++    if (!response.ok) {
++        let message = fallbackMessage;
++
++        try {
++            const data = await response.json();
++            message = data.message || message;
++        } catch {
++            // Отговорът не е JSON – ползваме общото съобщение.
++        }
++
++        throw new Error(message);
++    }
++
++    if (response.status === 204) {
++        return null;
++    }
++
++    return response.json();
++}
++
++export function getOrders() {
++    return request(BASE_URL, {}, 'Грешка при зареждането на поръчките.');
++}
++
++export function getOrderById(id) {
++    return request(`${BASE_URL}/${id}`, {}, 'Грешка при зареждането на поръчката.');
++}
++
++export function createOrder(order) {
++    return request(
++        BASE_URL,
++        { method: 'POST', body: JSON.stringify(order) },
++        'Грешка при създаването на поръчката.'
++    );
++}
++
++export function updateOrder(id, order) {
++    return request(
++        `${BASE_URL}/${id}`,
++        { method: 'PUT', body: JSON.stringify(order) },
++        'Грешка при запазването на поръчката.'
++    );
++}
++
++export function updateOrderStatus(id, status, trackingNumber) {
++    return request(
++        `${BASE_URL}/${id}/status`,
++        { method: 'PATCH', body: JSON.stringify({ status, trackingNumber }) },
++        'Грешка при смяната на статуса.'
++    );
++}
++
++export function updateOrderPaid(id, isPaid) {
++    return request(
++        `${BASE_URL}/${id}/paid`,
++        { method: 'PATCH', body: JSON.stringify({ isPaid }) },
++        'Грешка при запазването на плащането.'
++    );
++}
++
++export function deleteOrder(id) {
++    return request(
++        `${BASE_URL}/${id}`,
++        { method: 'DELETE' },
++        'Грешка при изтриването на поръчката.'
++    );
++}
+diff --git a/client/src/utils/orders.js b/client/src/utils/orders.js
+new file mode 100644
+index 0000000..f13772a
+--- /dev/null
++++ b/client/src/utils/orders.js
+@@ -0,0 +1,144 @@
++// Етикети и помощни функции за поръчките.
++// Стойностите (NEW, ECONT …) са същите като enum-ите в prisma/schema.prisma.
++
++export const STATUS_FLOW = [
++    'NEW',
++    'CONFIRMED',
++    'IN_PROGRESS',
++    'READY',
++    'SHIPPED',
++    'DELIVERED',
++];
++
++export const STATUSES = [...STATUS_FLOW, 'CANCELLED'];
++
++// Поръчки, по които вече няма работа.
++export const CLOSED_STATUSES = ['SHIPPED', 'DELIVERED', 'CANCELLED'];
++
++export const STATUS_LABELS = {
++    NEW: 'Нова',
++    CONFIRMED: 'Потвърдена',
++    IN_PROGRESS: 'В изработка',
++    READY: 'Готова',
++    SHIPPED: 'Изпратена',
++    DELIVERED: 'Доставена',
++    CANCELLED: 'Отказана',
++};
++
++// Множествено число за табовете в списъка.
++export const STATUS_TAB_LABELS = {
++    NEW: 'Нови',
++    CONFIRMED: 'Потвърдени',
++    IN_PROGRESS: 'В изработка',
++    READY: 'Готови',
++    SHIPPED: 'Изпратени',
++    DELIVERED: 'Доставени',
++    CANCELLED: 'Отказани',
++};
++
++// Текст на бутона за преминаване към съответния статус.
++export const NEXT_STEP_LABELS = {
++    CONFIRMED: 'Потвърди поръчката',
++    IN_PROGRESS: 'Започни изработката',
++    READY: 'Маркирай като готова',
++    SHIPPED: 'Маркирай като изпратена',
++    DELIVERED: 'Маркирай като доставена',
++};
++
++export const CHANNEL_LABELS = {
++    INSTAGRAM: 'Instagram',
++    FACEBOOK: 'Facebook',
++    TIKTOK: 'TikTok',
++    WEBSITE: 'Сайт',
++    PHONE: 'Телефон',
++    OTHER: 'Друго',
++};
++
++export const COURIER_LABELS = {
++    ECONT: 'Еконт',
++    SPEEDY: 'Спиди',
++    PICKUP: 'Лично вземане',
++};
++
++export const PAYMENT_LABELS = {
++    CASH_ON_DELIVERY: 'Наложен платеж',
++    BANK_TRANSFER: 'Банков превод',
++    CASH: 'В брой',
++};
++
++export function statusClass(status) {
++    return `order-status order-status--${status.toLowerCase().replace('_', '-')}`;
++}
++
++export function formatOrderNumber(number) {
++    return `ПС-${String(number).padStart(4, '0')}`;
++}
++
++export function formatMoney(value) {
++    return `${Number(value || 0).toFixed(2).replace('.', ',')} €`;
++}
++
++// Срокът се пази като дата без час (2026-11-21T00:00:00.000Z).
++export function toDateInput(value) {
++    return value ? String(value).slice(0, 10) : '';
++}
++
++export function formatDate(value) {
++    if (!value) return '';
++
++    const [year, month, day] = toDateInput(value).split('-');
++    return `${day}.${month}.${year}`;
++}
++
++export function formatDateTime(value) {
++    return new Date(value).toLocaleString('bg-BG', {
++        day: '2-digit',
++        month: '2-digit',
++        year: 'numeric',
++        hour: '2-digit',
++        minute: '2-digit',
++    });
++}
++
++export function daysUntil(value) {
++    const [year, month, day] = toDateInput(value).split('-').map(Number);
++    const today = new Date();
++
++    const deadline = Date.UTC(year, month - 1, day);
++    const todayUtc = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
++
++    return Math.round((deadline - todayUtc) / 86400000);
++}
++
++function plural(count) {
++    return count === 1 ? 'ден' : 'дни';
++}
++
++// Текст и цвят за крайния срок.
++export function deadlineInfo(order) {
++    if (!order.deadline) {
++        return { text: 'Без срок', date: '', className: 'due due--none' };
++    }
++
++    const date = formatDate(order.deadline);
++
++    if (CLOSED_STATUSES.includes(order.status)) {
++        return { text: date, date: '', className: 'due due--done' };
++    }
++
++    const days = daysUntil(order.deadline);
++
++    if (days < 0) {
++        return { text: `Просрочена ${-days} ${plural(-days)}`, date, className: 'due due--late' };
++    }
++
++    if (days === 0) {
++        return { text: 'Днес', date, className: 'due due--late' };
++    }
++
++    if (days <= 3) {
++        return { text: `След ${days} ${plural(days)}`, date, className: 'due due--soon' };
++    }
++
++    return { text: `След ${days} дни`, date, className: 'due' };
++}
+diff --git a/prisma/schema.prisma b/prisma/schema.prisma
+index b1d0960..6aad60e 100644
+--- a/prisma/schema.prisma
++++ b/prisma/schema.prisma
+@@ -65,6 +65,88 @@ model Product {
+ 
+   categories Category[]
+   images     Image[]
++  orderItems OrderItem[]
+ 
+   @@map("products")
+ }
++
++enum OrderStatus {
++  NEW
++  CONFIRMED
++  IN_PROGRESS
++  READY
++  SHIPPED
++  DELIVERED
++  CANCELLED
++}
++
++enum OrderChannel {
++  INSTAGRAM
++  FACEBOOK
++  TIKTOK
++  WEBSITE
++  PHONE
++  OTHER
++}
++
++enum Courier {
++  ECONT
++  SPEEDY
++  PICKUP
++}
++
++enum PaymentMethod {
++  CASH_ON_DELIVERY
++  BANK_TRANSFER
++  CASH
++}
++
++model Order {
++  id              String        @id @default(uuid())
++  number          Int           @unique @default(autoincrement())
++  status          OrderStatus   @default(NEW)
++  customerName    String
++  customerPhone   String
++  channel         OrderChannel  @default(INSTAGRAM)
++  courier         Courier       @default(ECONT)
++  deliveryAddress String?
++  trackingNumber  String?
++  paymentMethod   PaymentMethod @default(CASH_ON_DELIVERY)
++  isPaid          Boolean       @default(false)
++  deadline        DateTime?     @db.Date
++  notes           String?
++  total           Decimal       @default(0) @db.Decimal(10, 2)
++  createdAt       DateTime      @default(now())
++  updatedAt       DateTime      @updatedAt
++
++  items   OrderItem[]
++  history OrderHistory[]
++
++  @@map("orders")
++}
++
++model OrderItem {
++  id        String  @id @default(uuid())
++  name      String
++  quantity  Int     @default(1)
++  unitPrice Decimal @db.Decimal(10, 2)
++
++  orderId   String
++  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
++  productId String?
++  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
++
++  @@map("order_items")
++}
++
++model OrderHistory {
++  id        String       @id @default(uuid())
++  message   String
++  status    OrderStatus?
++  createdAt DateTime     @default(now())
++
++  orderId String
++  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
++
++  @@map("order_history")
++}
+diff --git a/server/src/controllers/admin-orders-controller.js b/server/src/controllers/admin-orders-controller.js
+new file mode 100644
+index 0000000..eba3540
+--- /dev/null
++++ b/server/src/controllers/admin-orders-controller.js
+@@ -0,0 +1,116 @@
++import { Router } from 'express';
++import { ZodError } from 'zod';
++import orderService from '../services/order-service.js';
++import {
++    createOrderSchema,
++    updateOrderSchema,
++    updateOrderStatusSchema,
++    updateOrderPaidSchema,
++} from '../schemas/order-schema.js';
++
++const adminOrdersController = Router();
++
++// Връща първото съобщение от валидацията, за да го покажем във формата.
++function sendError(res, error, fallbackMessage) {
++    if (error instanceof ZodError) {
++        return res.status(400).json({
++            message: error.issues[0]?.message || 'Невалидни данни.',
++        });
++    }
++
++    console.error(fallbackMessage, error);
++
++    return res.status(500).json({ message: fallbackMessage });
++}
++
++adminOrdersController.get('/', async (req, res) => {
++    try {
++        const orders = await orderService.getAllOrders();
++
++        return res.json(orders);
++    } catch (error) {
++        return sendError(res, error, 'Грешка при зареждането на поръчките.');
++    }
++});
++
++adminOrdersController.get('/:id', async (req, res) => {
++    try {
++        const order = await orderService.getOrderById(req.params.id);
++
++        if (!order) {
++            return res.status(404).json({ message: 'Поръчката не е намерена.' });
++        }
++
++        return res.json(order);
++    } catch (error) {
++        return sendError(res, error, 'Грешка при зареждането на поръчката.');
++    }
++});
++
++adminOrdersController.post('/', async (req, res) => {
++    try {
++        const data = createOrderSchema.parse(req.body);
++        const order = await orderService.createOrder(data);
++
++        return res.status(201).json(order);
++    } catch (error) {
++        return sendError(res, error, 'Грешка при създаването на поръчката.');
++    }
++});
++
++adminOrdersController.put('/:id', async (req, res) => {
++    try {
++        const data = updateOrderSchema.parse(req.body);
++        const order = await orderService.updateOrder(req.params.id, data);
++
++        if (!order) {
++            return res.status(404).json({ message: 'Поръчката не е намерена.' });
++        }
++
++        return res.json(order);
++    } catch (error) {
++        return sendError(res, error, 'Грешка при редактирането на поръчката.');
++    }
++});
++
++adminOrdersController.patch('/:id/status', async (req, res) => {
++    try {
++        const data = updateOrderStatusSchema.parse(req.body);
++        const order = await orderService.updateOrderStatus(req.params.id, data);
++
++        if (!order) {
++            return res.status(404).json({ message: 'Поръчката не е намерена.' });
++        }
++
++        return res.json(order);
++    } catch (error) {
++        return sendError(res, error, 'Грешка при смяната на статуса.');
++    }
++});
++
++adminOrdersController.patch('/:id/paid', async (req, res) => {
++    try {
++        const { isPaid } = updateOrderPaidSchema.parse(req.body);
++        const order = await orderService.updateOrderPaid(req.params.id, isPaid);
++
++        if (!order) {
++            return res.status(404).json({ message: 'Поръчката не е намерена.' });
++        }
++
++        return res.json(order);
++    } catch (error) {
++        return sendError(res, error, 'Грешка при запазването на плащането.');
++    }
++});
++
++adminOrdersController.delete('/:id', async (req, res) => {
++    try {
++        await orderService.deleteOrder(req.params.id);
++
++        return res.status(204).end();
++    } catch (error) {
++        return sendError(res, error, 'Грешка при изтриването на поръчката.');
++    }
++});
++
++export default adminOrdersController;
+diff --git a/server/src/repositories/order-repository.js b/server/src/repositories/order-repository.js
+new file mode 100644
+index 0000000..5ed3f43
+--- /dev/null
++++ b/server/src/repositories/order-repository.js
+@@ -0,0 +1,79 @@
++import { prisma } from '../lib/prisma.js';
++
++const listInclude = {
++    items: true,
++};
++
++const detailsInclude = {
++    items: {
++        include: {
++            product: {
++                select: { slug: true },
++            },
++        },
++    },
++    history: {
++        orderBy: { createdAt: 'desc' },
++    },
++};
++
++async function getAllOrders() {
++    return await prisma.order.findMany({
++        orderBy: { createdAt: 'desc' },
++        include: listInclude,
++    });
++}
++
++async function getOrderById(id) {
++    return await prisma.order.findUnique({
++        where: { id },
++        include: detailsInclude,
++    });
++}
++
++async function createOrder({ items, ...data }, historyMessage) {
++    return await prisma.order.create({
++        data: {
++            ...data,
++            items: { create: items },
++            history: {
++                create: { message: historyMessage, status: data.status ?? 'NEW' },
++            },
++        },
++        include: detailsInclude,
++    });
++}
++
++async function updateOrder(id, { items, ...data }, historyEntries) {
++    return await prisma.order.update({
++        where: { id },
++        data: {
++            ...data,
++            // Продуктите се заменят изцяло с новия списък.
++            ...(items && {
++                items: {
++                    deleteMany: {},
++                    create: items,
++                },
++            }),
++            ...(historyEntries.length > 0 && {
++                history: { create: historyEntries },
++            }),
++        },
++        include: detailsInclude,
++    });
++}
++
++async function deleteOrder(id) {
++    return await prisma.order.delete({
++        where: { id },
++    });
++}
++
++export default {
++    getAllOrders,
++    getOrderById,
++    createOrder,
++    updateOrder,
++    deleteOrder,
++};
+diff --git a/server/src/routes/routes.js b/server/src/routes/routes.js
+index d7cac09..db21805 100644
+--- a/server/src/routes/routes.js
++++ b/server/src/routes/routes.js
+@@ -4,6 +4,7 @@ import adminProductsController from '../controllers/admin-products-controller.js
+ import productController from '../controllers/product-controller.js';
+ import { isAdmin } from '../middlewares/auth-middleware.js';
+ import categoryController from '../controllers/category-controller.js';
++import adminOrdersController from '../controllers/admin-orders-controller.js';
+ 
+ const routes = Router();
+ 
+@@ -14,6 +15,7 @@ routes.use('/api/auth', adminAuthController);
+ // admin routes
+ routes.use('/api/admin/products', isAdmin, adminProductsController);
+ routes.use('/api/admin/categories', isAdmin, categoryController);
++routes.use('/api/admin/orders', isAdmin, adminOrdersController);
+ 
+ 
+ export default routes;
+\ No newline at end of file
+diff --git a/server/src/schemas/order-schema.js b/server/src/schemas/order-schema.js
+new file mode 100644
+index 0000000..fb8bb87
+--- /dev/null
++++ b/server/src/schemas/order-schema.js
+@@ -0,0 +1,77 @@
++import * as zod from 'zod';
++
++export const ORDER_STATUSES = [
++    'NEW',
++    'CONFIRMED',
++    'IN_PROGRESS',
++    'READY',
++    'SHIPPED',
++    'DELIVERED',
++    'CANCELLED',
++];
++
++export const ORDER_CHANNELS = ['INSTAGRAM', 'FACEBOOK', 'TIKTOK', 'WEBSITE', 'PHONE', 'OTHER'];
++export const COURIERS = ['ECONT', 'SPEEDY', 'PICKUP'];
++export const PAYMENT_METHODS = ['CASH_ON_DELIVERY', 'BANK_TRANSFER', 'CASH'];
++
++// Празен текст от формата се записва като null.
++const optionalText = (max) =>
++    zod
++        .string()
++        .trim()
++        .max(max)
++        .optional()
++        .nullable()
++        .transform(value => (value ? value : null));
++
++const orderItemSchema = zod.object({
++    productId: zod.string().uuid().optional().nullable(),
++    name: zod.string().trim().min(1, 'Изберете продукт').max(150),
++    quantity: zod.coerce.number().int().min(1, 'Броят трябва да е поне 1'),
++    unitPrice: zod.coerce.number().min(0, 'Цената не може да е отрицателна'),
++});
++
++const orderFields = {
++    customerName: zod
++        .string()
++        .trim()
++        .min(2, 'Името трябва да съдържа поне 2 символа')
++        .max(100),
++    customerPhone: zod
++        .string()
++        .trim()
++        .min(6, 'Невалиден телефон')
++        .max(30),
++    channel: zod.enum(ORDER_CHANNELS),
++    courier: zod.enum(COURIERS),
++    deliveryAddress: optionalText(300),
++    paymentMethod: zod.enum(PAYMENT_METHODS),
++    deadline: zod
++        .string()
++        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Невалидна дата')
++        .optional()
++        .nullable()
++        .or(zod.literal(''))
++        .transform(value => (value ? value : null)),
++    notes: optionalText(2000),
++    items: zod.array(orderItemSchema).min(1, 'Добавете поне един продукт'),
++};
++
++export const createOrderSchema = zod.object(orderFields);
++
++// При редакция се променят и полетата, които ги няма при създаване.
++export const updateOrderSchema = zod.object({
++    ...orderFields,
++    status: zod.enum(ORDER_STATUSES),
++    trackingNumber: optionalText(50),
++    isPaid: zod.boolean(),
++});
++
++export const updateOrderStatusSchema = zod.object({
++    status: zod.enum(ORDER_STATUSES),
++    trackingNumber: optionalText(50),
++});
++
++export const updateOrderPaidSchema = zod.object({
++    isPaid: zod.boolean(),
++});
+diff --git a/server/src/services/order-service.js b/server/src/services/order-service.js
+new file mode 100644
+index 0000000..414cd62
+--- /dev/null
++++ b/server/src/services/order-service.js
+@@ -0,0 +1,150 @@
++import orderRepository from '../repositories/order-repository.js';
++
++const STATUS_LABELS = {
++    NEW: 'Нова',
++    CONFIRMED: 'Потвърдена',
++    IN_PROGRESS: 'В изработка',
++    READY: 'Готова',
++    SHIPPED: 'Изпратена',
++    DELIVERED: 'Доставена',
++    CANCELLED: 'Отказана',
++};
++
++function calculateTotal(items) {
++    const total = items.reduce(
++        (sum, item) => sum + item.quantity * item.unitPrice,
++        0
++    );
++
++    return Math.round(total * 100) / 100;
++}
++
++function toDate(value) {
++    return value ? new Date(`${value}T00:00:00.000Z`) : null;
++}
++
++function prepareItems(items) {
++    return items.map(item => ({
++        name: item.name,
++        quantity: item.quantity,
++        unitPrice: item.unitPrice,
++        productId: item.productId || null,
++    }));
++}
++
++function statusEntry(status, trackingNumber) {
++    let message = `Статус: ${STATUS_LABELS[status]}`;
++
++    if (status === 'SHIPPED' && trackingNumber) {
++        message += ` · № ${trackingNumber}`;
++    }
++
++    return { message, status };
++}
++
++async function getAllOrders() {
++    return await orderRepository.getAllOrders();
++}
++
++async function getOrderById(id) {
++    return await orderRepository.getOrderById(id);
++}
++
++async function createOrder(data) {
++    const items = prepareItems(data.items);
++
++    return await orderRepository.createOrder(
++        {
++            ...data,
++            deadline: toDate(data.deadline),
++            items,
++            total: calculateTotal(items),
++        },
++        'Поръчката е създадена'
++    );
++}
++
++async function updateOrder(id, data) {
++    const current = await orderRepository.getOrderById(id);
++
++    if (!current) {
++        return null;
++    }
++
++    const items = prepareItems(data.items);
++    const history = [{ message: 'Поръчката е редактирана' }];
++
++    if (data.status !== current.status) {
++        history.push(statusEntry(data.status, data.trackingNumber));
++    }
++
++    if (data.isPaid !== current.isPaid) {
++        history.push({
++            message: data.isPaid ? 'Плащането е получено' : 'Плащането е отменено',
++        });
++    }
++
++    return await orderRepository.updateOrder(
++        id,
++        {
++            ...data,
++            deadline: toDate(data.deadline),
++            items,
++            total: calculateTotal(items),
++        },
++        history
++    );
++}
++
++async function updateOrderStatus(id, { status, trackingNumber }) {
++    const current = await orderRepository.getOrderById(id);
++
++    if (!current) {
++        return null;
++    }
++
++    if (current.status === status) {
++        return current;
++    }
++
++    const data = { status };
++
++    // Товарителницата се пази, ако не е подадена нова.
++    if (trackingNumber) {
++        data.trackingNumber = trackingNumber;
++    }
++
++    return await orderRepository.updateOrder(id, data, [
++        statusEntry(status, trackingNumber || current.trackingNumber),
++    ]);
++}
++
++async function updateOrderPaid(id, isPaid) {
++    const current = await orderRepository.getOrderById(id);
++
++    if (!current) {
++        return null;
++    }
++
++    if (current.isPaid === isPaid) {
++        return current;
++    }
++
++    return await orderRepository.updateOrder(id, { isPaid }, [
++        { message: isPaid ? 'Плащането е получено' : 'Плащането е отменено' },
++    ]);
++}
++
++async function deleteOrder(id) {
++    return await orderRepository.deleteOrder(id);
++}
++
++export default {
++    getAllOrders,
++    getOrderById,
++    createOrder,
++    updateOrder,
++    updateOrderStatus,
++    updateOrderPaid,
++    deleteOrder,
++};
+-- 
+2.43.0
+

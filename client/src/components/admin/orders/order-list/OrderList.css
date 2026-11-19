@@ -1,0 +1,187 @@
+.order-list-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.order-list-top p {
+  margin-top: 4px;
+}
+
+/* Табове по статус */
+.order-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.order-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 6px 0 14px;
+  border: 1px solid #8f6a5e;
+  border-radius: 25px;
+  background: #fcf0e8;
+  color: #5c463e;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.order-tab:hover {
+  background: #ebdacf;
+}
+
+.order-tab.active {
+  background: #8f6a5e;
+  color: #fff;
+}
+
+.order-tab-count {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #fff;
+  color: #7a5c52;
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-tab.active .order-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+/* Търсене и филтри */
+.order-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.order-search {
+  flex: 1 1 320px;
+}
+
+.order-select {
+  width: auto;
+}
+
+/* Таблица */
+.order-table {
+  overflow: hidden;
+}
+
+.order-row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1.3fr) minmax(0, 1.5fr) 140px 130px minmax(0, 1fr) 120px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f4ebe4;
+  font-size: 0.9rem;
+}
+
+.order-row:last-child {
+  border-bottom: 0;
+}
+
+.order-row:not(.order-row--head):hover {
+  background: #fffaf7;
+}
+
+.order-row--head {
+  padding: 12px 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #7a5c52;
+  border-bottom: 1px solid #efe3da;
+}
+
+.order-number {
+  font-weight: 700;
+  color: #8f6a5e;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-number:hover {
+  text-decoration: underline;
+}
+
+.order-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.order-sub {
+  margin-top: 2px;
+  font-size: 0.8rem;
+  color: #7a5c52;
+}
+
+.order-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-amount {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-amount .order-sub {
+  font-weight: 400;
+}
+
+.order-status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid transparent;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.order-status-select:hover {
+  border-color: currentColor;
+}
+
+.order-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #7a5c52;
+}
+
+/* На по-тесен екран всяка поръчка става карта */
+@media (max-width: 900px) {
+  .order-row--head {
+    display: none;
+  }
+
+  .order-row {
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+  }
+
+  .order-row > :nth-child(3),
+  .order-row > :nth-child(6) {
+    grid-column: 1 / -1;
+  }
+
+  .order-amount {
+    text-align: left;
+  }
+}

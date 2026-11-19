@@ -65,6 +65,88 @@ model Product {
 
   categories Category[]
   images     Image[]
+  orderItems OrderItem[]
 
   @@map("products")
+}
+
+enum OrderStatus {
+  NEW
+  CONFIRMED
+  IN_PROGRESS
+  READY
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderChannel {
+  INSTAGRAM
+  FACEBOOK
+  TIKTOK
+  WEBSITE
+  PHONE
+  OTHER
+}
+
+enum Courier {
+  ECONT
+  SPEEDY
+  PICKUP
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  BANK_TRANSFER
+  CASH
+}
+
+model Order {
+  id              String        @id @default(uuid())
+  number          Int           @unique @default(autoincrement())
+  status          OrderStatus   @default(NEW)
+  customerName    String
+  customerPhone   String
+  channel         OrderChannel  @default(INSTAGRAM)
+  courier         Courier       @default(ECONT)
+  deliveryAddress String?
+  trackingNumber  String?
+  paymentMethod   PaymentMethod @default(CASH_ON_DELIVERY)
+  isPaid          Boolean       @default(false)
+  deadline        DateTime?     @db.Date
+  notes           String?
+  total           Decimal       @default(0) @db.Decimal(10, 2)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  items   OrderItem[]
+  history OrderHistory[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  name      String
+  quantity  Int     @default(1)
+  unitPrice Decimal @db.Decimal(10, 2)
+
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@map("order_items")
+}
+
+model OrderHistory {
+  id        String       @id @default(uuid())
+  message   String
+  status    OrderStatus?
+  createdAt DateTime     @default(now())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_history")
 }
