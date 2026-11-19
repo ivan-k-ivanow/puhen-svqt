@@ -1,35 +1,11 @@
-import { Link } from "react-router";
+import ProductCard from "../../catalog/product-card/ProductCard";
 import "./SimilarProducts.css";
 
-export default function SimilarProducts({
-    similarProducts
-}) {
+export default function SimilarProducts({ similarProducts }) {
     return (
         <div className="similar-grid">
             {similarProducts.map((product) => (
-                <Link
-                    key={product.id}
-                    to={`/products/${product.slug}`}
-                    className="similar-card"
-                >
-                    <img
-                        src={product.images?.[0]?.url}
-                        alt={product.name}
-                    />
-                    <div className="similar-card-body">
-                        <h3>
-                            {product.name}
-                        </h3>
-                        <p>
-                            {product.shortDescription}
-                        </p>
-                        <div
-                            className="product-button"
-                        >
-                            Виж продукта
-                        </div>
-                    </div>
-                </Link>
+                <ProductCard key={product.id} product={product} />
             ))}
         </div>
     );
