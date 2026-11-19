@@ -105,6 +105,13 @@ export default function ProductDetails() {
         fetchSimilarProducts();
     }, [slug]);
 
+
+    useEffect(() => {
+        if (product?.id) {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }
+    }, [product?.id]);
+
     if (!product) {
         return null;
     }
