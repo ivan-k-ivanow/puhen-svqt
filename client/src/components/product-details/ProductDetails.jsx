@@ -77,6 +77,24 @@ function ProductDescription({ text }) {
     );
 }
 
+function ProductDetailsSkeleton() {
+    return (
+        <main className="product-details-page pd-loading" aria-busy="true" aria-label="Зареждане на продукта">
+            <div className="pd-skeleton pd-skeleton-crumbs" />
+            <div className="product-container">
+                <div className="pd-skeleton pd-skeleton-image" />
+                <div className="pd-skeleton-info">
+                    <div className="pd-skeleton pd-skeleton-title" />
+                    <div className="pd-skeleton pd-skeleton-line" />
+                    <div className="pd-skeleton pd-skeleton-line short" />
+                    <div className="pd-skeleton pd-skeleton-buttons" />
+                    <div className="pd-skeleton pd-skeleton-text" />
+                </div>
+            </div>
+        </main>
+    );
+}
+
 export default function ProductDetails() {
     const { slug } = useParams();
     const [product, setProduct] = useState(null);
@@ -112,8 +130,8 @@ export default function ProductDetails() {
         }
     }, [product?.id]);
 
-    if (!product) {
-        return null;
+    if (!product || product.slug !== slug) {
+        return <ProductDetailsSkeleton />;
     }
 
     return (
