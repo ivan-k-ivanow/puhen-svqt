@@ -23,6 +23,7 @@ export default function AdminNavigation() {
                 {isAdmin ? (<>
                     <Link to="/" className="admin-nav-btn">Начало</Link>
                     <Link to="/admin/dashboard" className="admin-nav-btn">Админ панел</Link>
+                    <Link to="/admin/orders" className="admin-nav-btn">Поръчки</Link>
                     <Link to="/admin/products/create" className="admin-nav-btn">Добави продукт</Link>
                     <Link to="/admin/categories/create" className="admin-nav-btn"> Създай категория </Link>
 

@@ -7,6 +7,10 @@ import Home from './pages/home/Home'
 import Product from './pages/product/Product'
 import ProductPage from './pages/product-catalog/ProductCatalog'
 import AdminEditProduct from './pages/admin/AdminEditProduct'
+import AdminOrders from './pages/admin/AdminOrders'
+import AdminCreateOrder from './pages/admin/AdminCreateOrder'
+import AdminEditOrder from './pages/admin/AdminEditOrder'
+import AdminOrder from './pages/admin/AdminOrder'
 import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import CookieConsent from './components/cookie-consent/CookieConsent'
@@ -32,6 +36,10 @@ function App() {
             <Route path="/admin/products/create" element={<AdminCreateProduct />} />
             <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />
             <Route path="/admin/categories/create" element={<AdminCreateCategory />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/orders/create" element={<AdminCreateOrder />} />
+            <Route path="/admin/orders/edit/:id" element={<AdminEditOrder />} />
+            <Route path="/admin/orders/:id" element={<AdminOrder />} />
           </Route>
 
         </Routes>
