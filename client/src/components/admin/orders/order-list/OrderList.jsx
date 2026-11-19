@@ -152,6 +152,24 @@ export default function OrderList() {
                 ))}
             </div>
 
+            <div className="order-tabs-mobile">
+                <label htmlFor="order-tab-select" className="visually-hidden">
+                    Покажи поръчки
+                </label>
+                <select
+                    id="order-tab-select"
+                    className="orders-input"
+                    value={tab}
+                    onChange={event => setTab(event.target.value)}
+                >
+                    {tabs.map(item => (
+                        <option key={item.value} value={item.value}>
+                            {item.label} ({item.count})
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div className="order-filters">
                 <label htmlFor="order-search" className="visually-hidden">
                     Търсене
