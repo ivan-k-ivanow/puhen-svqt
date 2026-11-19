@@ -327,3 +327,111 @@
     width: 100%;
   }
 }
+
+
+/* ---------- Телефон ---------- */
+@media (max-width: 640px) {
+  /* Заглавие: дата и „Редактирай“ на един ред */
+  .order-details-title {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .order-details-title h2 {
+    font-size: 1.6rem;
+  }
+
+  .order-details-heading {
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .order-details-title .admin-nav-btn {
+    width: auto;
+    flex: none;
+    padding: 6px 14px;
+  }
+
+  /* Път на поръчката: 6 точки на един ред, надпис само под текущата */
+  .order-progress {
+    padding: 20px 16px;
+    gap: 18px;
+  }
+
+  .order-steps {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    row-gap: 0;
+  }
+
+  .order-step:nth-child(4)::before {
+    display: block;
+  }
+
+  .order-step::before {
+    top: 13px;
+  }
+
+  .order-step-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+
+  .order-step > span:last-child {
+    display: none;
+  }
+
+  .order-step.current > span:last-child {
+    display: block;
+    white-space: nowrap;
+  }
+
+  /* Товарителница и бутон на цялата ширина */
+  .order-progress-actions,
+  .order-next {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .order-next .orders-btn {
+    width: 100%;
+  }
+
+  /* Карти */
+  .order-box {
+    padding: 18px 16px;
+  }
+
+  .order-kv {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  /* Продукти: име на първи ред, „брой × цена“ и сума на втори */
+  .order-line--head {
+    display: none;
+  }
+
+  .order-line {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 4px 6px;
+  }
+
+  .order-line > span:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .order-line > span:nth-child(2),
+  .order-line > span:nth-child(3) {
+    text-align: left;
+    color: #7a5c52;
+  }
+
+  .order-line > span:nth-child(2)::after {
+    content: " ×";
+  }
+
+  .order-line > span:nth-child(4) {
+    font-weight: 600;
+  }
+}
