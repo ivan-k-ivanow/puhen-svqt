@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './ProductGallery.css';
 
 const ArrowIcon = ({ direction }) => (
@@ -98,7 +99,8 @@ export default function ProductGallery({ product }) {
                 </div>
             )}
 
-            {isModalOpen && (
+            {/* Модалът се рендерира директно в <body>, за да е над всичко на страницата */}
+            {isModalOpen && createPortal(
                 <div
                     className="image-modal"
                     role="dialog"
@@ -145,7 +147,8 @@ export default function ProductGallery({ product }) {
                             <ArrowIcon direction="right" />
                         </button>
                     )}
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
