@@ -188,7 +188,7 @@ export default function ProductDetails() {
                                     </svg>
                                 </span>
                                 <span className="pd-fact-label">Изработка</span>
-                                <span className="pd-fact-value">от 7 работни дни</span>
+                                <span className="pd-fact-value">до 7 работни дни</span>
                             </div>
 
                             <div className="pd-fact">
