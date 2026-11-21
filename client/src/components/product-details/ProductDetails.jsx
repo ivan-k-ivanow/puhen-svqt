@@ -318,16 +318,18 @@ export default function ProductDetails() {
         }
     }, [product?.id]);
 
-    if (!product || product.slug !== slug) {
-        return <ProductDetailsSkeleton />;
-    }
-
     useEffect(() => {
         if (product?.id && product.slug === slug) {
             trackMeta('ViewContent', productParams(product));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [product?.id]);
+
+    if (!product || product.slug !== slug) {
+        return <ProductDetailsSkeleton />;
+    }
+
+
 
     return (
         <main className="product-details-page">
