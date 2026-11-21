@@ -367,6 +367,14 @@
     color: #7a5c52;
 }
 
+.oc-summary-price {
+    margin-top: 4px;
+    font-size: 1.06rem;
+    font-weight: 600;
+    color: #7a5c52;
+    font-variant-numeric: tabular-nums;
+}
+
 .oc-summary-pz {
     margin: 0;
     display: flex;

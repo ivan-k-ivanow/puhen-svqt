@@ -199,6 +199,7 @@ function ProductOrderPanel({ product }) {
                     slug: product.slug,
                     name: product.name,
                     shortDescription: product.shortDescription,
+                    price: product.price,
                     image: product.images?.[0]?.url ?? null,
                 },
                 personalization: fields.map(field => ({

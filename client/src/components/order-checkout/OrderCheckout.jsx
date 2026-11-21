@@ -45,7 +45,7 @@ function validate(form) {
         errors.customerName = 'Въведете име и фамилия.';
     }
 
-        // 0 + 9 цифри (10 общо) или +359 + 9 цифри.
+    // 0 + 9 цифри (10 общо) или +359 + 9 цифри.
     if (!/^(?:0|\+359)\d{9}$/.test(form.customerPhone.replace(/[\s()-]/g, ''))) {
         errors.customerPhone = 'Въведете телефон с 10 цифри, напр. 0888 123 456.';
     }
@@ -84,6 +84,10 @@ function OrderSummary({ product, personalization }) {
                     <span className="oc-summary-name">{product.name}</span>
                     {product.shortDescription && (
                         <span className="oc-summary-short">{product.shortDescription}</span>
+                    )}
+
+                    {Number(product.price) > 0 && (
+                        <span className="oc-summary-price">Цена: {Number(product.price).toFixed(2).replace('.', ',')} €</span>
                     )}
                 </div>
             </div>
