@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import orderService, { OrderValidationError } from '../services/order-service.js';
 import { websiteOrderSchema } from '../schemas/order-schema.js';
 import { rateLimit } from '../middlewares/rate-limit-middleware.js';
+import metaCapiService from '../services/meta-capi-service.js';
 
 const orderController = Router();
 
@@ -54,6 +55,15 @@ orderController.post('/', limitOrders, handleUpload, async (req, res) => {
 
         const data = websiteOrderSchema.parse(body);
         const order = await orderService.createWebsiteOrder(data, req.files ?? []);
+
+        // Изпращаме Purchase към Meta на заден план – клиентът не чака.
+        metaCapiService
+            .sendPurchase(order, {
+                ip: req.ip,
+                userAgent: req.get('user-agent'),
+                url: req.get('referer'),
+            })
+            .catch(error => console.error('Meta CAPI error:', error.message));
 
         return res.status(201).json({ id: order.id, number: order.number });
     } catch (error) {

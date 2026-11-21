@@ -22,6 +22,11 @@ export function captureAttribution(search) {
         }
     }
 
+    // Кога е дошъл от рекламата – нужно е на Meta за fbc.
+    if (found.fbclid) {
+        found.fbclid_ts = String(Date.now());
+    }
+
     if (Object.keys(found).length === 0) {
         return;
     }
@@ -45,6 +50,13 @@ export function getAttribution() {
 
     if (fbp) data.fbp = fbp;
     if (fbc) data.fbc = fbc;
+
+    // Сървърът праща данни на Meta само ако посетителят е приел бисквитките.
+    try {
+        data.consent = localStorage.getItem('puhen-svqt-cookie-consent') || 'none';
+    } catch {
+        data.consent = 'none';
+    }
 
     return data;
 }
