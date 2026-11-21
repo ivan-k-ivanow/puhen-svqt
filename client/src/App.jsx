@@ -13,6 +13,7 @@ import AdminEditOrder from './pages/admin/AdminEditOrder'
 import AdminOrder from './pages/admin/AdminOrder'
 import Order from './pages/order/Order'
 import OrderThankYouPage from './pages/order/OrderThankYouPage'
+import Privacy from './pages/privacy/Privacy'
 import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import CookieConsent from './components/cookie-consent/CookieConsent'
@@ -33,6 +34,8 @@ function App() {
           <Route path="/products/:slug" element={<><Product /> <CookieConsent /></>} />
           <Route path="/order" element={<><Order /> <CookieConsent /></>} />
           <Route path="/order/thank-you" element={<><OrderThankYouPage /> <CookieConsent /></>} />
+          {/* Без банера за бисквитки – иначе той закрива страницата, към която води. */}
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/admin/login" element={<AdminLogin />} />
 
           <Route element={<ProtectedRoute />}>

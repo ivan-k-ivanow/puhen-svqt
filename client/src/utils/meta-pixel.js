@@ -48,7 +48,8 @@ export function grantMetaPixel() {
 }
 
 export function trackMeta(event, params = {}, eventId) {
-    if (!isLoaded || typeof window.fbq !== 'function') {
+    // Ако посетителят е отказал по-късно, спираме да изпращаме.
+    if (!isLoaded || !hasConsent() || typeof window.fbq !== 'function') {
         return;
     }
 
