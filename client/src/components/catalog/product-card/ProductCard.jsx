@@ -23,11 +23,11 @@ export default function ProductCard({ product }) {
             <div className="product-card-body">
                 <h3 className="product-card-name">{product.name}</h3>
 
-                {product.shortDescription && (
+                {/* {product.shortDescription && (
                     <p className="product-card-desc">
                         {product.shortDescription}
                     </p>
-                )}
+                )} */}
 
                 <p className="product-card-price">{product.price} €</p>
 
