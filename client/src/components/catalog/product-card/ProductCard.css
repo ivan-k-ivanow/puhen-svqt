@@ -127,6 +127,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .product-card-media img,
     .product-card-cta {
         transition: none;
@@ -136,6 +137,10 @@
 @media (max-width: 768px) {
     .product-card-cta {
         display: none;
+    }
+
+    .product-card-link {
+        margin-top: 0px;
     }
 
     .product-card-name {
