@@ -14,6 +14,12 @@ export const ORDER_CHANNELS = ['INSTAGRAM', 'FACEBOOK', 'TIKTOK', 'WEBSITE', 'PH
 export const COURIERS = ['ECONT', 'SPEEDY', 'PICKUP'];
 export const PAYMENT_METHODS = ['CASH_ON_DELIVERY', 'BANK_TRANSFER', 'CASH'];
 
+// 0 + 9 цифри (10 общо) или +359 + 9 цифри.
+export function isBulgarianPhone(phone) {
+    return /^(?:0|\+359)\d{9}$/.test(String(phone).replace(/[\s()-]/g, ''));
+}
+
+
 // Празен текст от формата се записва като null.
 const optionalText = (max) =>
     zod
@@ -105,7 +111,8 @@ export const websiteOrderSchema = zod.object({
     customerPhone: zod
         .string()
         .trim()
-        .regex(/^[+\d][\d\s()-]{5,24}$/, 'Въведете валиден телефон'),
+        .max(30)
+        .refine(isBulgarianPhone, 'Въведете телефон с 10 цифри, напр. 0888 123 456'),
     customerEmail: zod
         .string()
         .trim()

@@ -45,8 +45,9 @@ function validate(form) {
         errors.customerName = 'Въведете име и фамилия.';
     }
 
-    if (!/^[+\d][\d\s()-]{5,24}$/.test(form.customerPhone.trim())) {
-        errors.customerPhone = 'Въведете валиден телефон.';
+        // 0 + 9 цифри (10 общо) или +359 + 9 цифри.
+    if (!/^(?:0|\+359)\d{9}$/.test(form.customerPhone.replace(/[\s()-]/g, ''))) {
+        errors.customerPhone = 'Въведете телефон с 10 цифри, напр. 0888 123 456.';
     }
 
     if (form.customerEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.customerEmail.trim())) {
