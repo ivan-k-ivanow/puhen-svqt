@@ -29,7 +29,7 @@ export default function ProductCard({ product }) {
                     </p>
                 )}
 
-                {/* <p className="product-card-price">{product.price} €</p> */}
+                <p className="product-card-price">{product.price} €</p>
 
                 <span className="product-card-link">
                     Поръчай
