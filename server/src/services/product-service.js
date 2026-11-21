@@ -1,14 +1,22 @@
 import { generateSlug } from '../utils/slug.js';
 import productRepository from '../repositories/product-repository.js';
 import imageService from './image-service.js';
+function fieldsWithPosition(fields) {
+    return fields.map((field, index) => ({ ...field, position: index }));
+}
+
 async function createProduct(data) {
-    const { categoryIds, ...productData } = data;
+    const { categoryIds, fields, ...productData } = data;
 
     productData.slug = generateSlug(productData.name);
 
     productData.categories = {
         connect: categoryIds.map(id => ({ id }))
     };
+
+    if (fields?.length) {
+        productData.fields = { create: fieldsWithPosition(fields) };
+    }
 
     return await productRepository.createProduct(productData);
 }
@@ -50,7 +58,15 @@ async function getProductBySlug(slug) {
 }
 
 async function updateProduct(id, data) {
-    const { categoryIds, ...productData } = data;
+    const { categoryIds, fields, ...productData } = data;
+
+    // Полетата се заменят изцяло с тези от формата.
+    if (fields !== undefined) {
+        productData.fields = {
+            deleteMany: {},
+            create: fieldsWithPosition(fields),
+        };
+    }
 
     if (productData.name) {
         productData.slug = generateSlug(productData.name);

@@ -5,12 +5,16 @@ import cors from 'cors';
 import routes from './routes/routes.js';
 import { authMiddleware } from './middlewares/auth-middleware.js';
 import cookieParser from 'cookie-parser';
+import orderService from './services/order-service.js';
 
 
 dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 // Create an instance of the Express application
 const app = express();
+
+// Render стои пред сървъра – така req.ip е истинският IP адрес на клиента.
+app.set('trust proxy', 1);
 
 //Add JSON parsing middleware
 app.use(express.json());
@@ -51,4 +55,18 @@ app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}...`);
 });
 
+// Веднъж на ден изтрива снимките на клиентите от приключили поръчки.
+async function cleanupPhotos() {
+  try {
+    const removed = await orderService.cleanupOldOrderPhotos();
 
+    if (removed > 0) {
+      console.log(`Removed ${removed} old order photos.`);
+    }
+  } catch (error) {
+    console.error('Error cleaning up order photos:', error);
+  }
+}
+
+setTimeout(cleanupPhotos, 60 * 1000);
+setInterval(cleanupPhotos, 24 * 60 * 60 * 1000);

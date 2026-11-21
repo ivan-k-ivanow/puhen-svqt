@@ -31,6 +31,8 @@ function itemFromOrder(item) {
         name: item.name,
         quantity: item.quantity,
         unitPrice: String(Number(item.unitPrice)),
+        // Персонализацията от сайта се пази при редакция.
+        personalization: item.personalization ?? null,
     };
 }
 
@@ -139,6 +141,7 @@ export default function OrderForm({ order }) {
                     name: item.name.trim(),
                     quantity: toNumber(item.quantity),
                     unitPrice: toNumber(item.unitPrice),
+                    personalization: item.personalization ?? null,
                 })),
         };
 

@@ -70,7 +70,41 @@ async function deleteOrder(id) {
     });
 }
 
+// Приключени поръчки със снимки, които още не са изтрити.
+async function getOrdersForPhotoCleanup(cutoff) {
+    return await prisma.order.findMany({
+        where: {
+            status: { in: ['DELIVERED', 'CANCELLED'] },
+            updatedAt: { lt: cutoff },
+            photosDeletedAt: null,
+            channel: 'WEBSITE',
+        },
+        include: { items: true },
+        take: 50,
+    });
+}
+
+async function markPhotosDeleted(orderId, items) {
+    return await prisma.$transaction([
+        ...items.map(item =>
+            prisma.orderItem.update({
+                where: { id: item.id },
+                data: { personalization: item.personalization ?? undefined },
+            })
+        ),
+        prisma.order.update({
+            where: { id: orderId },
+            data: {
+                photosDeletedAt: new Date(),
+                history: { create: { message: 'Снимките на клиента са изтрити автоматично' } },
+            },
+        }),
+    ]);
+}
+
 export default {
+    getOrdersForPhotoCleanup,
+    markPhotosDeleted,
     getAllOrders,
     getOrderById,
     createOrder,

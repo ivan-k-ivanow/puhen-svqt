@@ -142,3 +142,37 @@ export function deadlineInfo(order) {
 
     return { text: `След ${days} дни`, date, className: 'due' };
 }
+
+export const CONTACT_METHOD_LABELS = {
+    CALL: 'Обаждане',
+    VIBER: 'Viber',
+    MESSENGER: 'Messenger',
+};
+
+// Телефон в международен формат за линковете tel: и Viber.
+export function phoneToInternational(phone) {
+    const digits = String(phone || '').replace(/[^\d+]/g, '');
+
+    if (digits.startsWith('+')) return digits;
+    if (digits.startsWith('00')) return `+${digits.slice(2)}`;
+    if (digits.startsWith('0')) return `+359${digits.slice(1)}`;
+
+    return digits;
+}
+
+// Кратко описание откъде е дошъл клиентът (реклама или UTM).
+export function attributionLabel(attribution) {
+    if (!attribution) return '';
+
+    const source = (attribution.utm_source || '').toLowerCase();
+
+    if (attribution.fbclid || attribution.fbc || ['facebook', 'fb', 'instagram', 'ig', 'meta'].includes(source)) {
+        return 'Facebook / Instagram реклама';
+    }
+
+    if (attribution.ttclid || source === 'tiktok') return 'TikTok реклама';
+    if (attribution.gclid || source === 'google') return 'Google';
+    if (attribution.utm_source) return attribution.utm_source;
+
+    return '';
+}

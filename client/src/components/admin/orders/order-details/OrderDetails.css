@@ -435,3 +435,224 @@
     font-weight: 600;
   }
 }
+/* Поръчки от сайта */
+
+.order-source-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eef3ec;
+  color: #46613f;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.order-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid #e3cfc3;
+  border-radius: 8px;
+  background: #fff;
+  color: #5c463e;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.order-mini-btn:hover {
+  border-color: #8f6a5e;
+  background: #fdf8f5;
+}
+
+.order-mini-btn:focus-visible {
+  outline: 3px solid #8f6a5e;
+  outline-offset: 2px;
+}
+
+.order-contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.order-pref {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #fcf0e8;
+  color: #8f6a5e;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.order-total-missing {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #7a5c52;
+}
+
+/* Персонализация към продукт */
+.order-pz {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fdf8f5;
+  border: 1px solid #f0e4db;
+  text-align: left;
+  font-variant-numeric: normal;
+}
+
+.order-pz-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8f6a5e;
+}
+
+.order-pz-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-pz-label {
+  font-size: 0.8rem;
+  color: #7a5c52;
+}
+
+.order-pz-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.order-pz-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 110px;
+}
+
+.order-pz-thumb {
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+  background: #f4ebe4;
+}
+
+.order-pz-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.order-pz-thumb--missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #7a5c52;
+}
+
+.order-pz-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: #7a5c52;
+}
+
+.order-pz-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.order-pz-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5c463e;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.order-pz-note {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #7a5c52;
+}
+
+/* Съгласия */
+.order-consents {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.order-consents li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.45;
+}
+
+.order-consents svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #46613f;
+}
+
+.order-consents li.is-no svg {
+  color: #a63a2c;
+}
+
+.order-consent-date {
+  display: block;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .order-pz {
+    padding: 12px;
+  }
+
+  .order-pz-photo,
+  .order-pz-thumb {
+    width: 92px;
+  }
+
+  .order-pz-thumb {
+    height: 92px;
+  }
+}

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import ProductForm from '../product-form/ProductForm';
+import { fieldsFromProduct, fieldsToPayload } from '../product-form/personalization-fields';
 import { getProductById, updateProduct } from '../../../services/products';
 
 export default function EditProduct() {
@@ -11,6 +12,7 @@ export default function EditProduct() {
     const [error, setError] = useState(null);
 
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [fields, setFields] = useState([]);
 
     const [newImages, setNewImages] = useState([]);
     const [deletedImageIds, setDeletedImageIds] = useState([]);
@@ -25,6 +27,7 @@ export default function EditProduct() {
             setSelectedCategories(
                 response.categories.map(category => category.id)
             );
+            setFields(fieldsFromProduct(response.fields));
         } catch (err) {
             setError(err.message);
         } finally {
@@ -75,6 +78,7 @@ export default function EditProduct() {
         });
 
         formData.append('deletedImageIds', JSON.stringify(deletedImageIds));
+        formData.append('fields', JSON.stringify(fieldsToPayload(fields)));
 
         try {
             const updatedProduct = await updateProduct(id, formData);
@@ -85,6 +89,7 @@ export default function EditProduct() {
             setSelectedCategories(
                 updatedProduct.categories.map(category => category.id)
             );
+            setFields(fieldsFromProduct(updatedProduct.fields));
 
             setMessage('Промените са запазени успешно!');
             setMessageType('success');
@@ -130,6 +135,8 @@ export default function EditProduct() {
                     onSubmit={handleSubmit}
                     selectedCategories={selectedCategories}
                     submitLabel="Запази промените"
+                    fields={fields}
+                    onFieldsChange={setFields}
                 />
                 {message && (
                     <p className={`form-message ${messageType}`} role="status">

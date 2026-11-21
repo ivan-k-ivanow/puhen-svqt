@@ -11,6 +11,8 @@ import AdminOrders from './pages/admin/AdminOrders'
 import AdminCreateOrder from './pages/admin/AdminCreateOrder'
 import AdminEditOrder from './pages/admin/AdminEditOrder'
 import AdminOrder from './pages/admin/AdminOrder'
+import Order from './pages/order/Order'
+import OrderThankYouPage from './pages/order/OrderThankYouPage'
 import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import CookieConsent from './components/cookie-consent/CookieConsent'
@@ -29,6 +31,8 @@ function App() {
           <Route path="/" element={<><Home /> <CookieConsent /></>} />
           <Route path="/products" element={<><ProductPage /> <CookieConsent /></>} />
           <Route path="/products/:slug" element={<><Product /> <CookieConsent /></>} />
+          <Route path="/order" element={<><Order /> <CookieConsent /></>} />
+          <Route path="/order/thank-you" element={<><OrderThankYouPage /> <CookieConsent /></>} />
           <Route path="/admin/login" element={<AdminLogin />} />
 
           <Route element={<ProtectedRoute />}>

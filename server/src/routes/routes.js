@@ -5,12 +5,14 @@ import productController from '../controllers/product-controller.js';
 import { isAdmin } from '../middlewares/auth-middleware.js';
 import categoryController from '../controllers/category-controller.js';
 import adminOrdersController from '../controllers/admin-orders-controller.js';
+import orderController from '../controllers/order-controller.js';
 
 const routes = Router();
 
 // general routes
 routes.use('/api/products', productController);
 routes.use('/api/auth', adminAuthController);
+routes.use('/api/orders', orderController);
 
 // admin routes
 routes.use('/api/admin/products', isAdmin, adminProductsController);

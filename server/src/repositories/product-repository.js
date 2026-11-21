@@ -36,6 +36,10 @@ async function getAllProductsForAdmin() {
     });
 }
 
+const fieldsInclude = {
+    orderBy: { position: 'asc' },
+};
+
 async function getProductById(id) {
     return prisma.product.findUnique({
         where: {
@@ -44,6 +48,7 @@ async function getProductById(id) {
         include: {
             categories: true,
             images: true,
+            fields: fieldsInclude,
         },
     });
 }
@@ -124,6 +129,7 @@ async function getProductBySlug(slug) {
         include: {
             categories: true,
             images: true,
+            fields: fieldsInclude,
         },
     });
 }

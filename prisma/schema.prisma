@@ -65,9 +65,37 @@ model Product {
 
   categories Category[]
   images     Image[]
+  fields     ProductField[]
   orderItems OrderItem[]
 
   @@map("products")
+}
+
+// Полета за персонализация, които клиентът попълва при поръчка.
+enum ProductFieldType {
+  PHOTO
+  TEXT
+  TEXTAREA
+  DATE
+  CHOICE
+}
+
+model ProductField {
+  id          String           @id @default(uuid())
+  type        ProductFieldType
+  label       String
+  hint        String?
+  placeholder String?
+  required    Boolean          @default(true)
+  maxLength   Int?
+  maxFiles    Int?
+  options     String[]
+  position    Int              @default(0)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_fields")
 }
 
 enum OrderStatus {
@@ -95,6 +123,12 @@ enum Courier {
   PICKUP
 }
 
+enum ContactMethod {
+  CALL
+  VIBER
+  MESSENGER
+}
+
 enum PaymentMethod {
   CASH_ON_DELIVERY
   BANK_TRANSFER
@@ -107,6 +141,8 @@ model Order {
   status          OrderStatus   @default(NEW)
   customerName    String
   customerPhone   String
+  customerEmail   String?
+  contactMethod   ContactMethod?
   channel         OrderChannel  @default(INSTAGRAM)
   courier         Courier       @default(ECONT)
   deliveryAddress String?
@@ -116,6 +152,11 @@ model Order {
   deadline        DateTime?     @db.Date
   notes           String?
   total           Decimal       @default(0) @db.Decimal(10, 2)
+  // Попълват се само при поръчка от сайта.
+  substitutionConsent Boolean   @default(false)
+  privacyAcceptedAt   DateTime?
+  attribution         Json?
+  photosDeletedAt     DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -130,6 +171,8 @@ model OrderItem {
   name      String
   quantity  Int     @default(1)
   unitPrice Decimal @db.Decimal(10, 2)
+  // Копие на попълнената персонализация: [{ fieldId, label, type, value }]
+  personalization Json?
 
   orderId   String
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)

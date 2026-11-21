@@ -1,11 +1,13 @@
 
 import { useState } from 'react';
 import ProductForm from '../product-form/ProductForm';
+import { fieldsToPayload } from '../product-form/personalization-fields';
 import { createProduct } from '../../../services/products';
 
 export default function CreateProduct() {
     const [newImages, setNewImages] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [fields, setFields] = useState([]);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
 
@@ -36,13 +38,16 @@ export default function CreateProduct() {
             formData.append('images', image);
         });
 
+        formData.append('fields', JSON.stringify(fieldsToPayload(fields)));
+
         try {
-            const response = await createProduct(formData);
+            await createProduct(formData);
 
             setMessage('Продуктът е добавен успешно!');
             setMessageType('success');
             setNewImages([]);
             setSelectedCategories([]);
+            setFields([]);
             form.reset();
         } catch (err) {
             console.error(err);
@@ -78,6 +83,8 @@ export default function CreateProduct() {
                 onCategoryChange={handleCategoryChange}
                 onSubmit={handleSubmit}
                 submitLabel="Добави продукта"
+                fields={fields}
+                onFieldsChange={setFields}
             />
             {message && (
                 <p className={`form-message ${messageType}`} role="status">

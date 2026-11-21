@@ -1,6 +1,7 @@
 
 import Categories from '../categories/Categories';
 import ImagePreview from '../image-preview/ImagePreview';
+import PersonalizationFields from './PersonalizationFields';
 
 export default function ProductForm({
     product,
@@ -12,7 +13,9 @@ export default function ProductForm({
     onCategoryChange,
     onSubmit,
     selectedCategories,
-    submitLabel
+    submitLabel,
+    fields,
+    onFieldsChange
 }) {
     return (
         <form
@@ -62,6 +65,11 @@ export default function ProductForm({
                 name="description"
                 placeholder="Описание (за продуктовата страница)"
                 defaultValue={product.description}
+            />
+
+            <PersonalizationFields
+                fields={fields}
+                onChange={onFieldsChange}
             />
 
             <button type="submit">

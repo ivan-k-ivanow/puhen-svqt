@@ -44,8 +44,28 @@
 .product-container {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: 60px;
+    grid-template-areas:
+        "gallery info"
+        "about info";
+    /* Описанието стои веднага под галерията, без да чака дясната колона */
+    grid-template-rows: auto 1fr;
+    column-gap: 60px;
+    row-gap: 48px;
     align-items: start;
+}
+
+.product-container > .gallery {
+    grid-area: gallery;
+}
+
+.product-container > .product-info {
+    grid-area: info;
+}
+
+.product-container > .pd-about {
+    grid-area: about;
+    padding-top: 36px;
+    border-top: 1px solid #f0e4db;
 }
 
 
@@ -56,6 +76,12 @@
     flex-direction: column;
     gap: 30px;
     min-width: 0;
+}
+
+/* Без персонализация колоната е къса – залепва при скролиране. */
+.product-info.is-compact {
+    position: sticky;
+    top: 110px;
 }
 
 .pd-title {
@@ -112,16 +138,102 @@
 
 /* ORDER */
 
-.pd-buy {
+.pd-pz {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
+    padding: 24px;
+    border: 1px solid #f0e4db;
+    border-radius: 18px;
+}
+
+.pd-pz-title {
+    margin: 0;
+    font-family: "Pacifico", cursive;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: #8f6a5d;
+}
+
+.pd-cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pd-pz .pd-cta-block {
+    margin-top: 4px;
+}
+
+.pd-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 54px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1.03rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s, color 0.25s;
+}
+
+.pd-btn svg {
+    flex-shrink: 0;
+}
+
+.pd-btn-main {
+    background: #8f6a5e;
+    color: #fff;
+}
+
+.pd-btn-main:hover {
+    background: #5c463e;
+}
+
+.pd-alt {
+    margin: 2px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #7a5c52;
+    text-align: center;
+}
+
+.pd-alt-links {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pd-alt a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #8f6a5e;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pd-alt a:hover {
+    color: #5c463e;
+    text-decoration: underline;
 }
 
 .pd-facts {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 16px 0;
+    row-gap: 22px;
+    padding: 20px 0;
     border-top: 1px solid #f0e4db;
     border-bottom: 1px solid #f0e4db;
 }
@@ -133,10 +245,6 @@
     gap: 4px;
     padding: 0 6px;
     text-align: center;
-}
-
-.pd-fact + .pd-fact {
-    border-left: 1px solid #f0e4db;
 }
 
 .pd-fact-icon {
@@ -160,56 +268,6 @@
     font-size: 0.95rem;
     font-weight: 600;
     line-height: 1.3;
-}
-
-.pd-cta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.pd-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    height: 52px;
-    padding: 0 12px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: background-color 0.25s, color 0.25s;
-}
-
-.pd-btn svg {
-    flex-shrink: 0;
-}
-
-.pd-btn-main {
-    background: #8f6a5e;
-    color: #fff;
-}
-
-.pd-btn-main:hover {
-    background: #5c463e;
-}
-
-.pd-btn-second {
-    border: 1.5px solid #8f6a5e;
-    background: #fff;
-    color: #5c463e;
-}
-
-.pd-btn-second:hover {
-    background: #8f6a5e;
-    color: #fff;
-}
-
-.pd-cta-hint {
-    margin: -6px 0 0;
-    font-size: 0.85rem;
-    color: #7a5c52;
-    text-align: center;
 }
 
 
@@ -315,6 +373,7 @@
 }
 
 .pd-btn:focus-visible,
+.pd-alt a:focus-visible,
 .pd-more:focus-visible,
 .pd-crumbs a:focus-visible,
 .pd-back:focus-visible {
@@ -347,11 +406,31 @@
 
     .product-container {
         grid-template-columns: 1fr;
+        grid-template-areas:
+            "gallery"
+            "info"
+            "about";
+        grid-template-rows: none;
         gap: 22px;
+    }
+
+    .product-container > .pd-about {
+        margin-top: 8px;
+        padding-top: 0;
+        border-top: 0;
     }
 
     .product-info {
         gap: 26px;
+    }
+
+    .product-info.is-compact {
+        position: static;
+    }
+
+    .pd-pz {
+        margin: 0 -4px;
+        padding: 20px 16px;
     }
 
     .product-details-page .product-name {
@@ -377,10 +456,6 @@
 
     .pd-fact-value {
         font-size: 0.875rem;
-    }
-
-    .pd-cta {
-        grid-template-columns: 1fr;
     }
 
     .pd-btn {

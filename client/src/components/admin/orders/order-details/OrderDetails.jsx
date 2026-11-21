@@ -19,9 +19,101 @@ import {
     formatDate,
     formatDateTime,
     deadlineInfo,
+    CONTACT_METHOD_LABELS,
+    phoneToInternational,
+    attributionLabel,
 } from '../../../../utils/orders';
 import '../orders.css';
 import './OrderDetails.css';
+
+function Icon({ children, size = 14 }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            {children}
+        </svg>
+    );
+}
+
+function CopyButton({ text }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+        } catch {
+            // Браузърът не позволява копиране – нищо не правим.
+        }
+    };
+
+    return (
+        <button type="button" className="order-mini-btn" onClick={handleCopy}>
+            <Icon><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V5a1 1 0 0 1 1-1h10" /></Icon>
+            {copied ? 'Копирано' : 'Копирай'}
+        </button>
+    );
+}
+
+// Попълнената от клиента персонализация към един продукт.
+function ItemPersonalization({ personalization }) {
+    return (
+        <div className="order-pz">
+            <p className="order-pz-title">Персонализация</p>
+
+            {personalization.map((entry, index) => (
+                <div className="order-pz-row" key={entry.fieldId ?? index}>
+                    <span className="order-pz-label">
+                        {entry.label}
+                        {entry.type === 'PHOTO' && Array.isArray(entry.value) && entry.value.length > 0 && ` · ${entry.value.length}`}
+                    </span>
+
+                    {entry.type === 'PHOTO' ? (
+                        entry.deleted ? (
+                            <span className="orders-muted">Снимките са изтрити автоматично.</span>
+                        ) : (
+                            <div className="order-pz-photos">
+                                {entry.value.map((photo, photoIndex) => (
+                                    <div className="order-pz-photo" key={photo.path ?? photoIndex}>
+                                        {photo.url ? (
+                                            <a href={photo.url} target="_blank" rel="noopener noreferrer" className="order-pz-thumb">
+                                                <img src={photo.url} alt={photo.name || `Снимка ${photoIndex + 1}`} />
+                                            </a>
+                                        ) : (
+                                            <span className="order-pz-thumb order-pz-thumb--missing">Няма достъп</span>
+                                        )}
+                                        <span className="order-pz-name">{photo.name}</span>
+                                        {photo.downloadUrl && (
+                                            <a href={photo.downloadUrl} className="order-mini-btn">
+                                                <Icon><path d="M12 4v11M7 10l5 5 5-5" /><path d="M5 20h14" /></Icon>
+                                                Изтегли
+                                            </a>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    ) : (
+                        <div className="order-pz-text">
+                            <span className="order-pz-value">
+                                {entry.type === 'DATE' ? formatDate(entry.value) : entry.value}
+                            </span>
+                            <CopyButton text={String(entry.value)} />
+                        </div>
+                    )}
+                </div>
+            ))}
+
+            {personalization.some(entry => entry.type === 'PHOTO' && !entry.deleted) && (
+                <p className="order-pz-note">
+                    <Icon><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Icon>
+                    Снимките се изтриват 30 дни след доставка.
+                </p>
+            )}
+        </div>
+    );
+}
 
 function CheckIcon() {
     return (
@@ -98,6 +190,10 @@ export default function OrderDetails() {
         order.history.find(entry => entry.status && entry.status !== 'CANCELLED')?.status ?? 'NEW';
 
     const due = deadlineInfo(order);
+    const isWebsite = order.channel === 'WEBSITE';
+    const hasNoPrice = Number(order.total) === 0;
+    const phone = phoneToInternational(order.customerPhone);
+    const source = attributionLabel(order.attribution);
 
     const handleNext = () => {
         run(() => updateOrderStatus(order.id, nextStatus, needsTracking ? trackingDraft.trim() : undefined));
@@ -133,6 +229,7 @@ export default function OrderDetails() {
                         <span className={statusClass(order.status)}>
                             {STATUS_LABELS[order.status]}
                         </span>
+                        {isWebsite && <span className="order-source-badge">Сайт</span>}
                     </div>
 
                     <div className="order-details-heading">
@@ -267,44 +364,78 @@ export default function OrderDetails() {
                                         )}
                                     </span>
                                     <span>{item.quantity}</span>
-                                    <span>{formatMoney(item.unitPrice)}</span>
-                                    <span>{formatMoney(item.quantity * Number(item.unitPrice))}</span>
+                                    <span>{Number(item.unitPrice) === 0 && isWebsite ? '—' : formatMoney(item.unitPrice)}</span>
+                                    <span>{Number(item.unitPrice) === 0 && isWebsite ? '—' : formatMoney(item.quantity * Number(item.unitPrice))}</span>
+
+                                    {item.personalization?.length > 0 && (
+                                        <ItemPersonalization personalization={item.personalization} />
+                                    )}
                                 </div>
                             ))}
                         </div>
 
                         <div className="order-total">
                             <span>Общо</span>
-                            <strong>{formatMoney(order.total)}</strong>
+                            {isWebsite && hasNoPrice ? (
+                                <span className="order-total-missing">Въвежда се при потвърждаване</span>
+                            ) : (
+                                <strong>{formatMoney(order.total)}</strong>
+                            )}
                         </div>
                     </section>
 
                     {order.notes && (
                         <section className="orders-card order-box">
-                            <h3>Бележка</h3>
+                            <h3>{isWebsite ? 'Бележка от клиента' : 'Бележка'}</h3>
                             <p className="order-notes">{order.notes}</p>
                         </section>
                     )}
 
+                </div>
+
+                <div className="order-details-column">
                     <section className="orders-card order-box">
                         <h3>Клиент</h3>
                         <dl className="order-kv">
                             <dt>Име</dt>
                             <dd>{order.customerName}</dd>
                             <dt>Телефон</dt>
-                            <dd>{order.customerPhone}</dd>
+                            <dd>
+                                {order.customerPhone}
+                                <span className="order-contact-actions">
+                                    <a className="order-mini-btn" href={`tel:${phone}`}>
+                                        <Icon><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></Icon>
+                                        Обади се
+                                    </a>
+                                    <a className="order-mini-btn" href={`viber://chat?number=${encodeURIComponent(phone)}`}>
+                                        <Icon><path d="M4 5h16v11H8l-4 4z" /></Icon>
+                                        Viber
+                                    </a>
+                                </span>
+                            </dd>
+                            {order.customerEmail && (
+                                <>
+                                    <dt>Имейл</dt>
+                                    <dd><a href={`mailto:${order.customerEmail}`} className="order-line-link">{order.customerEmail}</a></dd>
+                                </>
+                            )}
+                            {order.contactMethod && (
+                                <>
+                                    <dt>Връзка</dt>
+                                    <dd><span className="order-pref">Предпочита {CONTACT_METHOD_LABELS[order.contactMethod]}</span></dd>
+                                </>
+                            )}
                             <dt>Откъде</dt>
-                            <dd>{CHANNEL_LABELS[order.channel]}</dd>
+                            <dd>{CHANNEL_LABELS[order.channel]}{source && ` · ${source}`}</dd>
                         </dl>
                     </section>
-                </div>
 
-                <div className="order-details-column">
                     <section className="orders-card order-box">
                         <h3>Срок</h3>
                         <p>
                             <span className={due.className}>{due.text}</span>
                             {due.date && <span className="orders-muted"> · {formatDate(order.deadline)}</span>}
+                            {isWebsite && order.deadline && <span className="orders-muted"> (дата на повода)</span>}
                         </p>
                     </section>
 
@@ -331,7 +462,11 @@ export default function OrderDetails() {
                                 {order.isPaid ? 'Платено' : 'Чака плащане'}
                             </span>
                         </div>
-                        <p>{PAYMENT_LABELS[order.paymentMethod]} · {formatMoney(order.total)}</p>
+                        <p>
+                            {PAYMENT_LABELS[order.paymentMethod]}
+                            {' · '}
+                            {isWebsite && hasNoPrice ? 'сумата се въвежда при потвърждаване' : formatMoney(order.total)}
+                        </p>
                         <button
                             type="button"
                             className="orders-text-btn"
@@ -341,6 +476,31 @@ export default function OrderDetails() {
                             {order.isPaid ? 'Отбележи като неплатена' : 'Отбележи като платена'}
                         </button>
                     </section>
+
+                    {isWebsite && (
+                        <section className="orders-card order-box">
+                            <h3>Съгласия</h3>
+                            <ul className="order-consents">
+                                <li className={order.substitutionConsent ? '' : 'is-no'}>
+                                    <Icon size={16}>{order.substitutionConsent ? <path d="M5 12l5 5 9-10" /> : <path d="M6 6l12 12M18 6L6 18" />}</Icon>
+                                    <span>
+                                        {order.substitutionConsent
+                                            ? 'Съгласен/на е със замяна на цвят или материал, ако не е наличен'
+                                            : 'Не е съгласен/на със замяна на цвят или материал'}
+                                    </span>
+                                </li>
+                                {order.privacyAcceptedAt && (
+                                    <li>
+                                        <Icon size={16}><path d="M5 12l5 5 9-10" /></Icon>
+                                        <span>
+                                            Политика за поверителност
+                                            <span className="orders-muted order-consent-date">Приета на {formatDateTime(order.privacyAcceptedAt)}</span>
+                                        </span>
+                                    </li>
+                                )}
+                            </ul>
+                        </section>
+                    )}
 
                     <section className="orders-card order-box">
                         <h3>История</h3>

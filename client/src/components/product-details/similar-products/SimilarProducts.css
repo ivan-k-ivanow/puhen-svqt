@@ -1,7 +1,5 @@
 .similar-section {
-    margin: 90px 0 80px;
-    padding-top: 50px;
-    border-top: 1px solid #e8d5c8;
+    margin: 80px 0;
 }
 
 .similar-head {
@@ -59,8 +57,7 @@
 /* На мобилно картите се плъзгат хоризонтално */
 @media (max-width: 768px) {
     .similar-section {
-        margin: 50px 0 50px;
-        padding-top: 28px;
+        margin: 44px 0 50px;
     }
 
     .similar-head {

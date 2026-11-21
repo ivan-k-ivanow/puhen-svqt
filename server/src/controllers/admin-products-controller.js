@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import categoryService from '../services/category-service.js';
 import productService from '../services/product-service.js';
-import { createProductSchema, updateProductSchema } from '../schemas/product-schema.js';
+import { createProductSchema, updateProductSchema, parseProductFields } from '../schemas/product-schema.js';
+import { ZodError } from 'zod';
 import upload from '../middlewares/upload-middleware.js';
 import imageService from '../services/image-service.js';
 
@@ -57,6 +58,7 @@ adminProductsController.post(
             };
 
             const validatedData = createProductSchema.parse(productData);
+            validatedData.fields = parseProductFields(req.body.fields) ?? [];
 
             const product = await productService.createProduct(validatedData);
 
@@ -73,7 +75,9 @@ adminProductsController.post(
             console.error('Error creating product:', error);
 
             return res.status(400).json({
-                message: 'Грешка при създаването на продукта.',
+                message: error instanceof ZodError
+                    ? error.issues[0]?.message || 'Грешка при създаването на продукта.'
+                    : 'Грешка при създаването на продукта.',
             });
         }
     }
@@ -108,6 +112,7 @@ adminProductsController.put(
             }
 
             const validatedData = updateProductSchema.parse(productData);
+            validatedData.fields = parseProductFields(req.body.fields);
 
             const deletedImageIds = req.body.deletedImageIds
                 ? JSON.parse(req.body.deletedImageIds)
@@ -147,7 +152,9 @@ adminProductsController.put(
             console.error('Error updating product:', error);
 
             return res.status(400).json({
-                message: 'Грешка при редактирането на продукта.',
+                message: error instanceof ZodError
+                    ? error.issues[0]?.message || 'Грешка при редактирането на продукта.'
+                    : 'Грешка при редактирането на продукта.',
             });
         }
     }
