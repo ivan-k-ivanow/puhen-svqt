@@ -100,6 +100,11 @@
     background: #fcf0e8;
 }
 
+.pz-drop.is-busy {
+    cursor: progress;
+    opacity: 0.7;
+}
+
 .pz-drop.is-invalid {
     border-color: #b4483a;
 }

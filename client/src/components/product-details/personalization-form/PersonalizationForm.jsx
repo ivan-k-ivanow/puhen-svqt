@@ -1,4 +1,5 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { compressImage } from '../../../utils/compress-image';
 import './PersonalizationForm.css';
 
 function PhotoThumb({ file, onRemove }) {
@@ -17,13 +18,32 @@ function PhotoThumb({ file, onRemove }) {
 }
 
 function PhotoField({ field, id, files, onChange, describedBy, invalid }) {
+    const [isProcessing, setIsProcessing] = useState(false);
     const max = field.maxFiles ?? 1;
     const canAdd = files.length < max;
 
-    const handleSelect = (event) => {
-        const selected = Array.from(event.target.files ?? []);
+    const handleSelect = async (event) => {
+        const selected = Array.from(event.target.files ?? []).slice(0, max - files.length);
         event.target.value = '';
-        onChange([...files, ...selected].slice(0, max));
+
+        if (selected.length === 0) {
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            // Една по една, за да не задавим паметта на по-слаб телефон.
+            const compressed = [];
+
+            for (const file of selected) {
+                compressed.push(await compressImage(file));
+            }
+
+            onChange([...files, ...compressed].slice(0, max));
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     return (
@@ -41,7 +61,7 @@ function PhotoField({ field, id, files, onChange, describedBy, invalid }) {
             )}
 
             {canAdd && (
-                <label className={`pz-drop ${invalid ? 'is-invalid' : ''}`} htmlFor={id}>
+                <label className={`pz-drop ${invalid ? 'is-invalid' : ''} ${isProcessing ? 'is-busy' : ''}`} htmlFor={id}>
                     <span className="pz-drop-icon">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d="M4 8h3l2-3h6l2 3h3v11H4z" />
@@ -49,7 +69,9 @@ function PhotoField({ field, id, files, onChange, describedBy, invalid }) {
                         </svg>
                     </span>
                     <span className="pz-drop-main">
-                        {files.length === 0 ? (max > 1 ? 'Качи снимки' : 'Качи снимка') : 'Добави още снимка'}
+                        {isProcessing
+                            ? 'Подготвяме снимките…'
+                            : files.length === 0 ? (max > 1 ? 'Качи снимки' : 'Качи снимка') : 'Добави още снимка'}
                     </span>
                     <span className="pz-drop-sub">
                         JPG или PNG, до 10 MB{max > 1 ? ` · ${files.length} от ${max}` : ''}
@@ -65,7 +87,7 @@ function PhotoField({ field, id, files, onChange, describedBy, invalid }) {
                 multiple={max > 1}
                 aria-describedby={describedBy}
                 aria-invalid={invalid || undefined}
-                disabled={!canAdd}
+                disabled={!canAdd || isProcessing}
                 onChange={handleSelect}
             />
         </>
