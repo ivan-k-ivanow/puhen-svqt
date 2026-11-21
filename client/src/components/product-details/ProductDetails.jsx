@@ -8,6 +8,7 @@ import { validatePersonalization } from './personalization-form/validate-persona
 import HowItWorks from './how-it-works/HowItWorks';
 import { getProductBySlug, getSimilarProducts } from '../../services/products';
 import './ProductDetails.css';
+import { productParams, trackMeta } from '../../utils/meta-pixel';
 
 // Абзацът за ръчната изработка се показва като отделна бележка под описанието,
 // затова го махаме от самото описание, ако е написан там.
@@ -192,6 +193,8 @@ function ProductOrderPanel({ product }) {
             return;
         }
 
+        trackMeta('InitiateCheckout', { ...productParams(product), num_items: 1 });
+
         navigate('/order', {
             state: {
                 product: {
@@ -220,7 +223,7 @@ function ProductOrderPanel({ product }) {
                     <p className="pd-lead">{product.shortDescription}</p>
                 )}
 
-                  {Number(product.price) > 0 && (
+                {Number(product.price) > 0 && (
                     <p className="pd-price">{Number(product.price).toFixed(2).replace('.', ',')} €</p>
                 )}
 
@@ -318,6 +321,13 @@ export default function ProductDetails() {
     if (!product || product.slug !== slug) {
         return <ProductDetailsSkeleton />;
     }
+
+    useEffect(() => {
+        if (product?.id && product.slug === slug) {
+            trackMeta('ViewContent', productParams(product));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [product?.id]);
 
     return (
         <main className="product-details-page">

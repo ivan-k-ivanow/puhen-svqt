@@ -2,6 +2,7 @@
 import { useState } from "react";
 import "./cookie-consent.css"
 import { updateConsent } from "../../analytics.js";
+import { grantMetaPixel } from "../../utils/meta-pixel.js";
 
 const COOKIE_CONSENT_KEY = "puhen-svqt-cookie-consent";
 
@@ -13,6 +14,9 @@ export default function CookieConsent() {
     function handleConsent(choice) {
         localStorage.setItem(COOKIE_CONSENT_KEY, choice);
         updateConsent(choice);
+        if (choice === "accepted") {
+            grantMetaPixel();
+        }
         setIsVisible(false);
     }
 
@@ -36,7 +40,8 @@ export default function CookieConsent() {
                         за анализ на данните на посетителите ни, за да
                         подобрим нашия уебсайт, да покажем персонализирано
                         съдържание и да ви дадем страхотно изживяване
-                        на уебсайта.
+                        , както и за измерване на рекламите
+                        ни във Facebook и Instagram.
                     </p>
 
                     <a href="/privacy">

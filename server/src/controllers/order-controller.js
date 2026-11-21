@@ -55,7 +55,7 @@ orderController.post('/', limitOrders, handleUpload, async (req, res) => {
         const data = websiteOrderSchema.parse(body);
         const order = await orderService.createWebsiteOrder(data, req.files ?? []);
 
-        return res.status(201).json({ number: order.number });
+        return res.status(201).json({ id: order.id, number: order.number });
     } catch (error) {
         if (error instanceof ZodError) {
             return res.status(400).json({ message: error.issues[0]?.message || 'Невалидни данни.' });

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { submitWebsiteOrder } from '../../services/website-orders';
 import { getAttribution } from '../../utils/attribution';
 import './OrderCheckout.css';
+import { productParams, trackMeta } from '../../utils/meta-pixel';
 
 const CONTACT_METHODS = [
     { value: 'CALL', label: 'Обаждане' },
@@ -246,6 +247,16 @@ export default function OrderCheckout() {
                         ? entry.files.map(file => ({ fieldId: entry.field.id, file }))
                         : []
                 )
+            );
+
+            trackMeta(
+                'Purchase',
+                {
+                    ...productParams(product),
+                    num_items: 1,
+                    order_id: `PS-${String(result.number).padStart(4, '0')}`,
+                },
+                `order-${result.id}`
             );
 
             navigate('/order/thank-you', {
