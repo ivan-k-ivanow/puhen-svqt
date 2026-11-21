@@ -31,6 +31,8 @@ function loadPixel() {
         s.parentNode.insertBefore(t, s);
     }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
+    window.fbq.disablePushState = true;
+
     window.fbq('init', PIXEL_ID);
 }
 
