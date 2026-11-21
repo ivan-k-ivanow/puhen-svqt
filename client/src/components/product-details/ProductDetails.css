@@ -54,15 +54,15 @@
     align-items: start;
 }
 
-.product-container > .gallery {
+.product-container>.gallery {
     grid-area: gallery;
 }
 
-.product-container > .product-info {
+.product-container>.product-info {
     grid-area: info;
 }
 
-.product-container > .pd-about {
+.product-container>.pd-about {
     grid-area: about;
     padding-top: 36px;
     border-top: 1px solid #f0e4db;
@@ -104,6 +104,21 @@
     font-size: 1.125rem;
     line-height: 1.5;
     color: #7a5c52;
+}
+
+.product-details-page .pd-price {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #7a5c52;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+    .product-details-page .pd-price {
+        font-size: 1.6rem;
+    }
 }
 
 .pd-occasions {
@@ -300,7 +315,7 @@
     white-space: pre-line;
 }
 
-.product-description > :last-child {
+.product-description> :last-child {
     margin-bottom: 0;
 }
 
@@ -414,7 +429,7 @@
         gap: 22px;
     }
 
-    .product-container > .pd-about {
+    .product-container>.pd-about {
         margin-top: 8px;
         padding-top: 0;
         border-top: 0;
@@ -476,7 +491,7 @@
         height: 44px;
     }
 
-    
+
 }
 
 /* LOADING */
@@ -559,4 +574,3 @@
         border-radius: 0;
     }
 }
-

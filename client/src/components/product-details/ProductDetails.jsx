@@ -219,6 +219,10 @@ function ProductOrderPanel({ product }) {
                     <p className="pd-lead">{product.shortDescription}</p>
                 )}
 
+                  {Number(product.price) > 0 && (
+                    <p className="pd-price">{Number(product.price).toFixed(2).replace('.', ',')} €</p>
+                )}
+
                 {product.categories?.length > 0 && (
                     <div className="pd-occasions">
                         <span className="pd-occasions-label">Подходящ за</span>
