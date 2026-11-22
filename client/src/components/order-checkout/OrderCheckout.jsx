@@ -39,6 +39,19 @@ function formatDate(value) {
     return `${day}.${month}.${year}`;
 }
 
+// Най-малко дни между днес и датата на повода (изработка + доставка).
+const MIN_LEAD_DAYS = 10;
+
+// Най-ранната дата на повода – днес + 10 дни, напр. „2026-12-02“ (по часа на клиента).
+function minDeadlineDate() {
+    const date = new Date();
+    date.setDate(date.getDate() + MIN_LEAD_DAYS);
+
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${date.getFullYear()}-${month}-${day}`;
+}
+
 function validate(form) {
     const errors = {};
 
@@ -61,6 +74,11 @@ function validate(form) {
 
     if (form.office.trim().length < 2) {
         errors.office = 'Въведете офис на Еконт.';
+    }
+
+    // Датата е по желание, но ако е избрана – поне 10 дни напред.
+    if (form.deadline && form.deadline < minDeadlineDate()) {
+        errors.deadline = `Изберете ${formatDate(minDeadlineDate())} или по-късна дата.`;
     }
 
     if (!form.privacyAccepted) {
@@ -175,7 +193,7 @@ export default function OrderCheckout() {
     const [submitError, setSubmitError] = useState('');
     const [isSending, setIsSending] = useState(false);
 
-    const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
+    const minDeadline = useMemo(() => minDeadlineDate(), []);
 
     if (!order?.product) {
         return (
@@ -335,8 +353,20 @@ export default function OrderCheckout() {
                             </Field>
                         </div>
 
-                        <Field id="oc-deadline" label="Дата на повода" optional hint="Ако подаръкът ви трябва за конкретна дата – ще съобразим изработката.">
-                            <input className="oc-input oc-date" type="date" min={today} {...inputProps('deadline')} aria-describedby="oc-deadline-hint" />
+                        <Field
+                            id="oc-deadline"
+                            label="Дата на повода"
+                            optional
+                            error={errors.deadline}
+                            hint={`Изработката и доставката отнемат поне ${MIN_LEAD_DAYS} дни, затова най-ранната дата е ${formatDate(minDeadline)}.`}
+                        >
+                            <input
+                                className="oc-input oc-date"
+                                type="date"
+                                min={minDeadline}
+                                {...inputProps('deadline')}
+                                aria-describedby={errors.deadline ? 'oc-deadline-hint oc-deadline-error' : 'oc-deadline-hint'}
+                            />
                         </Field>
 
                         <Field id="oc-notes" label="Бележка към поръчката" optional>
