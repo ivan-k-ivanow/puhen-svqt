@@ -5,7 +5,7 @@ import SimilarProducts from './similar-products/SimilarProducts';
 import ProductGallery from './product-gallery/ProductGallery';
 import PersonalizationForm from './personalization-form/PersonalizationForm';
 import { validatePersonalization } from './personalization-form/validate-personalization';
-import HowItWorks from './how-it-works/HowItWorks';
+import HowItWorks from '../how-it-works/HowItWorks';
 import { getProductBySlug, getSimilarProducts } from '../../services/products';
 import './ProductDetails.css';
 import { productParams, trackMeta } from '../../utils/meta-pixel';
