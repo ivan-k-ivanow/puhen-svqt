@@ -207,8 +207,51 @@ async function updateOrderPaid(id, isPaid) {
     ]));
 }
 
+// „Изтрий“ в админа само архивира – поръчката остава в базата.
+async function archiveOrder(id, by) {
+    const current = await orderRepository.getOrderById(id);
+
+    if (!current) {
+        return null;
+    }
+
+    if (current.archivedAt) {
+        return await withPhotoLinks(current);
+    }
+
+    return await withPhotoLinks(await orderRepository.updateOrder(
+        id,
+        { archivedAt: new Date(), archivedBy: by ?? null },
+        [{ message: by ? `Поръчката е архивирана от ${by}` : 'Поръчката е архивирана' }]
+    ));
+}
+
+async function restoreOrder(id, by) {
+    const current = await orderRepository.getOrderById(id);
+
+    if (!current) {
+        return null;
+    }
+
+    if (!current.archivedAt) {
+        return await withPhotoLinks(current);
+    }
+
+    return await withPhotoLinks(await orderRepository.updateOrder(
+        id,
+        { archivedAt: null, archivedBy: null },
+        [{ message: by ? `Поръчката е възстановена от ${by}` : 'Поръчката е възстановена' }]
+    ));
+}
+
+// Окончателно изтриване – само за вече архивирани поръчки (например тестови).
 async function deleteOrder(id) {
     const order = await orderRepository.getOrderById(id);
+
+    if (order && !order.archivedAt) {
+        throw new OrderNotArchivedError();
+    }
+
     const result = await orderRepository.deleteOrder(id);
 
     if (order && !order.photosDeletedAt) {
@@ -225,6 +268,13 @@ async function deleteOrder(id) {
 // ---------- Поръчка от сайта ----------
 
 export class OrderValidationError extends Error {}
+
+// Окончателно се трие само архивирана поръчка.
+export class OrderNotArchivedError extends Error {
+    constructor() {
+        super('Първо архивирайте поръчката.');
+    }
+}
 
 function checkPersonalization(fields, values, filesByField) {
     for (const field of fields) {
@@ -403,6 +453,8 @@ export default {
     updateOrder,
     updateOrderStatus,
     updateOrderPaid,
+    archiveOrder,
+    restoreOrder,
     deleteOrder,
     createWebsiteOrder,
     cleanupOldOrderPhotos,

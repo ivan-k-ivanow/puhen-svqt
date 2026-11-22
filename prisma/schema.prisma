@@ -157,6 +157,9 @@ model Order {
   privacyAcceptedAt   DateTime?
   attribution         Json?
   photosDeletedAt     DateTime?
+  // Архивирана (изтрита от таблицата) – остава в базата и може да се върне.
+  archivedAt          DateTime?
+  archivedBy          String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 

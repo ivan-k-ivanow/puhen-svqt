@@ -212,3 +212,18 @@
     transition: none !important;
   }
 }
+
+/* Архивирана поръчка */
+.order-archived {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #f3ede9;
+  border: 1px dashed #c9a99b;
+  color: #5c463e;
+  font-size: 0.9rem;
+}

@@ -86,7 +86,9 @@ export default function OrderList() {
         loadOrders();
     }, []);
 
-    const activeOrders = orders.filter(order => !CLOSED_STATUSES.includes(order.status));
+    // Архивираните поръчки се виждат само в таб „Архивирани“.
+    const liveOrders = useMemo(() => orders.filter(order => !order.archivedAt), [orders]);
+    const activeOrders = liveOrders.filter(order => !CLOSED_STATUSES.includes(order.status));
 
     const urgentCount = activeOrders.filter(
         order => order.deadline && daysUntil(order.deadline) <= 3
@@ -98,10 +100,13 @@ export default function OrderList() {
         [orders]
     );
 
-    const monthOrders = useMemo(
+    const monthAll = useMemo(
         () => (month ? orders.filter(order => monthKey(order.createdAt) === month) : orders),
         [orders, month]
     );
+
+    const monthOrders = useMemo(() => monthAll.filter(order => !order.archivedAt), [monthAll]);
+    const monthArchived = useMemo(() => monthAll.filter(order => order.archivedAt), [monthAll]);
 
     // Броят в табовете е за избрания месец.
     const tabs = [
@@ -116,6 +121,7 @@ export default function OrderList() {
             label: STATUS_TAB_LABELS[status],
             count: monthOrders.filter(order => order.status === status).length,
         })),
+        { value: 'archived', label: 'Архивирани', count: monthArchived.length },
     ];
 
     const handleMonthChange = value => {
@@ -131,9 +137,11 @@ export default function OrderList() {
         const query = search.trim().toLowerCase();
         const digits = query.replace(/\s/g, '');
 
-        const filtered = monthOrders.filter(order => {
+        const source = tab === 'archived' ? monthArchived : monthOrders;
+
+        const filtered = source.filter(order => {
             if (tab === 'active' && CLOSED_STATUSES.includes(order.status)) return false;
-            if (tab !== 'active' && tab !== 'all' && order.status !== tab) return false;
+            if (!['active', 'all', 'archived'].includes(tab) && order.status !== tab) return false;
             if (courier && order.courier !== courier) return false;
             if (channel && order.channel !== channel) return false;
 
@@ -159,7 +167,7 @@ export default function OrderList() {
             if (!b.deadline) return -1;
             return new Date(a.deadline) - new Date(b.deadline);
         });
-    }, [monthOrders, tab, search, courier, channel, sort]);
+    }, [monthOrders, monthArchived, tab, search, courier, channel, sort]);
 
     // Обобщение на показаните поръчки. Отказаните не влизат в сумата.
     const summary = useMemo(() => {

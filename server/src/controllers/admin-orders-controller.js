@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ZodError } from 'zod';
-import orderService from '../services/order-service.js';
+import orderService, { OrderNotArchivedError } from '../services/order-service.js';
 import {
     createOrderSchema,
     updateOrderSchema,
@@ -103,12 +103,46 @@ adminOrdersController.patch('/:id/paid', async (req, res) => {
     }
 });
 
+// „Изтрий“ в таблицата – архивира поръчката (може да се върне).
+adminOrdersController.post('/:id/archive', async (req, res) => {
+    try {
+        const order = await orderService.archiveOrder(req.params.id, req.user?.email);
+
+        if (!order) {
+            return res.status(404).json({ message: 'Поръчката не е намерена.' });
+        }
+
+        return res.json(order);
+    } catch (error) {
+        return sendError(res, error, 'Грешка при архивирането на поръчката.');
+    }
+});
+
+adminOrdersController.post('/:id/restore', async (req, res) => {
+    try {
+        const order = await orderService.restoreOrder(req.params.id, req.user?.email);
+
+        if (!order) {
+            return res.status(404).json({ message: 'Поръчката не е намерена.' });
+        }
+
+        return res.json(order);
+    } catch (error) {
+        return sendError(res, error, 'Грешка при възстановяването на поръчката.');
+    }
+});
+
+// Окончателно изтриване – само на архивирана поръчка.
 adminOrdersController.delete('/:id', async (req, res) => {
     try {
         await orderService.deleteOrder(req.params.id);
 
         return res.status(204).end();
     } catch (error) {
+        if (error instanceof OrderNotArchivedError) {
+            return res.status(400).json({ message: error.message });
+        }
+
         return sendError(res, error, 'Грешка при изтриването на поръчката.');
     }
 });

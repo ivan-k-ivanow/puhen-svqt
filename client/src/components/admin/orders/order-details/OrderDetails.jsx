@@ -5,6 +5,8 @@ import {
     updateOrderStatus,
     updateOrderPaid,
     deleteOrder,
+    archiveOrder,
+    restoreOrder,
 } from '../../../../services/orders';
 import {
     STATUS_FLOW,
@@ -205,8 +207,26 @@ export default function OrderDetails() {
         }
     };
 
+    const isArchived = Boolean(order.archivedAt);
+
+    // „Изтрий“ само архивира – поръчката остава в „Архивирани“.
+    const handleArchive = async () => {
+        if (!window.confirm('Поръчката ще се премести в „Архивирани“. Продължаване?')) {
+            return;
+        }
+
+        try {
+            await archiveOrder(order.id);
+            navigate('/admin/orders');
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleRestore = () => run(() => restoreOrder(order.id));
+
     const handleDelete = async () => {
-        if (!window.confirm('Поръчката ще бъде изтрита завинаги. Продължаване?')) {
+        if (!window.confirm('Поръчката ще бъде изтрита завинаги и не може да се върне. Продължаване?')) {
             return;
         }
 
@@ -242,6 +262,18 @@ export default function OrderDetails() {
                     </div>
                 </div>
             </div>
+
+            {isArchived && (
+                <div className="order-archived">
+                    <span>
+                        Архивирана на {formatDateTime(order.archivedAt)}
+                        {order.archivedBy && ` от ${order.archivedBy}`}. Не се вижда в списъците, освен в „Архивирани“.
+                    </span>
+                    <button type="button" className="orders-btn" onClick={handleRestore} disabled={isSaving}>
+                        Възстанови
+                    </button>
+                </div>
+            )}
 
             {/* Път на поръчката и следваща стъпка */}
             <section className="orders-card order-progress">
@@ -517,13 +549,23 @@ export default function OrderDetails() {
                         </ul>
                     </section>
 
-                    <button
-                        type="button"
-                        className="orders-text-btn orders-text-btn--danger order-delete"
-                        onClick={handleDelete}
-                    >
-                        Изтрий поръчката
-                    </button>
+                    {isArchived ? (
+                        <button
+                            type="button"
+                            className="orders-text-btn orders-text-btn--danger order-delete"
+                            onClick={handleDelete}
+                        >
+                            Изтрий завинаги
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            className="orders-text-btn orders-text-btn--danger order-delete"
+                            onClick={handleArchive}
+                        >
+                            Изтрий поръчката
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

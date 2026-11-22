@@ -69,6 +69,16 @@ export function updateOrderPaid(id, isPaid) {
     );
 }
 
+// „Изтрий“ архивира – поръчката може да се върне от „Архивирани“.
+export function archiveOrder(id) {
+    return request(`${BASE_URL}/${id}/archive`, { method: 'POST' }, 'Грешка при архивирането на поръчката.');
+}
+
+export function restoreOrder(id) {
+    return request(`${BASE_URL}/${id}/restore`, { method: 'POST' }, 'Грешка при възстановяването на поръчката.');
+}
+
+// Окончателно изтриване – само на архивирана поръчка.
 export function deleteOrder(id) {
     return request(
         `${BASE_URL}/${id}`,
