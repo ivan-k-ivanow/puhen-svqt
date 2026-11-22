@@ -69,6 +69,7 @@ export default function OrderList() {
     const [search, setSearch] = useState('');
     const [courier, setCourier] = useState('');
     const [month, setMonth] = useState('');
+    const [channel, setChannel] = useState('');
     const [sort, setSort] = useState('deadline');
 
     useEffect(() => {
@@ -134,6 +135,7 @@ export default function OrderList() {
             if (tab === 'active' && CLOSED_STATUSES.includes(order.status)) return false;
             if (tab !== 'active' && tab !== 'all' && order.status !== tab) return false;
             if (courier && order.courier !== courier) return false;
+            if (channel && order.channel !== channel) return false;
 
             if (query) {
                 const matches =
@@ -157,7 +159,7 @@ export default function OrderList() {
             if (!b.deadline) return -1;
             return new Date(a.deadline) - new Date(b.deadline);
         });
-    }, [monthOrders, tab, search, courier, sort]);
+    }, [monthOrders, tab, search, courier, channel, sort]);
 
     // Обобщение на показаните поръчки. Отказаните не влизат в сумата.
     const summary = useMemo(() => {
@@ -253,42 +255,63 @@ export default function OrderList() {
                     onChange={event => setSearch(event.target.value)}
                 />
 
-                <label htmlFor="order-month" className="orders-muted">Месец</label>
-                <select
-                    id="order-month"
-                    className="orders-input order-select order-month"
-                    value={month}
-                    onChange={event => handleMonthChange(event.target.value)}
-                >
-                    <option value="">Всички месеци</option>
-                    {monthOptions.map(key => (
-                        <option key={key} value={key}>{monthLabel(key)}</option>
-                    ))}
-                </select>
+                <div className="order-filter">
+                    <label htmlFor="order-month" className="orders-muted">Месец</label>
+                    <select
+                        id="order-month"
+                        className="orders-input order-select"
+                        value={month}
+                        onChange={event => handleMonthChange(event.target.value)}
+                    >
+                        <option value="">Всички месеци</option>
+                        {monthOptions.map(key => (
+                            <option key={key} value={key}>{monthLabel(key)}</option>
+                        ))}
+                    </select>
+                </div>
 
-                <label htmlFor="order-courier" className="orders-muted">Куриер</label>
-                <select
-                    id="order-courier"
-                    className="orders-input order-select"
-                    value={courier}
-                    onChange={event => setCourier(event.target.value)}
-                >
-                    <option value="">Всички</option>
-                    {Object.entries(COURIER_LABELS).map(([value, label]) => (
-                        <option key={value} value={value}>{label}</option>
-                    ))}
-                </select>
+                <div className="order-filter">
+                    <label htmlFor="order-channel" className="orders-muted">Откъде</label>
+                    <select
+                        id="order-channel"
+                        className="orders-input order-select"
+                        value={channel}
+                        onChange={event => setChannel(event.target.value)}
+                    >
+                        <option value="">Отвсякъде</option>
+                        {Object.entries(CHANNEL_LABELS).map(([value, label]) => (
+                            <option key={value} value={value}>{label}</option>
+                        ))}
+                    </select>
+                </div>
 
-                <label htmlFor="order-sort" className="orders-muted">Подреди по</label>
-                <select
-                    id="order-sort"
-                    className="orders-input order-select"
-                    value={sort}
-                    onChange={event => setSort(event.target.value)}
-                >
-                    <option value="deadline">Краен срок</option>
-                    <option value="newest">Най-нови</option>
-                </select>
+                <div className="order-filter">
+                    <label htmlFor="order-courier" className="orders-muted">Куриер</label>
+                    <select
+                        id="order-courier"
+                        className="orders-input order-select"
+                        value={courier}
+                        onChange={event => setCourier(event.target.value)}
+                    >
+                        <option value="">Всички</option>
+                        {Object.entries(COURIER_LABELS).map(([value, label]) => (
+                            <option key={value} value={value}>{label}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="order-filter">
+                    <label htmlFor="order-sort" className="orders-muted">Подреди по</label>
+                    <select
+                        id="order-sort"
+                        className="orders-input order-select"
+                        value={sort}
+                        onChange={event => setSort(event.target.value)}
+                    >
+                        <option value="deadline">Краен срок</option>
+                        <option value="newest">Най-нови</option>
+                    </select>
+                </div>
             </div>
 
             {error && <p className="orders-message orders-message--error">{error}</p>}

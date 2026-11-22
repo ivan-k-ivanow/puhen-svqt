@@ -73,7 +73,14 @@
 }
 
 .order-search {
-  flex: 1 1 320px;
+  flex: 1 1 240px;
+}
+
+/* Етикет и падащо меню винаги заедно на един ред */
+.order-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .order-select {
@@ -244,8 +251,7 @@
     gap: 8px;
   }
 
-  .order-search,
-  .order-month {
+  .order-search {
     grid-column: 1 / -1;
   }
 
