@@ -358,6 +358,7 @@ export default function OrderList() {
                                 <span className="order-ellipsis">{order.customerName}</span>
                                 <span className="order-sub">
                                     {order.customerPhone} · {CHANNEL_LABELS[order.channel]}
+                                    {order.attribution?.consent === 'internal' && ' · тест'}
                                 </span>
                             </div>
 

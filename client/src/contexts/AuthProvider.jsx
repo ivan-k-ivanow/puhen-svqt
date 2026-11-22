@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import AuthContext from './AuthContext';
+import { markInternalDevice } from '../utils/internal-device';
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -28,6 +29,13 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, []);
 
+
+    // Устройство, на което е влизал админ, вече не се брои в статистиките.
+    useEffect(() => {
+        if (user?.role === 'ADMIN') {
+            markInternalDevice();
+        }
+    }, [user]);
 
     const logout = async () => {
         try {

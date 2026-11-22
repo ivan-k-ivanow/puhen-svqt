@@ -1,3 +1,5 @@
+import { isInternalDevice } from './internal-device.js';
+
 // Запомня откъде е дошъл клиентът (реклама, UTM), за да го видим в поръчката.
 const STORAGE_KEY = 'ps_attribution';
 const PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'ttclid', 'gclid'];
@@ -53,7 +55,10 @@ export function getAttribution() {
 
     // Сървърът праща данни на Meta само ако посетителят е приел бисквитките.
     try {
-        data.consent = localStorage.getItem('puhen-svqt-cookie-consent') || 'none';
+        // „internal“ = тестова поръчка от екипа – сървърът не я праща към Meta.
+        data.consent = isInternalDevice()
+            ? 'internal'
+            : localStorage.getItem('puhen-svqt-cookie-consent') || 'none';
     } catch {
         data.consent = 'none';
     }

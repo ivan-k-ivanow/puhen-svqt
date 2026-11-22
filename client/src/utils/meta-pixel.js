@@ -1,5 +1,7 @@
 // Meta (Facebook) пиксел – зарежда се само след „Приемам“.
 
+import { isInternalDevice } from './internal-device.js';
+
 const PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
 const CONSENT_KEY = 'puhen-svqt-cookie-consent';
 
@@ -14,7 +16,8 @@ function hasConsent() {
 }
 
 function loadPixel() {
-    if (isLoaded || !PIXEL_ID || typeof window === 'undefined') {
+    // Устройствата на екипа не се броят.
+    if (isLoaded || !PIXEL_ID || typeof window === 'undefined' || isInternalDevice()) {
         return;
     }
 
@@ -51,7 +54,7 @@ export function grantMetaPixel() {
 
 export function trackMeta(event, params = {}, eventId) {
     // Ако посетителят е отказал по-късно, спираме да изпращаме.
-    if (!isLoaded || !hasConsent() || typeof window.fbq !== 'function') {
+    if (!isLoaded || !hasConsent() || isInternalDevice() || typeof window.fbq !== 'function') {
         return;
     }
 
