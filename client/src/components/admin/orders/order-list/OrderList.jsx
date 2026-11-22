@@ -28,6 +28,39 @@ function paymentText(order) {
     return order.isPaid ? `${method} · платено` : method;
 }
 
+const MONTH_NAMES = [
+    'Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни',
+    'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември',
+];
+
+function pad(number) {
+    return String(number).padStart(2, '0');
+}
+
+// Месецът, в който е влязла поръчката, напр. „2026-11“ (по часа на компютъра).
+function monthKey(value) {
+    const date = new Date(value);
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
+}
+
+function monthLabel(key) {
+    const [year, month] = key.split('-');
+    return `${MONTH_NAMES[Number(month) - 1]} ${year}`;
+}
+
+// Кога е влязла поръчката – дата и час поотделно.
+function orderedAt(value) {
+    const date = new Date(value);
+    return {
+        date: `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}`,
+        time: `${pad(date.getHours())}:${pad(date.getMinutes())}`,
+    };
+}
+
+function ordersCountText(count) {
+    return `${count} ${count === 1 ? 'поръчка' : 'поръчки'}`;
+}
+
 export default function OrderList() {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +68,7 @@ export default function OrderList() {
     const [tab, setTab] = useState('active');
     const [search, setSearch] = useState('');
     const [courier, setCourier] = useState('');
+    const [month, setMonth] = useState('');
     const [sort, setSort] = useState('deadline');
 
     useEffect(() => {
@@ -57,21 +91,46 @@ export default function OrderList() {
         order => order.deadline && daysUntil(order.deadline) <= 3
     ).length;
 
+    // Месеците, в които има поръчки – най-новият е първи.
+    const monthOptions = useMemo(
+        () => [...new Set(orders.map(order => monthKey(order.createdAt)))].sort().reverse(),
+        [orders]
+    );
+
+    const monthOrders = useMemo(
+        () => (month ? orders.filter(order => monthKey(order.createdAt) === month) : orders),
+        [orders, month]
+    );
+
+    // Броят в табовете е за избрания месец.
     const tabs = [
-        { value: 'active', label: 'Активни', count: activeOrders.length },
-        { value: 'all', label: 'Всички', count: orders.length },
+        {
+            value: 'active',
+            label: 'Активни',
+            count: monthOrders.filter(order => !CLOSED_STATUSES.includes(order.status)).length,
+        },
+        { value: 'all', label: 'Всички', count: monthOrders.length },
         ...STATUSES.map(status => ({
             value: status,
             label: STATUS_TAB_LABELS[status],
-            count: orders.filter(order => order.status === status).length,
+            count: monthOrders.filter(order => order.status === status).length,
         })),
     ];
+
+    const handleMonthChange = value => {
+        setMonth(value);
+
+        // За месец обикновено искаме всички поръчки, не само активните.
+        if (value && tab === 'active') {
+            setTab('all');
+        }
+    };
 
     const visibleOrders = useMemo(() => {
         const query = search.trim().toLowerCase();
         const digits = query.replace(/\s/g, '');
 
-        const filtered = orders.filter(order => {
+        const filtered = monthOrders.filter(order => {
             if (tab === 'active' && CLOSED_STATUSES.includes(order.status)) return false;
             if (tab !== 'active' && tab !== 'all' && order.status !== tab) return false;
             if (courier && order.courier !== courier) return false;
@@ -98,7 +157,18 @@ export default function OrderList() {
             if (!b.deadline) return -1;
             return new Date(a.deadline) - new Date(b.deadline);
         });
-    }, [orders, tab, search, courier, sort]);
+    }, [monthOrders, tab, search, courier, sort]);
+
+    // Обобщение на показаните поръчки. Отказаните не влизат в сумата.
+    const summary = useMemo(() => {
+        const counted = visibleOrders.filter(order => order.status !== 'CANCELLED');
+
+        return {
+            count: visibleOrders.length,
+            cancelled: visibleOrders.length - counted.length,
+            total: counted.reduce((sum, order) => sum + Number(order.total || 0), 0),
+        };
+    }, [visibleOrders]);
 
     const handleStatusChange = async (order, status) => {
         const previousStatus = order.status;
@@ -183,6 +253,19 @@ export default function OrderList() {
                     onChange={event => setSearch(event.target.value)}
                 />
 
+                <label htmlFor="order-month" className="orders-muted">Месец</label>
+                <select
+                    id="order-month"
+                    className="orders-input order-select order-month"
+                    value={month}
+                    onChange={event => handleMonthChange(event.target.value)}
+                >
+                    <option value="">Всички месеци</option>
+                    {monthOptions.map(key => (
+                        <option key={key} value={key}>{monthLabel(key)}</option>
+                    ))}
+                </select>
+
                 <label htmlFor="order-courier" className="orders-muted">Куриер</label>
                 <select
                     id="order-courier"
@@ -213,6 +296,7 @@ export default function OrderList() {
             <div className="orders-card order-table">
                 <div className="order-row order-row--head" aria-hidden="true">
                     <span>Номер</span>
+                    <span>Дата</span>
                     <span>Клиент</span>
                     <span>Продукти</span>
                     <span>Краен срок</span>
@@ -233,6 +317,7 @@ export default function OrderList() {
 
                 {visibleOrders.map(order => {
                     const due = deadlineInfo(order);
+                    const created = orderedAt(order.createdAt);
                     const [firstItem, ...otherItems] = order.items;
 
                     return (
@@ -240,6 +325,11 @@ export default function OrderList() {
                             <Link to={`/admin/orders/${order.id}`} className="order-number">
                                 {formatOrderNumber(order.number)}
                             </Link>
+
+                            <div className="order-cell order-date" title="Кога е влязла поръчката">
+                                <span>{created.date}</span>
+                                <span className="order-sub">{created.time}</span>
+                            </div>
 
                             <div className="order-cell">
                                 <span className="order-ellipsis">{order.customerName}</span>
@@ -294,6 +384,22 @@ export default function OrderList() {
                         </div>
                     );
                 })}
+
+                {!isLoading && visibleOrders.length > 0 && (
+                    <div className="order-summary">
+                        <div>
+                            Общо: <strong>{ordersCountText(summary.count)}</strong>
+                            {summary.cancelled > 0 && (
+                                <span className="order-sub order-summary-note">
+                                    Отказаните ({summary.cancelled}) не влизат в сумата
+                                </span>
+                            )}
+                        </div>
+                        <div className="order-summary-total">
+                            Обща сума: <strong>{formatMoney(summary.total)}</strong>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

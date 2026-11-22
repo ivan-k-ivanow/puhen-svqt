@@ -87,7 +87,7 @@
 
 .order-row {
   display: grid;
-  grid-template-columns: 90px minmax(0, 1.3fr) minmax(0, 1.5fr) 140px 130px minmax(0, 1fr) 120px;
+  grid-template-columns: 84px 92px minmax(0, 1.3fr) minmax(0, 1.5fr) 124px 130px minmax(0, 1fr) 120px;
   gap: 14px;
   align-items: center;
   padding: 14px 20px;
@@ -163,6 +163,37 @@
   border-color: currentColor;
 }
 
+/* Кога е влязла поръчката */
+.order-date {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Обобщение под списъка */
+.order-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: 16px 20px;
+  background: #fcf6f2;
+  font-size: 0.95rem;
+  color: #5c463e;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-summary strong {
+  font-weight: 700;
+}
+
+.order-summary-note {
+  display: block;
+}
+
+.order-summary-total {
+  font-size: 1.05rem;
+}
+
 .order-empty {
   padding: 40px 20px;
   text-align: center;
@@ -180,8 +211,8 @@
     gap: 6px 12px;
   }
 
-  .order-row> :nth-child(3),
-  .order-row> :nth-child(6) {
+  .order-row> :nth-child(4),
+  .order-row> :nth-child(7) {
     grid-column: 1 / -1;
   }
 
@@ -213,7 +244,8 @@
     gap: 8px;
   }
 
-  .order-search {
+  .order-search,
+  .order-month {
     grid-column: 1 / -1;
   }
 
@@ -246,6 +278,7 @@
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "number   status"
+      "date     status"
       "client   client"
       "items    items"
       "due      amount"
@@ -264,33 +297,47 @@
   }
 
   .order-row > :nth-child(1) { grid-area: number; }
-  .order-row > :nth-child(2) { grid-area: client; }
-  .order-row > :nth-child(3) { grid-area: items; }
-  .order-row > :nth-child(4) { grid-area: due; }
-  .order-row > :nth-child(5) { grid-area: status; justify-self: end; }
-  .order-row > :nth-child(6) { grid-area: delivery; }
-  .order-row > :nth-child(7) { grid-area: amount; }
+  .order-row > :nth-child(2) { grid-area: date; }
+  .order-row > :nth-child(3) { grid-area: client; }
+  .order-row > :nth-child(4) { grid-area: items; }
+  .order-row > :nth-child(5) { grid-area: due; }
+  .order-row > :nth-child(6) { grid-area: status; justify-self: end; align-self: start; }
+  .order-row > :nth-child(7) { grid-area: delivery; }
+  .order-row > :nth-child(8) { grid-area: amount; }
+
+  /* Датата на поръчката – на един ред под номера */
+  .order-row > :nth-child(2) {
+    flex-direction: row;
+    gap: 6px;
+    margin-top: -4px;
+    font-size: 0.8rem;
+    color: #7a5c52;
+  }
+
+  .order-row > :nth-child(2) .order-sub {
+    margin-top: 0;
+  }
 
   /* Срокът и датата на един ред */
-  .order-row > :nth-child(4) {
+  .order-row > :nth-child(5) {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0 6px;
   }
 
-  .order-row > :nth-child(4) .order-sub {
+  .order-row > :nth-child(5) .order-sub {
     margin-top: 0;
   }
 
   /* Долна част на картата с линия отгоре */
-  .order-row > :nth-child(4),
-  .order-row > :nth-child(7) {
+  .order-row > :nth-child(5),
+  .order-row > :nth-child(8) {
     padding-top: 10px;
     border-top: 1px solid #f4ebe4;
   }
 
-  .order-row > :nth-child(6) {
+  .order-row > :nth-child(7) {
     font-size: 0.8rem;
     color: #7a5c52;
   }
@@ -299,5 +346,12 @@
     text-align: right;
     padding-left: 12px;
     align-self: start;
+  }
+
+  .order-summary {
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   }
 }
