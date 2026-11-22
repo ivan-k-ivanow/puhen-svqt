@@ -1,0 +1,64 @@
+.admin-bar {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 6px 6px 14px;
+    border-radius: 999px;
+    background: #5c463e;
+    color: #fff;
+    font-family: "Chocolate Classical Sans", sans-serif;
+    font-size: 0.85rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.admin-bar-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-right: 4px;
+    font-weight: 600;
+}
+
+.admin-bar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8fd18b;
+}
+
+.admin-bar-link {
+    padding: 7px 12px;
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.admin-bar-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.admin-bar-link--main {
+    background: #fff;
+    color: #5c463e;
+    font-weight: 600;
+}
+
+.admin-bar-link--main:hover {
+    background: #fcf0e8;
+}
+
+.admin-bar-link:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+@media print {
+    .admin-bar {
+        display: none;
+    }
+}
