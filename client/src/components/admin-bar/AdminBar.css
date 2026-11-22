@@ -32,6 +32,7 @@
 
 .admin-bar-link {
     padding: 7px 12px;
+    white-space: nowrap;
     border-radius: 999px;
     color: #fff;
     text-decoration: none;
@@ -55,6 +56,28 @@
 .admin-bar-link:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 2px;
+}
+
+/* На телефон по-кратки надписи, за да се събере на един ред */
+@media (max-width: 480px) {
+    .admin-bar {
+        left: 10px;
+        bottom: 10px;
+        gap: 2px;
+        padding-left: 12px;
+    }
+
+    .admin-bar-label {
+        margin-right: 2px;
+    }
+
+    .admin-bar-wide {
+        display: none;
+    }
+
+    .admin-bar-link {
+        padding: 7px 10px;
+    }
 }
 
 @media print {
