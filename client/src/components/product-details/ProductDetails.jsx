@@ -357,8 +357,6 @@ export default function ProductDetails() {
                 <ProductDescription key={`description-${product.id}`} text={product.description} />
             </div>
 
-            <HowItWorks />
-
             {similarProducts.length > 0 && (
                 <section className="similar-section">
                     <div className="similar-head">
@@ -372,7 +370,11 @@ export default function ProductDetails() {
                     </div>
                     <SimilarProducts similarProducts={similarProducts} />
                 </section>
+
+
             )}
+
+            <HowItWorks />
         </main>
     );
 }
