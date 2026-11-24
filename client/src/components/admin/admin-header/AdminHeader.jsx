@@ -209,9 +209,16 @@ export default function AdminHeader() {
                                     {menu === 'create' && createMenu}
                                 </div>
 
-                                <a href="/" target="_blank" rel="noopener noreferrer" className="ah-ghost">
+                                <a
+                                    href="/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="ah-ghost"
+                                    aria-label="Към сайта (нов таб)"
+                                    title="Към сайта"
+                                >
                                     <Icon name="external" size={16} />
-                                    Към сайта
+                                    <span className="ah-ghost-text">Към сайта</span>
                                 </a>
 
                                 <div className="ah-menu-wrap ah-profile-wrap">
@@ -229,9 +236,9 @@ export default function AdminHeader() {
                                 </div>
                             </>
                         ) : (
-                            <a href="/" className="ah-ghost">
+                            <a href="/" className="ah-ghost ah-ghost--always">
                                 <Icon name="external" size={16} />
-                                Към сайта
+                                <span className="ah-ghost-text">Към сайта</span>
                             </a>
                         )}
                     </div>

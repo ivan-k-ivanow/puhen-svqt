@@ -110,7 +110,7 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-left: auto;
 }
 
@@ -299,13 +299,32 @@
   display: none;
 }
 
+/* По-тесен екран: „Към сайта“ остава горе, но само като иконка до „+“ */
 @media (max-width: 1000px) {
   .ah-bar {
     gap: 16px;
   }
 
-  .ah-ghost {
-    display: none;
+  .ah-ghost:not(.ah-ghost--always) {
+    justify-content: center;
+    width: 40px;
+    padding: 0;
+    border: 1px solid #e8d5c8;
+    border-radius: 12px;
+  }
+
+  .ah-ghost:not(.ah-ghost--always) .ah-ghost-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .ah-ghost:not(.ah-ghost--always) svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -330,6 +349,11 @@
   .ah-new-chevron,
   .admin-header .ah-drop {
     display: none;
+  }
+
+  /* „Към сайта“ вляво от „+“, а „+“ остава най-вдясно */
+  .ah-ghost {
+    order: -1;
   }
 
   .ah-new {
