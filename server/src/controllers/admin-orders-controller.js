@@ -33,6 +33,17 @@ adminOrdersController.get('/', async (req, res) => {
     }
 });
 
+// Само броят нови поръчки – за брояча в менюто, без да тегли всички поръчки.
+adminOrdersController.get('/counts', async (req, res) => {
+    try {
+        const newOrders = await orderService.countNewOrders();
+
+        return res.json({ new: newOrders });
+    } catch (error) {
+        return sendError(res, error, 'Грешка при броенето на поръчките.');
+    }
+});
+
 adminOrdersController.get('/:id', async (req, res) => {
     try {
         const order = await orderService.getOrderById(req.params.id);

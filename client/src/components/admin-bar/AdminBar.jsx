@@ -4,9 +4,9 @@ import useAuth from '../../contexts/useAuth';
 import { getProductBySlug } from '../../services/products';
 import './AdminBar.css';
 
-// Малка лента в долния ляв ъгъл, видима само за влезлия админ.
-// В сайта води към админа (и към редакцията на отворения продукт),
-// а в админа – обратно към сайта.
+// Малка лента в долния ляв ъгъл на сайта, видима само за влезлия админ.
+// Води към админа (и към редакцията на отворения продукт).
+// В самия админ не се показва – там менюто има „Към сайта“.
 export default function AdminBar() {
     const { user } = useAuth();
     const { pathname } = useLocation();
@@ -35,7 +35,7 @@ export default function AdminBar() {
         };
     }, [isAdmin, productSlug]);
 
-    if (!isAdmin || pathname === '/admin/login') {
+    if (!isAdmin || inAdmin) {
         return null;
     }
 
@@ -46,19 +46,13 @@ export default function AdminBar() {
                 <span className="admin-bar-wide">Админ</span>
             </span>
 
-            {inAdmin ? (
-                <Link to="/" className="admin-bar-link admin-bar-link--main">Към сайта</Link>
-            ) : (
-                <>
-                    {productId && (
-                        <Link to={`/admin/products/edit/${productId}`} className="admin-bar-link">
-                            Редактирай<span className="admin-bar-wide"> продукта</span>
-                        </Link>
-                    )}
-                    <Link to="/admin/orders" className="admin-bar-link">Поръчки</Link>
-                    <Link to="/admin/dashboard" className="admin-bar-link admin-bar-link--main">Админ панел</Link>
-                </>
+            {productId && (
+                <Link to={`/admin/products/edit/${productId}`} className="admin-bar-link">
+                    Редактирай<span className="admin-bar-wide"> продукта</span>
+                </Link>
             )}
+            <Link to="/admin/orders" className="admin-bar-link">Поръчки</Link>
+            <Link to="/admin/dashboard" className="admin-bar-link admin-bar-link--main">Админ панел</Link>
         </div>
     );
 }

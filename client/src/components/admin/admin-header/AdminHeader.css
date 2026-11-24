@@ -1,31 +1,487 @@
+/* Админ навигация: горна лента на десктоп, долно меню на телефон */
+
 .admin-header {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 12px 24px;
   position: sticky;
   top: 0;
   z-index: 100;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: "Chocolate Classical Sans", sans-serif;
+  color: #5c463e;
 }
 
-.admin-nav-wrapper {
+.admin-header button,
+.ah-tabbar button,
+.ah-sheet button {
+  font-family: inherit;
+}
+
+.ah-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
-  margin: auto;
+  gap: 28px;
+  max-width: 1160px;
+  height: 68px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-.admin-header .logo img {
-  width: 130px;
+.ah-brand {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
 }
 
+.ah-brand img {
+  display: block;
+  width: 104px;
+}
+
+.ah-tag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #5c463e;
+  color: #fff;
+  font-size: 0.72rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.ah-nav {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+}
+
+.ah-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  color: #5c463e;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ah-nav-item svg {
+  color: #a88d82;
+  transition: color 0.15s;
+}
+
+.ah-nav-item:hover {
+  background: #fcf0e8;
+}
+
+.ah-nav-item.is-active {
+  background: #8f6a5e;
+  color: #fff;
+}
+
+.ah-nav-item.is-active svg {
+  color: #fff;
+}
+
+.ah-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #c4704f;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ah-nav-item.is-active .ah-badge {
+  background: #fff;
+  color: #8f6a5e;
+}
+
+.ah-right {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.ah-menu-wrap {
+  position: relative;
+}
+
+.ah-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px 0 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #8f6a5e;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ah-new-chevron {
+  display: inline-flex;
+}
+
+.ah-new:hover,
+.ah-new.is-open {
+  background: #5c463e;
+}
+
+.ah-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: #5c463e;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.ah-ghost:hover {
+  background: #fcf0e8;
+}
+
+.ah-ghost svg {
+  color: #8f6a5e;
+}
+
+.ah-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 2px solid #f0e4db;
+  border-radius: 50%;
+  background: #fcf0e8;
+  color: #8f6a5e;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.ah-avatar:hover,
+.ah-avatar.is-open {
+  border-color: #8f6a5e;
+}
+
+.ah-avatar--static {
+  flex-shrink: 0;
+  cursor: default;
+}
+
+/* Падащи менюта */
+.ah-drop {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 110;
+  min-width: 290px;
+  padding: 8px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(92, 70, 62, 0.18), 0 0 0 1px #f0e4db;
+}
+
+.ah-drop-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: #5c463e;
+  font-size: 0.9rem;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ah-drop-item:hover {
+  background: #fcf0e8;
+}
+
+.ah-drop-item b {
+  display: block;
+  font-weight: 600;
+}
+
+.ah-drop-item small {
+  display: block;
+  margin-top: 1px;
+  font-size: 0.78rem;
+  color: #7a5c52;
+}
+
+.ah-drop-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: #fcf0e8;
+  color: #8f6a5e;
+}
+
+.ah-drop-item--danger {
+  color: #963131;
+}
+
+.ah-drop-item--danger .ah-drop-icon {
+  background: #fbe9e9;
+  color: #963131;
+}
+
+.ah-who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  padding: 8px 12px 12px;
+  border-bottom: 1px solid #f4ebe4;
+}
+
+.ah-who-text {
+  min-width: 0;
+}
+
+.ah-who-text b {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.ah-who-text span {
+  display: block;
+  overflow: hidden;
+  font-size: 0.8rem;
+  color: #7a5c52;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-header a:focus-visible,
+.admin-header button:focus-visible,
+.ah-tabbar a:focus-visible,
+.ah-tabbar button:focus-visible,
+.ah-sheet a:focus-visible,
+.ah-sheet button:focus-visible {
+  outline: 3px solid #8f6a5e;
+  outline-offset: 2px;
+}
+
+/* Мобилните части са скрити на десктоп */
+.ah-tabbar,
+.ah-sheet-layer {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .ah-bar {
+    gap: 16px;
+  }
+
+  .ah-ghost {
+    display: none;
+  }
+}
+
+/* ТЕЛЕФОН */
 @media (max-width: 768px) {
-  .admin-nav-wrapper {
-    justify-content: space-between;
+  .ah-bar {
+    height: 56px;
+    padding: 0 12px 0 16px;
   }
 
-  .admin-header .logo img {
-    width: 80px;
+  .ah-brand img {
+    width: 82px;
   }
 
+  .ah-tag {
+    font-size: 0.66rem;
+  }
+
+  .ah-nav,
+  .ah-profile-wrap,
+  .ah-new-text,
+  .ah-new-chevron,
+  .admin-header .ah-drop {
+    display: none;
+  }
+
+  .ah-new {
+    justify-content: center;
+    width: 40px;
+    padding: 0;
+    border-radius: 12px;
+  }
+
+  .ah-new.is-open svg {
+    transform: rotate(45deg);
+  }
+
+  .ah-new svg {
+    transition: transform 0.2s;
+  }
+
+  /* място за долното меню */
+  .admin-page {
+    padding-bottom: 80px;
+  }
+
+  .ah-tabbar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 64px;
+    padding: 0 6px env(safe-area-inset-bottom);
+    background: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+    box-sizing: content-box;
+  }
+
+  .ah-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #a88d82;
+    font-size: 0.75rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ah-tab-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 30px;
+    border-radius: 999px;
+    transition: background 0.15s;
+  }
+
+  .ah-tab.is-active {
+    color: #5c463e;
+    font-weight: 600;
+  }
+
+  .ah-tab.is-active .ah-tab-icon {
+    background: #fcf0e8;
+    color: #8f6a5e;
+  }
+
+  .ah-badge--tab {
+    position: absolute;
+    top: -3px;
+    right: 4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border: 2px solid #fff;
+    font-size: 0.65rem;
+  }
+
+  .ah-sheet-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: block;
+  }
+
+  .ah-shade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border: 0;
+    background: rgba(60, 40, 34, 0.35);
+    cursor: default;
+  }
+
+  .ah-sheet {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 10px 12px calc(22px + env(safe-area-inset-bottom));
+    border-radius: 20px 20px 0 0;
+    background: #fff;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+    font-family: "Chocolate Classical Sans", sans-serif;
+    color: #5c463e;
+  }
+
+  .ah-grab {
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 12px;
+    border-radius: 2px;
+    background: #e8d5c8;
+  }
+
+  .ah-sheet-title {
+    margin: 0 6px 8px;
+    font-size: 0.8rem;
+    color: #7a5c52;
+  }
+
+  /* В панела менюто е обикновен списък, не падащо */
+  .ah-sheet .ah-drop {
+    position: static;
+    min-width: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .ah-sheet .ah-drop-item {
+    min-height: 58px;
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+
+  .ah-sheet .ah-drop-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-header *,
+  .ah-tabbar * {
+    transition: none !important;
+  }
 }

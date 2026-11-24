@@ -114,6 +114,10 @@ function statusEntry(status, trackingNumber) {
     return { message, status };
 }
 
+async function countNewOrders() {
+    return orderRepository.countNewOrders();
+}
+
 async function getAllOrders() {
     return await orderRepository.getAllOrders();
 }
@@ -447,6 +451,7 @@ async function cleanupOldOrderPhotos() {
 }
 
 export default {
+    countNewOrders,
     getAllOrders,
     getOrderById,
     createOrder,

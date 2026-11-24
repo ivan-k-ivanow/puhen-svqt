@@ -33,6 +33,11 @@ export function getOrders() {
     return request(BASE_URL, {}, 'Грешка при зареждането на поръчките.');
 }
 
+// { new: брой нови поръчки } – за брояча в админ менюто.
+export function getOrderCounts() {
+    return request(`${BASE_URL}/counts`, {}, 'Грешка при броенето на поръчките.');
+}
+
 export function getOrderById(id) {
     return request(`${BASE_URL}/${id}`, {}, 'Грешка при зареждането на поръчката.');
 }

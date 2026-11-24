@@ -17,6 +17,13 @@ const detailsInclude = {
     },
 };
 
+// Броят нови поръчки за брояча в админ менюто (без архивираните).
+async function countNewOrders() {
+    return prisma.order.count({
+        where: { status: 'NEW', archivedAt: null },
+    });
+}
+
 async function getAllOrders() {
     return await prisma.order.findMany({
         orderBy: { createdAt: 'desc' },
@@ -103,6 +110,7 @@ async function markPhotosDeleted(orderId, items) {
 }
 
 export default {
+    countNewOrders,
     getOrdersForPhotoCleanup,
     markPhotosDeleted,
     getAllOrders,
