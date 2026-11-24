@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 // Колко дълго админът остава влязъл без да ползва админа.
 // Докато работи, сесията се подновява сама (виж shouldRefreshToken).
-export const SESSION_DAYS = 30;
+export const SESSION_DAYS = 7;
 const SESSION_MS = SESSION_DAYS * 24 * 60 * 60 * 1000;
 
 // Подновяваме бисквитката най-много веднъж на ден.
