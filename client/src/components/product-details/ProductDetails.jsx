@@ -122,7 +122,12 @@ const FACTS = [
     },
 ];
 
-function OrderCta({ onOrder }) {
+function OrderCta({ onOrder, product }) {
+    // Броим в Meta колко хора избират да поръчат с лично съобщение.
+    const trackContact = (channel) => {
+        trackMeta('Contact', { ...productParams(product), content_category: channel });
+    };
+
     return (
         <div className="pd-cta-block">
             <button type="button" className="pd-btn pd-btn-main" onClick={onOrder}>
@@ -132,33 +137,35 @@ function OrderCta({ onOrder }) {
                 </svg>
             </button>
 
-            <p className="pd-alt">
-                <span>или поръчай с лично съобщение:</span>
-                <span className="pd-alt-links">
-                    <a href="https://ig.me/m/puhensvqt" target="_blank" rel="noopener noreferrer">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                            <rect x="2" y="2" width="20" height="20" rx="5" />
-                            <circle cx="12" cy="12" r="4" />
-                            <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
-                        </svg>
-                        Instagram
-                    </a>
-                    <span aria-hidden="true">·</span>
-                    <a href="https://m.me/puhensvqt" target="_blank" rel="noopener noreferrer">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.7v-2.9h2.7V9.6c0-2.7 1.6-4.2 4-4.2 1.2 0 2.4.2 2.4.2v2.6h-1.4c-1.4 0-1.8.9-1.8 1.7v2h3l-.5 2.9h-2.5v7A10 10 0 0 0 22 12z" />
-                        </svg>
-                        Facebook
-                    </a>
-                    <span aria-hidden="true">·</span>
-                    <a href="https://www.tiktok.com/@puhensvqt" target="_blank" rel="noopener noreferrer">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <path d="M16.6 3c.4 2.2 1.8 3.7 4 3.9v3.1c-1.5 0-2.9-.4-4-1.2v6.4c0 3.3-2.6 5.8-5.9 5.8S4.8 18.5 4.8 15.2s2.6-5.9 5.9-5.9c.3 0 .6 0 .9.1v3.2c-.3-.1-.6-.1-.9-.1-1.5 0-2.7 1.2-2.7 2.7s1.2 2.7 2.7 2.7 2.8-1.2 2.8-2.7V3h3.1z" />
-                        </svg>
-                        TikTok
-                    </a>
-                </span>
-            </p>
+            <div className="pd-alt pd-alt--box">
+                <p className="pd-alt-title">Поръчай с лично съобщение и ще уточним всичко заедно</p>
+                <a
+                    href="https://m.me/puhensvqt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pd-btn pd-btn-alt"
+                    onClick={() => trackContact('Messenger')}
+                >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2C6.4 2 2 6.1 2 11.6c0 2.9 1.2 5.4 3.2 7.1V22l3-1.7c1.2.3 2.5.5 3.8.5 5.6 0 10-4.1 10-9.6S17.6 2 12 2zm1 12.9-2.5-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7-5.5 5.8z" />
+                    </svg>
+                    Поръчай през Messenger
+                </a>
+                <a
+                    href="https://ig.me/m/puhensvqt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pd-btn pd-btn-alt"
+                    onClick={() => trackContact('Instagram')}
+                >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="5" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+                    </svg>
+                    Поръчай през Instagram
+                </a>
+            </div>
         </div>
     );
 }
@@ -260,10 +267,10 @@ function ProductOrderPanel({ product }) {
                         }}
                     />
 
-                    <OrderCta onOrder={handleOrder} />
+                    <OrderCta onOrder={handleOrder} product={product} />
                 </section>
             ) : (
-                <OrderCta onOrder={handleOrder} />
+                <OrderCta onOrder={handleOrder} product={product} />
             )}
 
             <div className="pd-facts">
