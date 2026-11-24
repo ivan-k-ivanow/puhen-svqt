@@ -1,9 +1,7 @@
-import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import useAuth from '../../../contexts/useAuth';
 
 export default function AdminLoginForm() {
-    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,11 +29,12 @@ export default function AdminLoginForm() {
             if (!response.ok) {
                 setError(data.message || 'Грешка при вход');
             } else {
+                // Страницата за вход сама пренасочва влезлия админ.
                 setUser(data.user);
-                navigate('/admin/dashboard');
             }
         } catch (err) {
-            setError(err.message);
+            console.error('Login error:', err);
+            setError('Няма връзка със сървъра. Опитайте пак.');
         } finally {
             setIsLoading(false);
         }
@@ -46,8 +45,6 @@ export default function AdminLoginForm() {
             <h2>Админ вход</h2>
             <form
                 id="login-form"
-                action="/admin/login"
-                method="POST"
                 className="admin-form"
                 onSubmit={handleSubmit}
             >
@@ -66,6 +63,7 @@ export default function AdminLoginForm() {
                     placeholder="Парола"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
                     required />
 
                 {error && <p className="error">{error}</p>}

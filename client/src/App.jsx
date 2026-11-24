@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminCreateProduct from './pages/admin/AdminCreateProduct'
@@ -41,6 +41,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
 
           <Route element={<ProtectedRoute />}>
+            <Route path="/admin" element={<Navigate to="/admin/orders" replace />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/products/create" element={<AdminCreateProduct />} />
             <Route path="/admin/products/edit/:id" element={<AdminEditProduct />} />

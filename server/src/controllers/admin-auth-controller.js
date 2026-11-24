@@ -2,28 +2,53 @@ import { Router } from 'express';
 import authService from '../services/auth-service.js';
 import { loginSchema } from '../schemas/auth-schema.js';
 import { ZodError } from 'zod';
-import { generateAuthToken } from '../utils/token-utils.js';
+import { generateAuthToken, setAuthCookie, clearAuthCookie } from '../utils/token-utils.js';
+import { loginRetryAfter, recordLoginFailure, clearLoginFailures } from '../utils/login-limiter.js';
 
 const adminAuthController = Router();
 
 
-adminAuthController.post('/login', async (req, res) => {
-    try {
-        const { email, password } = loginSchema.parse(req.body);
-        const user = await authService.login(email, password);
-        const token = generateAuthToken(user);
+const WRONG_CREDENTIALS = 'Грешен имейл или парола.';
 
-        if (user.role !== 'ADMIN') {
-            return res.status(403).json({ message: 'Нямате достъп до тази страница.' });
+adminAuthController.post('/login', async (req, res) => {
+    let credentials;
+
+    try {
+        credentials = loginSchema.parse(req.body);
+    } catch (error) {
+        if (error instanceof ZodError) {
+            return res.status(400).json({ message: error.issues[0]?.message || 'Невалидни данни.' });
         }
 
-        res.cookie('auth', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            path: '/',
-            maxAge: 60 * 60 * 1000 // 1 hour in milliseconds
+        throw error;
+    }
+
+    const { email, password } = credentials;
+
+    // Твърде много грешни опити – спираме входа за малко.
+    const retryAfter = loginRetryAfter(req.ip, email);
+
+    if (retryAfter > 0) {
+        res.set('Retry-After', String(retryAfter));
+
+        return res.status(429).json({
+            message: `Твърде много опити. Опитайте пак след ${Math.ceil(retryAfter / 60)} мин.`,
         });
+    }
+
+    try {
+        const user = await authService.login(email, password);
+
+        // Едно и също съобщение за грешна парола и за акаунт без админ права,
+        // за да не се разбира кои имейли съществуват.
+        if (!user || user.role !== 'ADMIN') {
+            recordLoginFailure(req.ip, email);
+
+            return res.status(401).json({ message: WRONG_CREDENTIALS });
+        }
+
+        clearLoginFailures(req.ip, email);
+        setAuthCookie(res, generateAuthToken(user));
 
         return res.status(200).json({
             message: 'Успешен вход',
@@ -34,23 +59,14 @@ adminAuthController.post('/login', async (req, res) => {
             }
         });
     } catch (error) {
-        if (error instanceof ZodError) {
-            return res.status(400).json({ message: 'Невалидни данни', errors: error.errors });
-        }
+        console.error('Login error:', error);
 
-        console.error(error);
-
-        return res.status(500).json({ message: 'Възникна грешка при вход' });
+        return res.status(500).json({ message: 'Възникна грешка при вход.' });
     }
 });
 
 adminAuthController.post('/logout', (req, res) => {
-    res.clearCookie('auth', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-    });
+    clearAuthCookie(res);
 
     return res.status(200).json({ message: 'Успешен изход' });
 });

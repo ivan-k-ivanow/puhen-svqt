@@ -1,18 +1,22 @@
-import { Navigate, Outlet } from 'react-router';
+import { Navigate, Outlet, useLocation } from 'react-router';
 import useAuth from '../../contexts/useAuth';
 
-const ProtectedRoute = ({ redirectPath = '/admin/login' }) => {
+const ProtectedRoute = () => {
     const { user, isLoading } = useAuth();
+    const location = useLocation();
 
-   if (isLoading) {
-    return <p>Проверка на автентикация...</p>;
-   }
+    if (isLoading) {
+        return <p>Проверка на автентикация...</p>;
+    }
 
-   if (!user || user.role !== 'ADMIN') {
-       return <Navigate to="/admin/login" replace />;
-   }
+    if (!user || user.role !== 'ADMIN') {
+        // Запомняме страницата, за да се върнем на нея след входа.
+        const from = location.pathname + location.search;
 
-   return <Outlet />;
+        return <Navigate to="/admin/login" replace state={{ from }} />;
+    }
+
+    return <Outlet />;
 };
 
 export default ProtectedRoute;
