@@ -32,6 +32,7 @@
 
 .admin-bar-link {
     padding: 7px 12px;
+    margin-left: 6px;
     white-space: nowrap;
     border-radius: 999px;
     color: #fff;

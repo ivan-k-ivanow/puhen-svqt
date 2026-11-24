@@ -52,7 +52,7 @@ export default function AdminBar() {
                 </Link>
             )}
             {/* <Link to="/admin/orders" className="admin-bar-link">Поръчки</Link> */}
-            <Link to="/admin/dashboard" className="admin-bar-link admin-bar-link--main">Админ панел</Link>
+            <Link to="/admin/dashboard" className="admin-bar-link admin-bar-link--main"> Админ панел</Link>
         </div>
     );
 }
