@@ -79,6 +79,39 @@ export async function updateProduct(productId, formData) {
 }
 
 
+// Всички продукти за админа – и скритите, с броя на полетата за персонализация.
+export async function getAdminProducts() {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products`, {
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Грешка при зареждането на продуктите.');
+    }
+
+    return response.json();
+}
+
+
+export async function setProductVisibility(productId, isActive) {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${productId}/visibility`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ isActive })
+    });
+
+    if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.message || 'Грешка при промяната на видимостта.');
+    }
+
+    return response.json();
+}
+
+
 export async function reorderProducts(productIds) {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/reorder`, {
         method: 'PATCH',
@@ -105,7 +138,7 @@ export async function deleteProduct(productId) {
     });
 
     if (!response.ok) {
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
         throw new Error(data.message || 'Грешка при изтриването на продукта.');
     }
 

@@ -31,7 +31,9 @@ async function getAllProductsForAdmin() {
         ],
         include: {
             categories: true,
-            images: true
+            images: true,
+            // Само броя на полетата за персонализация – за колоната в списъка.
+            _count: { select: { fields: true } }
         }
     });
 }

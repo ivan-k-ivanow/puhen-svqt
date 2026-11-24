@@ -163,12 +163,43 @@ adminProductsController.put(
 
 adminProductsController.delete('/:id', async (req, res) => {
     try {
+        const product = await productService.getProductById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Продуктът не е намерен.' });
+        }
+
         await productService.deleteProduct(req.params.id);
 
         res.status(204).end();
     } catch (error) {
-        console.error(error);
-        return res.status(404).json({ message: 'Product not found.' });
+        console.error('Error deleting product:', error);
+        return res.status(500).json({ message: 'Грешка при изтриването на продукта.' });
+    }
+});
+
+
+adminProductsController.patch('/:id/visibility', async (req, res) => {
+    const { isActive } = req.body ?? {};
+
+    if (typeof isActive !== 'boolean') {
+        return res.status(400).json({ message: 'Невалидна стойност за видимост.' });
+    }
+
+    try {
+        const product = await productService.getProductById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Продуктът не е намерен.' });
+        }
+
+        await productService.setProductActive(req.params.id, isActive);
+
+        return res.json({ id: req.params.id, isActive });
+    } catch (error) {
+        console.error('Error changing product visibility:', error);
+
+        return res.status(500).json({ message: 'Грешка при промяната на видимостта.' });
     }
 });
 

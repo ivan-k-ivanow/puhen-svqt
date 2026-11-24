@@ -94,6 +94,11 @@ async function deleteProduct(id) {
     return await productRepository.deleteProduct(id);
 }
 
+// Скрит продукт не се вижда в сайта, но остава в админа и в старите поръчки.
+async function setProductActive(id, isActive) {
+    return await productRepository.updateProduct(id, { isActive });
+}
+
 async function updateProductPositions(productIds) {
     const products = productIds.map((id, index) => ({
         id,
@@ -115,5 +120,6 @@ export default {
     updateProduct,
     deleteProduct,
     getAllProductsForAdmin,
+    setProductActive,
     updateProductPositions
 };

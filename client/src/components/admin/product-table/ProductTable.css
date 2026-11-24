@@ -1,253 +1,700 @@
-.admin-products {
-  width: 100%;
-  max-width: 900px;
-}
+/* Админ – списък с продукти. Общите стилове (бутон, полета, карта, табове)
+   идват от orders.css и OrderList.css, за да изглежда като страницата с поръчки. */
 
-#manage-products {
-  max-width: 1000px;
-  width: 100%;
-  margin: auto;
-}
-
-#products-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.admin-filters {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.admin-filters input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #d4b8a8;
-  border-radius: 8px;
-  font-family: "Chocolate Classical Sans", sans-serif;
-  font-size: 0.95rem;
-}
-
-.admin-product {
+.pt-top {
   display: flex;
   align-items: center;
-  gap: 20px;
-  background-color: white;
-  padding: 12px 18px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.admin-product-image {
-  width: 12%;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #8f6a5e33;
+.pt-top p {
+  margin-top: 4px;
 }
 
-.admin-product-info {
-  flex-grow: 1;
-  font-size: 1rem;
-  line-height: 1.3;
-  width: 60%;
-}
-
-.admin-product-info p {
-  margin-bottom: 1rem;
-  width: 90%;
-  white-space: pre-line;
-}
-
-.admin-product-info strong {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.admin-product-actions button,
-.admin-product-actions .edit-product {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: none;
-  background-color: #e27d60;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  font-family: inherit;
-  text-decoration: none;
-  text-align: center;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.admin-product-actions button:hover,
-.admin-product-actions .edit-product:hover {
-  background-color: #c55b45;
-}
-
-.admin-product-actions button:active,
-.admin-product-actions .edit-product:active {
-  transform: scale(0.95);
-}
-
-.admin-product-actions {
+.pt-top-actions {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+}
+
+.pt-ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border: 1px solid #8f6a5e;
+  border-radius: 10px;
+  background: #fff;
+  color: #5c463e;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.pt-ghost-btn:hover {
+  background: #fcf0e8;
+}
+
+/* Табовете по категория са същите като статусите при поръчките */
+.pt-tabs {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.product-order-controls {
-  display: flex;
+.pt-tabs .order-tab {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  margin: 20px 0;
-}
-
-.product-order-controls button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font: inherit;
-  font-weight: 600;
+  gap: 8px;
+  height: 38px;
+  padding: 0 6px 0 14px;
+  border: 1px solid #8f6a5e;
+  border-radius: 25px;
+  background: #fcf0e8;
+  color: #5c463e;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background 0.15s, color 0.15s;
 }
 
-.product-order-controls button:first-child {
-  background-color: #8b5e50;
+.pt-tabs .order-tab:hover {
+  background: #ebdacf;
+}
+
+.pt-tabs .order-tab.active {
+  background: #8f6a5e;
   color: #fff;
 }
 
-.product-order-controls button:first-child:hover:not(:disabled) {
-  background-color: #70483d;
-  transform: translateY(-1px);
+.pt-tabs .order-tab-count {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #fff;
+  color: #7a5c52;
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
 }
 
-.product-order-controls button:last-child {
-  background-color: #f3e7e1;
+.pt-tabs .order-tab.active .order-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.pt-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.pt-tabs-mobile {
+  display: none;
+}
+
+.pt-search {
+  flex: 1 1 320px;
+  width: auto;
+}
+
+.pt-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pt-filter label {
+  white-space: nowrap;
+}
+
+.pt-filter .orders-input {
+  width: auto;
+}
+
+/* Лента за запазване на реда – остава видима при скролиране */
+.pt-savebar {
+  position: sticky;
+  top: 112px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px 12px 20px;
+  border-radius: 12px;
+  background: #5c463e;
+  color: #fff;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 24px rgba(92, 70, 62, 0.25);
+}
+
+.pt-savebar b {
+  font-weight: 600;
+}
+
+.pt-savebar-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pt-savebar-cancel,
+.pt-savebar-save {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pt-savebar-cancel {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: none;
+  color: #fff;
+}
+
+.pt-savebar-save {
+  border: 0;
+  background: #fff;
   color: #5c463e;
+  font-weight: 600;
 }
 
-.product-order-controls button:last-child:hover:not(:disabled) {
-  background-color: #e8d5cb;
-}
-
-.product-order-controls button:disabled {
+.pt-savebar button:disabled {
   opacity: 0.6;
+  cursor: default;
+}
+
+.pt-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #e3f1e6;
+  color: #2e6b40;
+  font-size: 0.9rem;
+}
+
+.pt-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #7a5c52;
+}
+
+/* Таблица */
+.pt-table {
+  overflow: hidden;
+}
+
+.pt-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 2.5fr) minmax(0, 1.3fr) 128px 84px 96px 160px;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f4ebe4;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+
+.pt-row:last-child {
+  border-bottom: 0;
+}
+
+.pt-row:not(.pt-row--head):hover {
+  background: #fffaf7;
+}
+
+.pt-row--head {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 0.8rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #7a5c52;
+  border-bottom-color: #efe3da;
+}
+
+.pt-row.is-moved {
+  background: #fdf6f2;
+}
+
+.pt-row.is-hidden .pt-product,
+.pt-row.is-hidden .pt-cats,
+.pt-row.is-hidden .pt-pz,
+.pt-row.is-hidden .pt-price {
+  opacity: 0.5;
+}
+
+.pt-pos {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pt-pos-number {
+  min-width: 20px;
+  font-size: 0.8rem;
+  color: #7a5c52;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pt-arrows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pt-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #e8d5c8;
+  border-radius: 6px;
+  background: #fff;
+  color: #8f6a5e;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pt-arrow:hover:not(:disabled) {
+  background: #fcf0e8;
+  border-color: #8f6a5e;
+}
+
+.pt-arrow:disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
-.product-order-actions {
+.pt-product {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin-right: 8px;
+  gap: 12px;
+  min-width: 0;
 }
 
-.product-order-actions button {
+.pt-thumb {
+  display: block;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border: 1px solid #f0e4db;
+  border-radius: 10px;
+  background: #f6ece6;
+  object-fit: cover;
+}
+
+.pt-product-text {
+  min-width: 0;
+}
+
+.pt-name {
+  display: block;
+  overflow: hidden;
+  font-weight: 600;
+  color: #5c463e;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pt-name:hover {
+  color: #8f6a5e;
+  text-decoration: underline;
+}
+
+.pt-sub {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: 0.8rem;
+  color: #7a5c52;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pt-cats {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pt-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #fcf0e8;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.pt-chip--more {
+  border: 1px solid #e8d5c8;
+  background: #fff;
+  color: #7a5c52;
+  cursor: default;
+}
+
+.pt-pz-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #efe7f6;
+  color: #5f4380;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.pt-pz-none {
+  color: #a88d82;
+}
+
+.pt-price {
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pt-row--head .pt-price {
+  font-weight: 400;
+}
+
+.pt-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #5c463e;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.pt-switch:disabled {
+  cursor: wait;
+}
+
+.pt-switch-track {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: #d9c9bf;
+  transition: background 0.2s;
+}
+
+.pt-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.pt-switch.on .pt-switch-track {
+  background: #4c8a5c;
+}
+
+.pt-switch.on .pt-switch-track::after {
+  transform: translateX(16px);
+}
+
+.pt-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.pt-edit {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #8f6a5e;
+  border-radius: 8px;
+  color: #5c463e;
+  font-size: 0.875rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pt-edit:hover {
+  background: #8f6a5e;
+  color: #fff;
+}
+
+.pt-icon-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 34px;
   height: 34px;
-  border: 1px solid #e2cfc5;
+  padding: 0;
+  border: 1px solid transparent;
   border-radius: 8px;
-  background-color: #fffaf7;
-  color: #70483d;
-  font-size: 20px;
-  line-height: 1;
+  background: none;
+  color: #8f6a5e;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background 0.15s, color 0.15s;
 }
 
-.product-order-actions button:hover:not(:disabled) {
-  background-color: #f3e7e1;
-  border-color: #b99583;
+.pt-icon-btn:hover {
+  background: #fcf0e8;
 }
 
-.product-order-actions button:disabled {
-  opacity: 0.35;
+.pt-icon-btn.is-disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
-.product-order-controls button:focus-visible,
-.product-order-actions button:focus-visible {
-  outline: 2px solid #8b5e50;
-  outline-offset: 3px;
+.pt-icon-btn.is-disabled:hover {
+  background: none;
 }
 
-@media (max-width: 600px) {
-  .product-order-controls {
-    flex-wrap: wrap;
+.pt-icon-btn--danger:hover {
+  background: #fbe9e9;
+  color: #963131;
+}
+
+.pt-confirm {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #963131;
+}
+
+.pt-confirm button {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.pt-confirm-yes {
+  border: 0;
+  background: #b4483a;
+  color: #fff;
+}
+
+.pt-confirm-no {
+  border: 1px solid #e8d5c8;
+  background: #fff;
+  color: #5c463e;
+}
+
+.pt-empty {
+  margin: 0;
+  padding: 40px 20px;
+  text-align: center;
+  color: #7a5c52;
+  font-size: 0.9rem;
+}
+
+/* По-тесен екран: без колоната „Персонализация“ – отбелязва се до цената */
+@media (max-width: 1100px) {
+  .pt-row {
+    grid-template-columns: 62px minmax(0, 2.2fr) minmax(0, 1.2fr) 84px 96px 160px;
   }
 
-  .product-order-controls button {
-    flex: 1;
-  }
-
-  .product-order-actions {
-    margin-right: 0;
+  .pt-row > :nth-child(4) {
+    display: none;
   }
 }
 
-@media (max-width: 768px) {
-  .admin-filters {
-    flex-direction: column;
+/* Телефон: карти вместо таблица */
+@media (max-width: 760px) {
+  .pt-tabs {
+    display: none;
   }
 
-  .admin-product {
+  .pt-tabs-mobile {
+    display: block;
+    flex: 1 1 100%;
+  }
+
+  .pt-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .pt-tabs-mobile,
+  .pt-search {
+    grid-column: 1 / -1;
+  }
+
+  .pt-search {
+    width: 100%;
+  }
+
+  .pt-filter label {
+    display: none;
+  }
+
+  .pt-filter .orders-input {
+    width: 100%;
+  }
+
+  .pt-filter {
+    display: block;
+  }
+
+  .pt-top-actions .pt-ghost-btn {
+    display: none;
+  }
+
+  .pt-savebar {
+    top: 84px;
     flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .pt-savebar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pt-table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .pt-row--head {
+    display: none;
+  }
+
+  .pt-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "product product"
+      "cats    price"
+      "pz      pz"
+      "visible actions"
+      "pos     pos";
+    gap: 8px 10px;
+    padding: 12px;
+    border: 0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .pt-row:not(.pt-row--head):hover {
+    background: #fff;
+  }
+
+  .pt-row.is-moved {
+    box-shadow: 0 0 0 2px #e8d5c8, 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .pt-row > :nth-child(4) {
+    display: block;
+  }
+
+  .pt-pos {
+    grid-area: pos;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid #f4ebe4;
+  }
+
+  .pt-pos-number::before {
+    content: "Място № ";
+  }
+
+  .pt-arrows {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .pt-arrow {
+    width: 40px;
+    height: 34px;
+    border-radius: 8px;
+  }
+
+  .pt-product {
+    grid-area: product;
     align-items: flex-start;
   }
 
-  .drag-handle {
-    cursor: grab !important;
-    font-size: 1.2rem;
-    color: #bca493;
-    padding: 10px;
-    user-select: none;
-    min-width: 44px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .pt-thumb {
+    width: 72px;
+    height: 72px;
   }
 
-  .drag-handle:active,
-  .drag-handle:hover {
-    cursor: grab !important;
+  .pt-name {
+    font-size: 0.95rem;
+    white-space: normal;
   }
 
-  .sortable-ghost {
-    opacity: 0.4;
-    background-color: #fcf0e8;
+  .pt-sub {
+    white-space: normal;
   }
 
-  .admin-product-image {
-    width: 40%;
+  .pt-cats {
+    grid-area: cats;
   }
 
-  .admin-product-info p {
-    margin-bottom: 1rem;
-    width: 165%;
-    white-space: pre-line;
+  .pt-pz {
+    grid-area: pz;
   }
 
-  .admin-product-actions {
-    align-items: center;
-    width: 100%;
+  .pt-pz--none {
+    display: none !important;
   }
 
-  .admin-product-actions button,
-  .admin-product-actions .edit-product {
-    font-size: 1rem;
-    width: 100%;
+  .pt-price {
+    grid-area: price;
+    align-self: start;
+    color: #8f6a5e;
+    font-weight: 700;
+  }
+
+  .pt-visibility {
+    grid-area: visible;
+  }
+
+  .pt-actions {
+    grid-area: actions;
+  }
+
+  .pt-edit,
+  .pt-icon-btn {
+    height: 36px;
+  }
+
+  .pt-icon-btn {
+    width: 36px;
+    border-color: #e8d5c8;
+  }
+
+  .pt-confirm {
+    flex-wrap: wrap;
   }
 }

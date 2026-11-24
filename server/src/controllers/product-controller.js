@@ -25,7 +25,7 @@ productController.get('/:slug/similar', async (req, res) => {
         // 1. Find the current product
         const product = await productService.getProductBySlug(slug);
 
-        if (!product) {
+        if (!product || !product.isActive) {
             return res.status(404).json({
                 message: 'Продуктът не е намерен.'
             });
@@ -55,7 +55,8 @@ productController.get('/:slug', async (req, res) => {
         const slug = req.params.slug;
         const product = await productService.getProductBySlug(slug);
 
-        if (!product) {
+        // Скритите продукти не се показват в сайта.
+        if (!product || !product.isActive) {
             return res.status(404).json({ message: 'Продуктът не е намерен.' });
         }
 
