@@ -6,9 +6,9 @@ import './AdminHeader.css';
 
 const SECTIONS = [
     { key: 'orders', label: 'Поръчки', to: '/admin/orders', match: ['/admin/orders'] },
-    { key: 'production', label: 'Изработка', to: '/admin/production', match: ['/admin/production'] },
     { key: 'products', label: 'Продукти', to: '/admin/dashboard', match: ['/admin/dashboard', '/admin/products'] },
-    { key: 'categories', label: 'Категории', to: '/admin/categories/create', match: ['/admin/categories'] },
+    { key: 'production', label: 'Изработка', to: '/admin/production', match: ['/admin/production'] },
+    // { key: 'categories', label: 'Категории', to: '/admin/categories/create', match: ['/admin/categories'] },
 ];
 
 const CREATE = [
