@@ -1,0 +1,288 @@
+/* Изработка – колко бройки от всеки продукт има за правене */
+
+.pr-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 16px;
+}
+
+.pr-top p {
+  margin: 4px 0 0;
+}
+
+/* Малко напомняне за спешните бройки */
+.pr-urgent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #fcefd9;
+  color: #8a5512;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pr-urgent::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.pr-table {
+  overflow: hidden;
+}
+
+/* Ред на продукт: продукт | 3 бройки | напредък | срок */
+.pr-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.6fr) repeat(3, 104px) minmax(0, 1fr) 150px;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f4ebe4;
+}
+
+.pr-row:last-child {
+  border-bottom: 0;
+}
+
+.pr-row--head {
+  border-bottom-color: #efe3da;
+  font-size: 0.8rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #7a5c52;
+}
+
+.pr-head-num {
+  text-align: center;
+}
+
+.pr-product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pr-thumb {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #f6ece6;
+}
+
+.pr-thumb--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a88d82;
+  font-size: 1.3rem;
+}
+
+.pr-name {
+  min-width: 0;
+}
+
+.pr-name b {
+  display: block;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pr-pz {
+  display: inline-flex;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #efe7f6;
+  color: #5f4380;
+  font-size: 0.75rem;
+}
+
+/* Срокът под името се вижда само на телефон */
+.pr-due-inline {
+  display: none;
+}
+
+.pr-num {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.pr-num b {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.pr-num--todo b {
+  font-size: 1.375rem;
+  font-weight: 800;
+}
+
+.pr-num.is-zero b {
+  color: #c9b3a7;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Етикетът е за екранните четци; на телефон се вижда под числото */
+.pr-num-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.pr-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: #f4ebe4;
+  overflow: hidden;
+}
+
+.pr-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #4c8a5c;
+}
+
+.pr-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8rem;
+  color: #7a5c52;
+}
+
+.pr-due .due {
+  display: block;
+  white-space: nowrap;
+}
+
+.pr-all-done {
+  color: #2e6b40;
+}
+
+.pr-empty {
+  margin: 0;
+  padding: 40px 20px;
+  text-align: center;
+  color: #7a5c52;
+}
+
+/* Таблет и телефон: всеки продукт е отделна карта */
+@media (max-width: 900px) {
+  .pr-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pr-table {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: visible;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .pr-row--head {
+    display: none;
+  }
+
+  .pr-row,
+  .pr-row:last-child {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "product product product"
+      "todo making ready";
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .pr-product {
+    grid-area: product;
+    padding: 12px;
+  }
+
+  .pr-name b {
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  .pr-pz {
+    display: none;
+  }
+
+  .pr-due-inline {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.82rem;
+  }
+
+  .pr-num {
+    align-self: stretch;
+    padding: 8px 4px;
+    border-top: 1px solid #f4ebe4;
+    font-size: 0.72rem;
+    color: #7a5c52;
+  }
+
+  .pr-num + .pr-num {
+    border-left: 1px solid #f4ebe4;
+  }
+
+  .pr-num--todo { grid-area: todo; }
+  .pr-num--making { grid-area: making; }
+  .pr-num--ready { grid-area: ready; }
+
+  .pr-num b {
+    display: block;
+    font-size: 1.125rem;
+    color: #5c463e;
+  }
+
+  .pr-num--todo b {
+    font-size: 1.375rem;
+  }
+
+  .pr-num.is-zero b {
+    font-size: 1.125rem;
+  }
+
+  .pr-num-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+
+  .pr-progress,
+  .pr-due {
+    display: none;
+  }
+
+  .pr-empty {
+    border-radius: 14px;
+    background: #fff;
+  }
+}

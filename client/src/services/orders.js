@@ -38,6 +38,11 @@ export function getOrderCounts() {
     return request(`${BASE_URL}/counts`, {}, 'Грешка при броенето на поръчките.');
 }
 
+// За страница „Изработка“: потвърдените поръчки, които още не са изпратени.
+export function getProductionOrders() {
+    return request(`${BASE_URL}/production`, {}, 'Грешка при зареждането на изработката.');
+}
+
 export function getOrderById(id) {
     return request(`${BASE_URL}/${id}`, {}, 'Грешка при зареждането на поръчката.');
 }

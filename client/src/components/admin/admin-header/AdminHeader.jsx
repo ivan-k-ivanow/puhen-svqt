@@ -6,6 +6,7 @@ import './AdminHeader.css';
 
 const SECTIONS = [
     { key: 'orders', label: 'Поръчки', to: '/admin/orders', match: ['/admin/orders'] },
+    { key: 'production', label: 'Изработка', to: '/admin/production', match: ['/admin/production'] },
     { key: 'products', label: 'Продукти', to: '/admin/dashboard', match: ['/admin/dashboard', '/admin/products'] },
     { key: 'categories', label: 'Категории', to: '/admin/categories/create', match: ['/admin/categories'] },
 ];
@@ -32,6 +33,8 @@ function Icon({ name, size = 18 }) {
     switch (name) {
         case 'orders':
             return <svg {...props}><path d="M6 3h12l2 5H4z" /><path d="M4 8h16v11a2 2 0 01-2 2H6a2 2 0 01-2-2z" /><path d="M9 12h6" /></svg>;
+        case 'production':
+            return <svg {...props}><path d="M4 20l6-6" /><path d="M14.5 4.5l5 5-7 7-5-5z" /><path d="M13 8l3 3" /></svg>;
         case 'products':
             return <svg {...props}><rect x="3" y="9" width="18" height="12" rx="2" /><path d="M12 9v12M3 13h18" /><path d="M12 9c-2-4-6-4-6-1.5S10 9 12 9zM12 9c2-4 6-4 6-1.5S14 9 12 9z" /></svg>;
         case 'categories':

@@ -122,6 +122,10 @@ async function getAllOrders() {
     return await orderRepository.getAllOrders();
 }
 
+async function getProductionOrders() {
+    return await orderRepository.getProductionOrders();
+}
+
 async function getOrderById(id) {
     return await withPhotoLinks(await orderRepository.getOrderById(id));
 }
@@ -453,6 +457,7 @@ async function cleanupOldOrderPhotos() {
 export default {
     countNewOrders,
     getAllOrders,
+    getProductionOrders,
     getOrderById,
     createOrder,
     updateOrder,

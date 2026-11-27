@@ -299,6 +299,17 @@
   display: none;
 }
 
+/* Четири секции не се събират с иконките на по-тесен екран */
+@media (max-width: 1120px) {
+  .ah-bar {
+    gap: 16px;
+  }
+
+  .ah-nav-item svg {
+    display: none;
+  }
+}
+
 /* По-тесен екран: „Към сайта“ остава горе, но само като иконка до „+“ */
 @media (max-width: 1000px) {
   .ah-bar {
@@ -325,6 +336,28 @@
   .ah-ghost:not(.ah-ghost--always) svg {
     width: 18px;
     height: 18px;
+  }
+}
+
+/* Таблет: „Създай“ става само „+“ */
+@media (max-width: 900px) {
+  .ah-nav {
+    gap: 2px;
+  }
+
+  .ah-nav-item {
+    padding: 0 10px;
+  }
+
+  .ah-new {
+    justify-content: center;
+    width: 40px;
+    padding: 0;
+  }
+
+  .ah-new-text,
+  .ah-new-chevron {
+    display: none;
   }
 }
 
@@ -383,7 +416,7 @@
     left: 0;
     z-index: 100;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     height: 64px;
     padding: 0 6px env(safe-area-inset-bottom);
     background: #fff;

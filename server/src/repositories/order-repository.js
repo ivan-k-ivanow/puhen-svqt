@@ -24,6 +24,42 @@ async function countNewOrders() {
     });
 }
 
+// За страница „Изработка“: потвърдените поръчки, които още не са изпратени.
+// Новите не влизат, докато не бъдат потвърдени.
+async function getProductionOrders() {
+    return await prisma.order.findMany({
+        where: {
+            archivedAt: null,
+            status: { in: ['CONFIRMED', 'IN_PROGRESS', 'READY'] },
+        },
+        // Само бройки, статус и срок – без данни за клиента.
+        select: {
+            id: true,
+            status: true,
+            deadline: true,
+            items: {
+                select: {
+                    id: true,
+                    name: true,
+                    quantity: true,
+                    productId: true,
+                    product: {
+                        select: {
+                            name: true,
+                            images: {
+                                select: { url: true },
+                                orderBy: { createdAt: 'asc' },
+                                take: 1,
+                            },
+                            _count: { select: { fields: true } },
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
 async function getAllOrders() {
     return await prisma.order.findMany({
         orderBy: { createdAt: 'desc' },
@@ -114,6 +150,7 @@ export default {
     getOrdersForPhotoCleanup,
     markPhotosDeleted,
     getAllOrders,
+    getProductionOrders,
     getOrderById,
     createOrder,
     updateOrder,

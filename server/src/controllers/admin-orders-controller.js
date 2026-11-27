@@ -44,6 +44,17 @@ adminOrdersController.get('/counts', async (req, res) => {
     }
 });
 
+// За страница „Изработка“ – потвърдените поръчки, които още не са изпратени.
+adminOrdersController.get('/production', async (req, res) => {
+    try {
+        const orders = await orderService.getProductionOrders();
+
+        return res.json(orders);
+    } catch (error) {
+        return sendError(res, error, 'Грешка при зареждането на изработката.');
+    }
+});
+
 adminOrdersController.get('/:id', async (req, res) => {
     try {
         const order = await orderService.getOrderById(req.params.id);

@@ -11,6 +11,7 @@ import AdminOrders from './pages/admin/AdminOrders'
 import AdminCreateOrder from './pages/admin/AdminCreateOrder'
 import AdminEditOrder from './pages/admin/AdminEditOrder'
 import AdminOrder from './pages/admin/AdminOrder'
+import AdminProduction from './pages/admin/AdminProduction'
 import Order from './pages/order/Order'
 import OrderThankYouPage from './pages/order/OrderThankYouPage'
 import Privacy from './pages/privacy/Privacy'
@@ -50,6 +51,7 @@ function App() {
             <Route path="/admin/orders/create" element={<AdminCreateOrder />} />
             <Route path="/admin/orders/edit/:id" element={<AdminEditOrder />} />
             <Route path="/admin/orders/:id" element={<AdminOrder />} />
+            <Route path="/admin/production" element={<AdminProduction />} />
           </Route>
 
         </Routes>
