@@ -211,10 +211,6 @@ export default function OrderList() {
                         </p>
                     )}
                 </div>
-
-                <Link to="/admin/orders/create" className="orders-btn">
-                    + Нова поръчка
-                </Link>
             </div>
 
             <div className="order-tabs" role="group" aria-label="Статус">
@@ -330,6 +326,7 @@ export default function OrderList() {
                     <span>Дата</span>
                     <span>Клиент</span>
                     <span>Продукти</span>
+                    <span className="order-qty">Брой</span>
                     <span>Краен срок</span>
                     <span>Статус</span>
                     <span>Доставка</span>
@@ -341,7 +338,7 @@ export default function OrderList() {
                 {!isLoading && visibleOrders.length === 0 && (
                     <p className="order-empty">
                         {orders.length === 0
-                            ? 'Още няма поръчки. Добавете първата с „+ Нова поръчка“.'
+                            ? 'Още няма поръчки. Добавете първата от „+ Ново“ в менюто.'
                             : 'Няма поръчки, които отговарят на търсенето.'}
                     </p>
                 )}
@@ -350,6 +347,7 @@ export default function OrderList() {
                     const due = deadlineInfo(order);
                     const created = orderedAt(order.createdAt);
                     const [firstItem, ...otherItems] = order.items;
+                    const pieces = order.items.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
                     return (
                         <div className="order-row" key={order.id}>
@@ -380,6 +378,10 @@ export default function OrderList() {
                                         + {otherItems.length} още: {otherItems.map(item => item.name).join(', ')}
                                     </span>
                                 )}
+                            </div>
+
+                            <div className="order-cell order-qty" title="Общ брой продукти в поръчката">
+                                <span>{pieces} бр.</span>
                             </div>
 
                             <div className="order-cell">
