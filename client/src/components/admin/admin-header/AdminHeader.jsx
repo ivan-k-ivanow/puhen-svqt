@@ -203,7 +203,7 @@ export default function AdminHeader() {
                                         onClick={() => toggle('create')}
                                     >
                                         <Icon name="plus" size={16} />
-                                        <span className="ah-new-text">Ново</span>
+                                        <span className="ah-new-text">Създай</span>
                                         <span className="ah-new-chevron"><Icon name="chevron" size={14} /></span>
                                     </button>
                                     {menu === 'create' && createMenu}
